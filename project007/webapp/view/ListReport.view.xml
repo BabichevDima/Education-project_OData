@@ -31,7 +31,7 @@
                             </fb:FilterItem>
                             <fb:FilterItem name="ProductSuppliers" label="Categories">
                                 <fb:control>
-                                    <MultiComboBox selectedKeys="{appView>/selectedCategories}" id="Category" selectionFinish="combineFilters('Categories')" items="{oData>/Categories}">
+                                    <MultiComboBox selectedKeys="" id="Category" selectionFinish="combineFilters('Categories')" items="{oData>/Categories}">
                                         <core:Item key="{oData>Name}" text="{oData>Name}"/>
                                     </MultiComboBox>
                                 </fb:control>
@@ -53,7 +53,7 @@
             <Table selectionChange="onSelectionTable" id="CategoriesTable" sticky="HeaderToolbar,ColumnHeaders" inset="false" width="auto" mode="MultiSelect" items="{oData>/Categories}">
                 <headerToolbar>
                     <Toolbar class="sapUiMediumMarginTop">
-                        <Title text="{i18n>Products} ({appView>/CountsOfProducts})" level="H2"/>
+                        <Title text="{i18n>Products}" level="H2"/>
                         <ToolbarSpacer/>
                         <Button id="CreateButton" type="Accept" icon="sap-icon://create" text="{i18n>ButtonCreate}" press="onPress" enabled="{= !${stateModel>/StatusButtons}}"/>
                         <Button id="EditButton" type="Ghost" icon="sap-icon://edit" text="{i18n>ButtonEdit}" enabled="{stateModel>/StatusButtons}" press="onEditButton" visible="{=!${stateModel>/EditMode}}"/>
@@ -63,13 +63,11 @@
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <HBox alignItems="Center">
-                            <Button type="Transparent" icon="sap-icon://{appViewSort>/sortType/Name}" press="onSortButtonPress('Name')"/>
                             <Text text="{i18n>Name}"/>
                         </HBox>
                     </Column>
                     <Column minScreenWidth="1100px" hAlign="Center">
                         <HBox alignItems="Center">
-                            <Button type="Transparent" icon="sap-icon://{appViewSort>/sortType/ID}" press="onSortButtonPress('ID')"/>
                             <Text text="{i18n>ID}"/>
                         </HBox>
                     </Column>

@@ -1,124 +1,86 @@
 <mvc:View controllerName="project007.controller.ProductInfo"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.uxap"
-	xmlns:m="sap.m"
+	xmlns:uxap="sap.uxap"
+	xmlns="sap.m"
 	xmlns:f="sap.f"
 	xmlns:layout="sap.ui.layout"
 	xmlns:core="sap.ui.core">
-	<ObjectPageLayout id="ProductInfo" showFooter="{stateModel>/EditMode}">
-		<headerTitle>
-			<ObjectPageDynamicHeaderTitle>
-				<breadcrumbs>
-					<m:Breadcrumbs id="breadcrumbsId">
-						<m:Link text="{i18n>CategoriesOverview}" press="onNavToCategoriesOverview"/>
-						<m:Link text="{i18n>Category}" press="onNavToCategory"/>
-						<m:Link text="{i18n>Product}"/>
-					</m:Breadcrumbs>
-				</breadcrumbs>
-				<expandedHeading>
-					<m:Title text="{i18n>Product}"/>
-				</expandedHeading>
-				<actions>
-					<m:Button id="EditProductsButton" text="{i18n>ButtonEdit}" icon="sap-icon://edit" type="Ghost" press="onEditButton"/>
-					<m:Button id="DeleteCategoryButton" text="{i18n>ButtonDelete}" icon="sap-icon://delete" type="Reject"/>
-				</actions>
-			</ObjectPageDynamicHeaderTitle>
-		</headerTitle>
+	<uxap:ObjectPageLayout id="ProductInfo" showFooter="{stateModel>/EditMode}">
+		<uxap:headerTitle>
+			<uxap:ObjectPageDynamicHeaderTitle>
+				<uxap:breadcrumbs>
+					<Breadcrumbs id="breadcrumbsId">
+						<Link text="{i18n>CategoriesOverview}" press="onNavToCategoriesOverview"/>
+						<Link text="{i18n>Category}" press="onNavToCategory"/>
+						<Link text="{i18n>Product}"/>
+					</Breadcrumbs>
+				</uxap:breadcrumbs>
+				<uxap:expandedHeading>
+					<Title text="{i18n>Product}"/>
+				</uxap:expandedHeading>
+				<uxap:actions>
+					<Button id="EditProductsButton" text="{i18n>ButtonEdit}" icon="sap-icon://edit" type="Ghost" press="onEditButton"/>
+					<Button id="DeleteCategoryButton" text="{i18n>ButtonDelete}" icon="sap-icon://delete" type="Reject"/>
+				</uxap:actions>
+			</uxap:ObjectPageDynamicHeaderTitle>
+		</uxap:headerTitle>
 
-		<headerContent>
-			<m:FlexBox visible="{= !${stateModel>/EditMode}}">
-				<m:FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
-					<m:Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-					<m:Text id="ProductsName" class="sapUiTinyMarginTop" maxLines="1" text="{oData>Name}"/>
-				</m:FlexBox>
-				<m:FlexBox direction="Row" alignItems="Start" class="sapUiTinyMarginBottom sapUiMediumMarginEnd">
-					<m:Label design="Bold" text="{i18n>ID}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-					<m:Text class="sapUiTinyMarginTop" text="{oData>ID}"/>
-				</m:FlexBox>
-			</m:FlexBox>
-		</headerContent>
+		<uxap:headerContent>
+			<FlexBox visible="{= !${stateModel>/EditMode}}">
+				<FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
+					<Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+					<Text id="ProductsName" class="sapUiTinyMarginTop" maxLines="1" text="{oData>Name}"/>
+				</FlexBox>
+				<FlexBox direction="Row" alignItems="Start" class="sapUiTinyMarginBottom sapUiMediumMarginEnd">
+					<Label design="Bold" text="{i18n>ID}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+					<Text class="sapUiTinyMarginTop" text="{oData>ID}"/>
+				</FlexBox>
+			</FlexBox>
+		</uxap:headerContent>
 
-		<sections>
-			<ObjectPageSection showTitle="{stateModel>/EditMode}">
-				<subSections>
-					<ObjectPageSubSection visible="{stateModel>/EditMode}">
-						<blocks>
-							<layout:VerticalLayout>
-								<m:FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
-									<m:Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-									<m:HBox>
-										<m:Input fieldGroupIds="groupValueProductInfo" value="{path: 'oData>Name'}"/>
-									</m:HBox>
-								</m:FlexBox>
-							</layout:VerticalLayout>
-							<layout:VerticalLayout>
-								<m:FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
-									<m:Label design="Bold" text="{i18n>ID}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-									<m:HBox>
-										<m:Input fieldGroupIds="groupValueObjectPageCategory" value="{path: 'oData>ID'}"/>
-									</m:HBox>
-								</m:FlexBox>
-							</layout:VerticalLayout>
-						</blocks>
-					</ObjectPageSubSection>
+		<uxap:sections>
+			<uxap:ObjectPageSection>
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection>
+						<uxap:blocks>
+							<Table id="ProductsTableCategories" selectionChange="" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{oData>/Suppliers}">
+								<headerToolbar>
+									<Toolbar class="sapUiMediumMarginTop">
+										<Title text="{i18n>Products}" level="H2"/>
+										<ToolbarSpacer/>
+										<SearchField id="CategoriesSearch" search="" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
+										<Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>ButtonCreate}" press="" enabled="{= !${stateModel>/EditMode}}"/>
+										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>ButtonDelete}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd"/>
+									</Toolbar>
+								</headerToolbar>
+								<columns>
+									<Column minScreenWidth="Tablet" demandPopin="true">
+										<Text text="{i18n>Name}"/>
+									</Column>
+									<Column minScreenWidth="Tablet" demandPopin="true">
+										<Text text="{i18n>ID}"/>
+									</Column>
 
-					<ObjectPageSubSection>
-						<blocks>
-							<m:Table id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{oData>Products}">
-								<m:headerToolbar>
-									<m:Toolbar class="sapUiMediumMarginTop">
-										<m:Title text="{i18n>Products}" level="H2"/>
-										<m:ToolbarSpacer/>
-										<m:SearchField id="CategoriesSearch" search="" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
-										<m:Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>ButtonCreate}" press="" enabled="{= !${stateModel>/EditMode}}"/>
-										<m:Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>ButtonDelete}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd"/>
-									</m:Toolbar>
-								</m:headerToolbar>
-								<m:columns>
-									<m:Column minScreenWidth="Tablet" demandPopin="true">
-										<m:Text text="{i18n>Name}"/>
-									</m:Column>
-									<m:Column minScreenWidth="Tablet" demandPopin="true">
-										<m:Text text="{i18n>Price}"/>
-									</m:Column>
-									<m:Column minScreenWidth="Tablet" demandPopin="true">
-										<m:Text text="{i18n>Description}"/>
-									</m:Column>
-									<m:Column minScreenWidth="Tablet" demandPopin="true">
-										<m:Text text="{i18n>ReleaseDate}"/>
-									</m:Column>
-									<m:Column minScreenWidth="Tablet" demandPopin="true">
-										<m:Text text="{i18n>DiscontinuedDate}"/>
-									</m:Column>
-									<m:Column minScreenWidth="Tablet" demandPopin="true">
-										<m:Text text="{i18n>Rating}"/>
-									</m:Column>
-								</m:columns>
+								</columns>
+								<items>
+									<ColumnListItem type="Active" press="onProductPress">
+										<Text text="{oData>Name}" />
+										<Text text="{oData>ID}" />
+									</ColumnListItem>
+								</items>
+							</Table>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+		</uxap:sections>
 
-								<m:items>
-									<m:ColumnListItem type="Active" press="onProductPress">
-										<m:Text text="{oData>Name}" />
-										<m:Text text="{oData>Price}" />
-										<m:Text text="{oData>Description}" />
-										<m:Text text="{oData>ReleaseDate}" />
-										<m:Text text="{oData>DiscontinuedDate}" />
-										<m:RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{oData>Rating}" tooltip="Rating Product" editable="false"/>
-									</m:ColumnListItem>
-								</m:items>
-							</m:Table>
-
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
-		</sections>
-
-		<footer>
-			<m:OverflowToolbar>
-				<m:ToolbarSpacer/>
-				<m:Button type="Accept" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onSaveButtonPress"/>
-				<m:Button id="CancelButtonObjectPageCategory" type="Reject" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onCancelButtonPress"/>
-			</m:OverflowToolbar>
-		</footer>
-	</ObjectPageLayout>
+		<uxap:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Accept" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onSaveButtonPress"/>
+				<Button id="CancelButtonObjectPageCategory" type="Reject" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onCancelButtonPress"/>
+			</OverflowToolbar>
+		</uxap:footer>
+	</uxap:ObjectPageLayout>
 </mvc:View>
