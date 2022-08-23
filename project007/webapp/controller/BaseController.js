@@ -29,7 +29,14 @@ sap.ui.define(
           .getModel("i18n")
           .getResourceBundle()
           .getText(sText);
-      }
+      },
+
+      /**
+       * Open products overview page button press event handler.
+       */
+      onNavToCategoriesOverview: function () {
+        this.navigate("ListReport");
+      },
     });
   }
 );

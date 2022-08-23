@@ -113,8 +113,8 @@
       ],
       "targets": {
         "TargetListReport": {
-          "viewId": "ListReport",
           "viewName": "ListReport",
+          "viewId": "ListReport",
           "viewLevel": 1
         },
         "TargetObjectPageCategory": {

@@ -10,12 +10,12 @@
 			<ObjectPageDynamicHeaderTitle>
 				<breadcrumbs>
 					<m:Breadcrumbs id="breadcrumbsId">
-						<m:Link text="{i18n>CategoriesOverview}" press="onNavToCategoriesOverview" id="ProductOverviewPage"/>
-						<m:Link text="{i18n>CategoryDetails}"/>
+						<m:Link text="{i18n>CategoriesOverview}" press="onNavToCategoriesOverview"/>
+						<m:Link text="{i18n>Category}"/>
 					</m:Breadcrumbs>
 				</breadcrumbs>
 				<expandedHeading>
-					<m:Title text="{i18n>CategoryDetails}"/>
+					<m:Title text="{i18n>Category}"/>
 				</expandedHeading>
 				<actions>
 					<m:Button id="EditButtonObjectPageCategory" text="{i18n>ButtonEdit}" icon="sap-icon://edit" type="Ghost" press="onEditButton" enabled="{= !${stateModel>/EditMode}}"/>

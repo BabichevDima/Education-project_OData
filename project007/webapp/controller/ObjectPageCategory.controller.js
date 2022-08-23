@@ -71,12 +71,7 @@ sap.ui.define(
         });
       },
 
-      /**
-       * Open products overview page button press event handler.
-       */
-      onNavToCategoriesOverview: function () {
-        this.navigate("ListReport");
-      },
+
 
       /**
        * Edits table fields.
