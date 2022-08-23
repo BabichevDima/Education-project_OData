@@ -1,0 +1,139 @@
+{
+  "_version": "1.40.0",
+  "sap.app": {
+    "id": "project007",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.6.7",
+      "toolsId": "9df734a4-38cb-405b-84b6-8f03cf7ac887"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "V2/OData/OData.svc",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.102.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.suite.ui.generic.template": {},
+        "sap.ui.comp": {},
+        "sap.ui.generic.app": {},
+        "sap.ui.table": {},
+        "sap.ushell": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "project007.i18n.i18n"
+        }
+      },
+      "oData": {
+        "dataSource": "mainService",
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "useBatch": false,
+          "disableHeadRequestForToken": true
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "project007.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "name": "ListReport",
+          "pattern": ":?query:",
+          "target": ["TargetListReport"]
+        },
+        {
+          "pattern": "ListReport/{CategoryId}/Info",
+          "name": "ProductDetails",
+          "target": ["productDetails"]
+        },
+        {
+          "pattern": "ListReport/{CategoryId}/Info/{productId}",
+          "name": "ProductInfo",
+          "target": ["productInfo"]
+        }
+      ],
+      "targets": {
+        "TargetListReport": {
+          "viewId": "ListReport",
+          "viewName": "ListReport",
+          "viewLevel": 1
+        },
+        "productDetails": {
+          "viewName": "ProductDetails",
+          "viewId": "productDetails",
+          "viewLevel": 2
+        },
+        "productInfo": {
+          "viewName": "ProductInfo",
+          "viewId": "productInfo",
+          "viewLevel": 3
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "project007.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "App"
+    }
+  }
+}

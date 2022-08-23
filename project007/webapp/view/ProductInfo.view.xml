@@ -1,0 +1,129 @@
+<mvc:View controllerName="project007.controller.ProductInfo"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.uxap"
+	xmlns:m="sap.m"
+	xmlns:f="sap.f"
+	xmlns:layout="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	<ObjectPageLayout id="ProductInfo" showFooter="{stateModel>/EditMode}">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle>
+				<breadcrumbs>
+					<m:Breadcrumbs id="breadcrumbsId">
+						<m:Link text="{i18n>CategoriesOverview}" press="onNavToCategoriesOverview" id="ProductOverviewPage"/>
+						<m:Link text="{i18n>CategoryInfo}"/>
+					</m:Breadcrumbs>
+				</breadcrumbs>
+				<expandedHeading>
+					<m:Title text="{i18n>CategoryInfo}"/>
+				</expandedHeading>
+				<actions>
+					<m:Button id="EditButtonProductInfo" text="{i18n>ButtonEdit}" icon="sap-icon://edit" type="Ghost" press="onEditButton" enabled="{= !${stateModel>/EditMode}}"/>
+					<m:Button id="DeleteButtonProductInfo" text="{i18n>ButtonDelete}" icon="sap-icon://delete" type="Reject" enabled="{= !${appView>/CheckedProductInfo}}" press="onWarningMessage('Product')"/>
+				</actions>
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+
+		<headerContent>
+			<m:FlexBox visible="{= !${stateModel>/EditMode}}">
+				<m:FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
+					<m:Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+					<m:Text id="ProductsName" class="sapUiTinyMarginTop" maxLines="1" text="{oData>Name}"/>
+				</m:FlexBox>
+				<m:FlexBox direction="Row" alignItems="Start" class="sapUiTinyMarginBottom sapUiMediumMarginEnd">
+					<m:Label design="Bold" text="{i18n>ID}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+					<m:Text class="sapUiTinyMarginTop" text="{oData>ID}"/>
+				</m:FlexBox>
+			</m:FlexBox>
+		</headerContent>
+
+		<sections>
+			<ObjectPageSection showTitle="{stateModel>/EditMode}">
+				<subSections>
+					<ObjectPageSubSection visible="{stateModel>/EditMode}">
+						<blocks>
+							<layout:VerticalLayout>
+								<m:FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
+									<m:Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+									<m:HBox>
+										<m:Input fieldGroupIds="groupValueProductInfo" value="{path: 'oData>Name'}"/>
+									</m:HBox>
+								</m:FlexBox>
+							</layout:VerticalLayout>
+							<layout:VerticalLayout>
+								<m:FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
+									<m:Label design="Bold" text="{i18n>ID}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+									<m:HBox>
+										<m:Input fieldGroupIds="groupValueProductDetails" value="{path: 'oData>ID'}"/>
+									</m:HBox>
+								</m:FlexBox>
+							</layout:VerticalLayout>
+						</blocks>
+					</ObjectPageSubSection>
+
+					<ObjectPageSubSection>
+						<blocks>
+							<m:Table id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{oData>Products}">
+								<m:headerToolbar>
+									<m:Toolbar class="sapUiMediumMarginTop">
+										<m:Title text="{i18n>Products}" level="H2"/>
+										<m:ToolbarSpacer/>
+										<m:SearchField id="CategoriesSearch" search="onCategoriesSearch" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
+										<m:Button id="AssignButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>ButtonCreate}" press="" enabled="{= !${stateModel>/EditMode}}"/>
+										<m:Button id="UnassignButton" type="Reject" icon="sap-icon://delete" text="{i18n>ButtonDelete}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd"/>
+									</m:Toolbar>
+								</m:headerToolbar>
+								<m:columns>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Button type="Transparent" icon="sap-icon://{appViewSort>/sortType/Name}" press="onSortButtonPress('Name')"/>
+											<m:Text text="{i18n>Name}"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Button type="Transparent" icon="sap-icon://{appViewSort>/sortType/Price}" press="onSortButtonPress('Price')"/>
+											<m:Text text="{i18n>Price}"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Button type="Transparent" icon="sap-icon://{appViewSort>/sortType/Description}" press="onSortButtonPress('Description')"/>
+											<m:Text text="{i18n>Description}"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Button type="Transparent" icon="sap-icon://{appViewSort>/sortType/ReleaseDate}" press="onSortButtonPress('ReleaseDate')"/>
+											<m:Text text="{i18n>ReleaseDate}"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Button type="Transparent" icon="sap-icon://{appViewSort>/sortType/DiscontinuedDate}" press="onSortButtonPress('DiscontinuedDate')"/>
+											<m:Text text="{i18n>DiscontinuedDate}"/>
+									</m:Column>
+									<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Button type="Transparent" icon="sap-icon://{appViewSort>/sortType/Rating}" press="onSortButtonPress('Rating')"/>
+											<m:Text text="{i18n>Rating}"/>
+									</m:Column>
+								</m:columns>
+
+								<m:items>
+									<m:ColumnListItem type="Active" press="onProductPress">
+											<m:Text text="{oData>Name}" />
+											<m:Text text="{oData>Price}" />
+											<m:Text text="{oData>Description}" />
+											<m:Text text="{oData>ReleaseDate}" />
+											<m:Text text="{oData>DiscontinuedDate}" />
+											<m:RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{oData>Rating}" tooltip="Rating Product" editable="false"/>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+
+		<footer>
+			<m:OverflowToolbar>
+				<m:ToolbarSpacer/>
+				<m:Button type="Accept" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onSaveButtonPress"/>
+				<m:Button id="CancelButtonProductDetails" type="Reject" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onCancelButtonPress"/>
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
+</mvc:View>
