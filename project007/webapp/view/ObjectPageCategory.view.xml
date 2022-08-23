@@ -1,11 +1,11 @@
-<mvc:View controllerName="project007.controller.ProductDetails"
+<mvc:View controllerName="project007.controller.ObjectPageCategory"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.uxap"
 	xmlns:m="sap.m"
 	xmlns:f="sap.f"
 	xmlns:layout="sap.ui.layout"
 	xmlns:core="sap.ui.core">
-	<ObjectPageLayout id="ProductDetails" showFooter="{stateModel>/EditMode}">
+	<ObjectPageLayout id="ObjectPageCategory" showFooter="{stateModel>/EditMode}">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
 				<breadcrumbs>
@@ -18,8 +18,8 @@
 					<m:Title text="{i18n>CategoryDetails}"/>
 				</expandedHeading>
 				<actions>
-					<m:Button id="EditButtonProductDetails" text="{i18n>ButtonEdit}" icon="sap-icon://edit" type="Ghost" press="onEditButton" enabled="{= !${stateModel>/EditMode}}"/>
-					<m:Button id="DeleteButtonProductDetails" text="{i18n>ButtonDelete}" icon="sap-icon://delete" type="Reject" enabled="{= !${appView>/CheckedProductDetails}}" press="onWarningMessage('Product')"/>
+					<m:Button id="EditButtonObjectPageCategory" text="{i18n>ButtonEdit}" icon="sap-icon://edit" type="Ghost" press="onEditButton" enabled="{= !${stateModel>/EditMode}}"/>
+					<m:Button id="DeleteButtonObjectPageCategory" text="{i18n>ButtonDelete}" icon="sap-icon://delete" type="Reject" enabled="{= !${appView>/CheckedObjectPageCategory}}" press="onWarningMessage('Product')"/>
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
 		</headerTitle>
@@ -46,7 +46,7 @@
 								<m:FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
 									<m:Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
 									<m:HBox>
-										<m:Input fieldGroupIds="groupValueProductDetails" value="{path: 'oData>Name'}"/>
+										<m:Input fieldGroupIds="groupValueObjectPageCategory" value="{path: 'oData>Name'}"/>
 									</m:HBox>
 								</m:FlexBox>
 							</layout:VerticalLayout>
@@ -54,7 +54,7 @@
 								<m:FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
 									<m:Label design="Bold" text="{i18n>ID}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
 									<m:HBox>
-										<m:Input fieldGroupIds="groupValueProductDetails" value="{path: 'oData>ID'}"/>
+										<m:Input fieldGroupIds="groupValueObjectPageCategory" value="{path: 'oData>ID'}"/>
 									</m:HBox>
 								</m:FlexBox>
 							</layout:VerticalLayout>
@@ -122,7 +122,7 @@
 			<m:OverflowToolbar>
 				<m:ToolbarSpacer/>
 				<m:Button type="Accept" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onSaveButtonPress"/>
-				<m:Button id="CancelButtonProductDetails" type="Reject" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onCancelButtonPress"/>
+				<m:Button id="CancelButtonObjectPageCategory" type="Reject" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onCancelButtonPress"/>
 			</m:OverflowToolbar>
 		</footer>
 	</ObjectPageLayout>

@@ -96,17 +96,17 @@
       },
       "routes": [
         {
-          "name": "ListReport",
           "pattern": ":?query:",
+          "name": "ListReport",
           "target": ["TargetListReport"]
         },
         {
-          "pattern": "ListReport/{CategoryId}/Info",
-          "name": "ProductDetails",
-          "target": ["productDetails"]
+          "pattern": "Category/{CategoryId}",
+          "name": "ObjectPageCategory",
+          "target": ["TargetObjectPageCategory"]
         },
         {
-          "pattern": "ListReport/{CategoryId}/Info/{productId}",
+          "pattern": "Category/{CategoryId}/Product/{productId}",
           "name": "ProductInfo",
           "target": ["productInfo"]
         }
@@ -117,9 +117,9 @@
           "viewName": "ListReport",
           "viewLevel": 1
         },
-        "productDetails": {
-          "viewName": "ProductDetails",
-          "viewId": "productDetails",
+        "TargetObjectPageCategory": {
+          "viewName": "ObjectPageCategory",
+          "viewId": "TargetObjectPageCategory",
           "viewLevel": 2
         },
         "productInfo": {

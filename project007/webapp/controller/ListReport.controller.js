@@ -115,7 +115,7 @@ sap.ui.define(
           .getObject("ID");
 
         if (!this.getView().getModel("stateModel").getProperty("/EditMode")) {
-          this.navigate("ProductDetails", {
+          this.navigate("ObjectPageCategory", {
             CategoryId: nCategoryId
           });
         } else {
