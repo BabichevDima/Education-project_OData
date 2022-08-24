@@ -43,6 +43,14 @@ sap.ui.define(
       onNavToCategory: function () {
         this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId,});
       },
+
+      handleLink1Press: function () {
+        MessageToast.show("Page 1 a very long link clicked");
+      },
+  
+      handleLink2Press: function () {
+        MessageToast.show("Page 2 long link clicked");
+      }
     });
   }
 );
