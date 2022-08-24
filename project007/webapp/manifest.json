@@ -92,7 +92,10 @@
         "viewPath": "project007.view",
         "controlAggregation": "pages",
         "controlId": "app",
-        "clearControlAggregation": false
+        "clearControlAggregation": false,
+        "bypassed": {
+          "target": ["notFound"]
+        }
       },
       "routes": [
         {
@@ -126,6 +129,11 @@
           "viewName": "ProductInfo",
           "viewId": "productInfo",
           "viewLevel": 3
+        },
+
+        "notFound": {
+          "viewName": "NotFound",
+          "viewId": "notFound"
         }
       }
     },
