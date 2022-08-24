@@ -25,10 +25,7 @@ sap.ui.define(
        * @returns {string} value.
        */
       getResourceBundle: function (sText) {
-        return this.getView()
-          .getModel("i18n")
-          .getResourceBundle()
-          .getText(sText);
+        return this.getView().getModel("i18n").getResourceBundle().getText(sText);
       },
 
       /**

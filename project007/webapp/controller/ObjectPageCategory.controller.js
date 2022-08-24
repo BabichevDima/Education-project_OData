@@ -1,24 +1,6 @@
 sap.ui.define(
-  [
-    "project007/controller/BaseController",
-    "sap/ui/model/json/JSONModel",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-    "sap/ui/core/ValueState",
-    "sap/m/MessageToast",
-    "sap/ui/core/Fragment",
-    "sap/m/MessageBox",
-  ],
-  function (
-    BaseController,
-    JSONModel,
-    Filter,
-    FilterOperator,
-    ValueState,
-    MessageToast,
-    Fragment,
-    MessageBox
-  ) {
+  ["project007/controller/BaseController", "sap/ui/model/json/JSONModel"],
+  function (BaseController, JSONModel) {
     "use strict";
 
     return BaseController.extend("project007.controller.ObjectPageCategory", {

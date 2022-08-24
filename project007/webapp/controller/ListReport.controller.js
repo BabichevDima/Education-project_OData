@@ -4,17 +4,8 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/Fragment",
     "sap/m/MessageBox",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
   ],
-  function (
-    BaseController,
-    JSONModel,
-    Fragment,
-    MessageBox,
-    Filter,
-    FilterOperator
-  ) {
+  function (BaseController, JSONModel, Fragment, MessageBox) {
     "use strict";
 
     return BaseController.extend("project007.controller.ListReport", {
@@ -43,7 +34,7 @@ sap.ui.define(
        * Selects a row.
        */
       onSelectionTable: function () {
-        var oStateModel = this.getView().getModel("stateModel");
+        var oStateModel         = this.getView().getModel("stateModel");
         var bIsSelectedContexts = this.byId("CategoriesTable").getSelectedContexts();
 
         oStateModel.setProperty("/StatusButtons", !!bIsSelectedContexts.length);
@@ -55,9 +46,7 @@ sap.ui.define(
       onCancelButton: function () {
         var oStateModel = this.getView().getModel("stateModel");
 
-        this.byId("CategoriesTable")
-          .getItems()
-          .forEach((elem) => (elem.mProperties.selected = false));
+        this.byId("CategoriesTable").getItems().forEach((elem) => (elem.mProperties.selected = false));
         oStateModel.setProperty("/StatusButtons", false);
         oStateModel.setProperty("/EditMode", false);
       },
@@ -79,7 +68,7 @@ sap.ui.define(
        */
       handleValueHelp: function (oEvent) {
         var sInputValue = oEvent.getSource().getValue();
-        var oView = this.getView();
+        var oView       = this.getView();
         oView.setBusy(true);
 
         if (!this._pValueHelpDialog) {
@@ -109,21 +98,16 @@ sap.ui.define(
        * @param {sap.ui.base.Event} oEvent event object.
        */
       onCategoryPress: function (oEvent) {
-        var nCategoryId = oEvent
-          .getSource()
-          .getBindingContext("oData")
-          .getObject("ID");
+        var nCategoryId = oEvent.getSource().getBindingContext("oData").getObject("ID");
 
         if (!this.getView().getModel("stateModel").getProperty("/EditMode")) {
           this.navigate("ObjectPageCategory", {
-            CategoryId: nCategoryId
+            CategoryId: nCategoryId,
           });
         } else {
           MessageBox.warning(this.getResourceBundle("WarningEditMode"));
         }
-      },
-
-      onPress: function () {},
+      }
     });
   }
 );

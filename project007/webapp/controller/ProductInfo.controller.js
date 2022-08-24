@@ -1,21 +1,7 @@
 // this.getOwnerComponent().getRouter().getHashChanger()
 sap.ui.define(
-  [
-    "project007/controller/BaseController",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-    "sap/ui/model/json/JSONModel",
-    "sap/ui/model/Sorter",
-    "sap/m/MessageToast",
-  ],
-  function (
-    BaseController,
-    Filter,
-    FilterOperator,
-    JSONModel,
-    Sorter,
-    MessageToast
-  ) {
+  ["project007/controller/BaseController"],
+  function (BaseController) {
     "use strict";
 
     return BaseController.extend("project007.controller.ProductInfo", {
@@ -23,10 +9,7 @@ sap.ui.define(
        * Controller's "init" lifecycle method.
        */
       onInit: function () {
-        this.getOwnerComponent()
-          .getRouter()
-          .getRoute("ProductInfo")
-          .attachPatternMatched(this._onPatternMatched, this);
+        this.getOwnerComponent().getRouter().getRoute("ProductInfo").attachPatternMatched(this._onPatternMatched, this);
       },
 
       /**
@@ -37,10 +20,10 @@ sap.ui.define(
        * @private
        */
       _onPatternMatched: function (oEvent) {
-        var that = this;
-        var oDataModel = this.getView().getModel("oData");
-        this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
-        this.sProductId = oEvent.getParameter("arguments").productId;
+        var that          = this;
+        var oDataModel    = this.getView().getModel("oData");
+        this.sCategoryId  = oEvent.getParameter("arguments").CategoryId;
+        this.sProductId   = oEvent.getParameter("arguments").productId;
 
         oDataModel.metadataLoaded().then(function () {
           var sKey = oDataModel.createKey("/Products", {
@@ -58,9 +41,7 @@ sap.ui.define(
        * Open products overview page button press event handler.
        */
       onNavToCategory: function () {
-        this.navigate("ObjectPageCategory", {
-          CategoryId: this.sCategoryId,
-        });
+        this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId,});
       },
     });
   }
