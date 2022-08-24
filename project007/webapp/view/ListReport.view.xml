@@ -66,7 +66,7 @@
                             <Text text="{i18n>Name}"/>
                         </HBox>
                     </Column>
-                    <Column minScreenWidth="1100px" hAlign="Center">
+                    <Column minScreenWidth="1100px" hAlign="End">
                         <HBox alignItems="Center">
                             <Text text="{i18n>ID}"/>
                         </HBox>
@@ -74,12 +74,8 @@
                 </columns>
                 <items>
                     <ColumnListItem type="Active" press="onCategoryPress">
-                        <HBox>
-                            <Text maxLines="1" text="{oData>Name}"/>
-                        </HBox>
-                        <HBox>
-                            <Text maxLines="1" text="{oData>ID}"/>
-                        </HBox>
+                        <Text maxLines="1" text="{oData>Name}"/>
+                        <Text maxLines="1" text="{oData>ID}"/>
                     </ColumnListItem>
                 </items>
             </Table>
