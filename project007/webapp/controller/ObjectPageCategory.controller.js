@@ -71,8 +71,6 @@ sap.ui.define(
         });
       },
 
-
-
       /**
        * Edits table fields.
        *

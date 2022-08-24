@@ -23,7 +23,6 @@
 				</uxap:actions>
 			</uxap:ObjectPageDynamicHeaderTitle>
 		</uxap:headerTitle>
-
 		<uxap:headerContent>
 			<FlexBox visible="{= !${stateModel>/EditMode}}">
 				<FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
@@ -36,7 +35,6 @@
 				</FlexBox>
 			</FlexBox>
 		</uxap:headerContent>
-
 		<uxap:sections>
 			<uxap:ObjectPageSection showTitle="{stateModel>/EditMode}">
 				<uxap:subSections>
@@ -60,7 +58,6 @@
 							</layout:VerticalLayout>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
-
 					<uxap:ObjectPageSubSection>
 						<uxap:blocks>
 							<Table id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{oData>Products}">
@@ -93,7 +90,6 @@
 										<Text text="{i18n>Rating}"/>
 									</Column>
 								</columns>
-
 								<items>
 									<ColumnListItem type="Active" press="onProductPress">
 										<Text text="{oData>Name}" />
@@ -105,13 +101,11 @@
 									</ColumnListItem>
 								</items>
 							</Table>
-
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>
 		</uxap:sections>
-
 		<uxap:footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>

@@ -37,9 +37,25 @@ sap.ui.define(
        * @private
        */
       _onPatternMatched: function (oEvent) {
-        this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
+        var that = this;
+        var oDataModel = this.getView().getModel("oData");
+        this.sProductId = oEvent.getParameter("arguments").productId;
+
+        oDataModel.metadataLoaded().then(function () {
+          var sKey = oDataModel.createKey("/Products", {
+            ID: that.sProductId,
+          });
+
+          that.getView().bindObject({
+            path: sKey,
+            model: "oData",
+          });
+        });
       },
 
+      /**
+       * Open products overview page button press event handler.
+       */
       onNavToCategory: function () {
         this.navigate("ObjectPageCategory", {
           CategoryId: this.sCategoryId,
