@@ -95,8 +95,8 @@
 										<Text text="{oData>Name}" />
 										<Text text="{oData>Price}" />
 										<Text text="{oData>Description}" />
-										<Text text="{oData>ReleaseDate}" />
-										<Text text="{oData>DiscontinuedDate}" />
+										<Text text="{path: 'oData>ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+										<Text text="{path: 'oData>DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
 										<RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{oData>Rating}" tooltip="Rating Product" editable="false"/>
 									</ColumnListItem>
 								</items>
