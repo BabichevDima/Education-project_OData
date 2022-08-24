@@ -10,7 +10,7 @@
 			<uxap:ObjectPageDynamicHeaderTitle>
 				<uxap:breadcrumbs>
 					<Breadcrumbs id="breadcrumbsId">
-						<Link text="{i18n>CategoriesOverview}" press="onNavToSuppliersOverview"/>
+						<Link text="{i18n>CategoriesOverview}" press="onNavToCategoriesOverview"/>
 						<Link text="{i18n>Category}" press="onNavToCategory"/>
 						<Link text="{i18n>Product}"/>
 					</Breadcrumbs>
@@ -71,7 +71,7 @@
 									</Column>
 								</columns>
 								<items>
-									<ColumnListItem type="Active">
+									<ColumnListItem>
 										<Text text="{oData>Name}"/>
 										<Text text="{oData>ID}"/>
 									</ColumnListItem>

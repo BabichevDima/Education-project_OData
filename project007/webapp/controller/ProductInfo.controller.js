@@ -39,6 +39,7 @@ sap.ui.define(
       _onPatternMatched: function (oEvent) {
         var that = this;
         var oDataModel = this.getView().getModel("oData");
+        this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
         this.sProductId = oEvent.getParameter("arguments").productId;
 
         oDataModel.metadataLoaded().then(function () {
