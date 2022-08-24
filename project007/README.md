@@ -9,7 +9,7 @@
 |**Service Type**<br>OData Url|
 |**Service URL**<br>https://services.odata.org/V2/OData/OData.svc
 |**Module Name**<br>project007|
-|**Application Title**<br>App Title|
+|**Application Title**<br>App with oData-V2|
 |**Namespace**<br>|
 |**UI5 Theme**<br>sap_fiori_3|
 |**UI5 Version**<br>1.102.1|
@@ -18,7 +18,7 @@
 
 ## project007
 
-A Fiori application.
+Freestyle application.
 
 ### Starting the generated app
 

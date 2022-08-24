@@ -2,8 +2,8 @@
 	xmlns="sap.uxap"
 	xmlns:layout="sap.ui.layout"
 	xmlns:m="sap.m"
-	xmlns:personal="project007.controller.blocks" controllerName="project007.controller.ProductInfo" height="100%">
-	<ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true" upperCaseAnchorBar="false">
+	xmlns:personal="project007.controller.blocks" controllerName="project007.controller.ObjectPageProduct" height="100%">
+	<ObjectPageLayout id="ObjectPageProduct" enableLazyLoading="true" upperCaseAnchorBar="false">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
 				<breadcrumbs>

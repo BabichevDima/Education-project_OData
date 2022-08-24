@@ -4,7 +4,7 @@ sap.ui.define(
   function (BaseController) {
     "use strict";
 
-    return BaseController.extend("project007.controller.ProductInfo", {
+    return BaseController.extend("project007.controller.ObjectPageProduct", {
       /**
        * Controller's "init" lifecycle method.
        */

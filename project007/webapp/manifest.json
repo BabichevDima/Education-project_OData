@@ -111,7 +111,7 @@
         {
           "pattern": "Category/{CategoryId}/Product/{productId}",
           "name": "ProductInfo",
-          "target": ["productInfo"]
+          "target": ["TargetObjectPageProduct"]
         }
       ],
       "targets": {
@@ -122,12 +122,12 @@
         },
         "TargetObjectPageCategory": {
           "viewName": "ObjectPageCategory",
-          "viewId": "TargetObjectPageCategory",
+          "viewId": "ObjectPageCategory",
           "viewLevel": 2
         },
-        "productInfo": {
-          "viewName": "ProductInfo",
-          "viewId": "productInfo",
+        "TargetObjectPageProduct": {
+          "viewName": "ObjectPageProduct",
+          "viewId": "ObjectPageProduct",
           "viewLevel": 3
         },
 

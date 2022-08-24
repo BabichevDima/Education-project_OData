@@ -39,7 +39,7 @@ sap.ui.define([
 							"tiles": [{
 								"tileType": "sap.ushell.ui.tile.StaticTile",
 								"properties": {
-									"title": "App Title",
+									"title": "App with oData-V2",
 									"targetURL": "#project007-display"
 								}
 							}]
@@ -54,8 +54,8 @@ sap.ui.define([
 							"project007-display": {
 								"semanticObject": "project007",
 								"action": "display",
-								"description": "A Fiori application.",
-								"title": "App Title",
+								"description": "Freestyle application.",
+								"title": "App with oData-V2",
 								"signature": {
 									"parameters": {}
 								},
