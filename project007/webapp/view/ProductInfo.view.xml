@@ -67,14 +67,14 @@
 									<Column minScreenWidth="Tablet" demandPopin="true">
 										<Text text="{i18n>Name}"/>
 									</Column>
-									<Column minScreenWidth="Tablet" demandPopin="true">
-										<Text text="{i18n>ID}"/>
+									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+										<Text text="{i18n>ID}" class="sapUiSmallMarginEnd"/>
 									</Column>
 								</columns>
 								<items>
 									<ColumnListItem>
 										<Text text="{oData>Name}"/>
-										<Text text="{oData>ID}"/>
+										<Text text="{oData>ID}" class="sapUiSmallMarginEnd"/>
 									</ColumnListItem>
 								</items>
 							</Table>

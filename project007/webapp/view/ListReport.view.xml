@@ -68,14 +68,14 @@
                     </Column>
                     <Column minScreenWidth="1100px" hAlign="End">
                         <HBox alignItems="Center">
-                            <Text text="{i18n>ID}"/>
+                            <Text text="{i18n>ID}" class="sapUiSmallMarginEnd"/>
                         </HBox>
                     </Column>
                 </columns>
                 <items>
                     <ColumnListItem type="Active" press="onCategoryPress">
                         <Text maxLines="1" text="{oData>Name}"/>
-                        <Text maxLines="1" text="{oData>ID}"/>
+                        <Text maxLines="1" text="{oData>ID}" class="sapUiSmallMarginEnd"/>
                     </ColumnListItem>
                 </items>
             </Table>
