@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<Dialog title="{i18n>TitleDialogCategory}" id="DialogCategory">
+		<f:SimpleForm maxContainerCols="1" layout="ResponsiveGridLayout" labelSpanL="12" labelSpanM="12" emptySpanL="0" emptySpanM="0" columnsL="1" columnsM="1">
+			<f:content>
+				<Label text="{i18n>Name}"/>
+				<Input valueLiveUpdate="true" placeholder="{i18n>PlaceholderFieldName}" value="{path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 3, maxLength: 40}}"/>
+
+				<Label text="{i18n>ID}" required="true"/>
+				<Input valueLiveUpdate="true" editable="false" value="{ID}"/>
+			</f:content>
+		</f:SimpleForm>
+
+		<buttons>
+			<Button text="{i18n>ButtonCreate}" press="onCreateCategory" id="CreateCategory"/>
+			<Button text="{i18n>ButtonClose}" press="onDialogCategoryClosePress" id="CloseDialogCategory"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

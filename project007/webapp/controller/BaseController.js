@@ -25,7 +25,10 @@ sap.ui.define(
        * @returns {string} value.
        */
       getResourceBundle: function (sText) {
-        return this.getView().getModel("i18n").getResourceBundle().getText(sText);
+        return this.getView()
+          .getModel("i18n")
+          .getResourceBundle()
+          .getText(sText);
       },
 
       /**
@@ -33,6 +36,15 @@ sap.ui.define(
        */
       onNavToCategoriesOverview: function () {
         this.navigate("ListReport");
+      },
+
+      /**
+       * Register the view with the message manager.
+       */
+      onRegisterManager: function () {
+        var oMessageManager = sap.ui.getCore().getMessageManager();
+        oMessageManager.registerObject(this.getView(), true);
+        this.getView().setModel(oMessageManager.getMessageModel(), "messages");
       },
     });
   }

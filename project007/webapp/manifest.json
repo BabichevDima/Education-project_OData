@@ -20,6 +20,8 @@
         "uri": "V2/OData/OData.svc",
         "type": "OData",
         "settings": {
+          "annotations": [],
+          "localUri": "localService/metadata.xml",
           "odataVersion": "2.0"
         }
       }

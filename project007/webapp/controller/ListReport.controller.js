@@ -4,8 +4,9 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/Fragment",
     "sap/m/MessageBox",
+    "sap/m/MessageToast",
   ],
-  function (BaseController, JSONModel, Fragment, MessageBox) {
+  function (BaseController, JSONModel, Fragment, MessageBox, MessageToast) {
     "use strict";
 
     return BaseController.extend("project007.controller.ListReport", {
@@ -14,6 +15,7 @@ sap.ui.define(
        */
       onInit: function () {
         this._setStateModel();
+        this.onRegisterManager();
       },
 
       /**
@@ -34,8 +36,9 @@ sap.ui.define(
        * Selects a row.
        */
       onSelectionTable: function () {
-        var oStateModel         = this.getView().getModel("stateModel");
-        var bIsSelectedContexts = this.byId("CategoriesTable").getSelectedContexts();
+        var oStateModel = this.getView().getModel("stateModel");
+        var bIsSelectedContexts =
+          this.byId("CategoriesTable").getSelectedContexts();
 
         oStateModel.setProperty("/StatusButtons", !!bIsSelectedContexts.length);
       },
@@ -46,7 +49,9 @@ sap.ui.define(
       onCancelButton: function () {
         var oStateModel = this.getView().getModel("stateModel");
 
-        this.byId("CategoriesTable").getItems().forEach((elem) => (elem.mProperties.selected = false));
+        this.byId("CategoriesTable")
+          .getItems()
+          .forEach((elem) => (elem.mProperties.selected = false));
         oStateModel.setProperty("/StatusButtons", false);
         oStateModel.setProperty("/EditMode", false);
       },
@@ -68,7 +73,7 @@ sap.ui.define(
        */
       handleValueHelp: function (oEvent) {
         var sInputValue = oEvent.getSource().getValue();
-        var oView       = this.getView();
+        var oView = this.getView();
         oView.setBusy(true);
 
         if (!this._pValueHelpDialog) {
@@ -98,7 +103,10 @@ sap.ui.define(
        * @param {sap.ui.base.Event} oEvent event object.
        */
       onCategoryPress: function (oEvent) {
-        var nCategoryId = oEvent.getSource().getBindingContext("oData").getObject("ID");
+        var nCategoryId = oEvent
+          .getSource()
+          .getBindingContext("oData")
+          .getObject("ID");
 
         if (!this.getView().getModel("stateModel").getProperty("/EditMode")) {
           this.navigate("ObjectPageCategory", {
@@ -107,7 +115,81 @@ sap.ui.define(
         } else {
           MessageBox.warning(this.getResourceBundle("WarningEditMode"));
         }
-      }
+      },
+
+      /**
+       * Downloads dialog.
+       *
+       * @param {number} nIDNewCategory ID new category.
+       */
+      openDialog: function (nIDNewCategory) {
+        var oView = this.getView();
+        var oODataModel = oView.getModel("oData");
+
+        if (!this.oDialog) {
+          this.oDialog = sap.ui.xmlfragment(
+            oView.getId(),
+            `project007.view.fragments.CategoryDialog`,
+            this
+          );
+          oView.addDependent(this.oDialog);
+        }
+
+        var oEntryCtx = oODataModel.createEntry("/Categories", {
+          properties: {
+            Name: "NEW Category",
+            ID: nIDNewCategory,
+          },
+        });
+
+        this.oDialog.setBindingContext(oEntryCtx);
+        this.oDialog.setModel(oODataModel);
+        this.oDialog.open();
+      },
+
+      /**
+       * Opens dialog.
+       *
+       */
+      onOpenDialogCategory: function () {
+        var that = this;
+        var oODataModel = this.getView().getModel("oData");
+
+        oODataModel.read(`/Categories`, {
+          success: function (mData) {
+            that.openDialog(mData.results.length);
+          },
+          error: function () {
+            MessageBox.error("Error!!!");
+          },
+        });
+      },
+
+      /**
+       * "Search stores" event handler of the "SearchField".
+       *
+       * @param {sap.ui.base.Event} oEvent event object.
+       */
+      onDialogCategoryClosePress: function () {
+        var oODataModel = this.getView().getModel("oData");
+        var oCtx = this.oDialog.getBindingContext();
+
+        oODataModel.deleteCreatedEntry(oCtx);
+        this.oDialog.close();
+      },
+
+      /**
+       * Creates element.
+       *
+       * @param {string} sQuery create type.
+       */
+      onCreateCategory: function () {
+        var oODataModel = this.getView().getModel("oData");
+
+        oODataModel.submitChanges();
+        this.onDialogCategoryClosePress();
+        MessageToast.show(this.getResourceBundle("SuccessCreatedCategory"));
+      },
     });
   }
 );
