@@ -1,0 +1,37 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+	xmlns:forms="sap.ui.layout.form"
+	xmlns="sap.m">
+	<forms:Form width="100%">
+		<forms:formContainers>
+			<forms:FormContainer id="addressInfo" title="{i18n>Info}">
+				<forms:formElements>
+					<forms:FormElement label="{i18n>Description}">
+						<forms:fields>
+							<Text text="{oData>Description}"/>
+						</forms:fields>
+					</forms:FormElement>
+					<forms:FormElement label="{i18n>Rating}">
+						<forms:fields>
+							<RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{oData>Rating}" tooltip="Rating Product" editable="false"/>
+						</forms:fields>
+					</forms:FormElement>
+					<forms:FormElement label="{i18n>ReleaseDate}">
+						<forms:fields>
+							<Text wrapping="false" class="sapUiTinyMarginTop" text="{path: 'oData>ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+						</forms:fields>
+					</forms:FormElement>
+					<forms:FormElement label="{i18n>DiscontinuedDate}" visible="{= ${oData>DiscontinuedDate} ? true : false }">
+						<forms:fields>
+							<Text wrapping="false" class="sapUiTinyMarginTop" text="{path: 'oData>DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+						</forms:fields>
+					</forms:FormElement>
+					<forms:FormElement label="{i18n>Price}">
+						<forms:fields>
+							<Text text="{oData>Price}"/>
+						</forms:fields>
+					</forms:FormElement>
+				</forms:formElements>
+			</forms:FormContainer>
+		</forms:formContainers>
+	</forms:Form>
+</mvc:View>

@@ -1,0 +1,92 @@
+<mvc:View controllerName="project007.controller.ListReport"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core" height="100%">
+    <f:DynamicPage class="sapUiNoContentPadding" id="ListReport" showFooter="{stateModel>/EditMode}">
+
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="{i18n>CategoriesOverview}"/>
+                </f:heading>
+                <f:breadcrumbs>
+                    <Breadcrumbs>
+                        <Link text="{i18n>CategoriesOverview}"/>
+                    </Breadcrumbs>
+                </f:breadcrumbs>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar id="filterbar" reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false">
+                        <fb:filterItems>
+                            <fb:FilterItem name="ProductName" label="Search">
+                                <fb:control>
+                                    <Input id="searchFieldName" placeholder="{i18n>PlaceholderSerch}" valueLiveUpdate="true" liveChange="combineFilters('Name')" value="{oFilterModel>/name}"/>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="ProductSuppliers" label="Categories">
+                                <fb:control>
+                                    <MultiComboBox selectedKeys="" id="Category" selectionFinish="combineFilters('Categories')" items="{oData>/Categories}">
+                                        <core:Item key="{oData>Name}" text="{oData>Name}"/>
+                                    </MultiComboBox>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="ProductCategory" label="{i18n>ID}">
+                                <fb:control>
+                                    <MultiInput id="multiInput" suggestionItems="{path: 'oData>/Categories', sorter: { path: 'Name' }}" valueHelpRequest="handleValueHelp" tokenChange="combineFilters('Categories')">
+                                        <core:Item text="{oData>ID}" />
+                                    </MultiInput>
+                                </fb:control>
+                            </fb:FilterItem>
+                        </fb:filterItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <f:content>
+            <Table selectionChange="onSelectionTable" id="CategoriesTable" sticky="HeaderToolbar,ColumnHeaders" inset="false" width="auto" mode="MultiSelect" items="{oData>/Categories}">
+                <headerToolbar>
+                    <Toolbar class="sapUiMediumMarginTop">
+                        <Title text="{i18n>Category}" level="H2"/>
+                        <ToolbarSpacer/>
+                        <Button id="CreateButton" type="Accept" icon="sap-icon://create" text="{i18n>ButtonCreate}" press="onPress" enabled="{= !${stateModel>/StatusButtons}}"/>
+                        <Button id="EditButton" type="Ghost" icon="sap-icon://edit" text="{i18n>ButtonEdit}" enabled="{stateModel>/StatusButtons}" press="onEditButton" visible="{=!${stateModel>/EditMode}}"/>
+                        <Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>ButtonDelete}" enabled="{stateModel>/StatusButtons}" visible="{=!${stateModel>/EditMode}}"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <HBox alignItems="Center">
+                            <Text text="{i18n>Name}"/>
+                        </HBox>
+                    </Column>
+                    <Column minScreenWidth="1100px" hAlign="End">
+                        <HBox alignItems="Center">
+                            <Text text="{i18n>ID}" class="sapUiSmallMarginEnd"/>
+                        </HBox>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Active" press="onCategoryPress">
+                        <Text maxLines="1" text="{oData>Name}"/>
+                        <Text maxLines="1" text="{oData>ID}" class="sapUiSmallMarginEnd"/>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </f:content>
+
+        <f:footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Accept" id="SaveButton" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onSaveButton" visible="{stateModel>/EditMode}"/>
+                <Button id="CancelButton" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onCancelButton" visible="{stateModel>/EditMode}"/>
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</mvc:View>

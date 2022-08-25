@@ -1,0 +1,117 @@
+<mvc:View controllerName="project007.controller.ObjectPageCategory"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:layout="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	<uxap:ObjectPageLayout id="ObjectPageCategory" showFooter="{stateModel>/EditMode}">
+		<uxap:headerTitle>
+			<uxap:ObjectPageDynamicHeaderTitle>
+				<uxap:breadcrumbs>
+					<Breadcrumbs id="breadcrumbsId">
+						<Link text="{i18n>CategoriesOverview}" press="onNavToCategoriesOverview"/>
+						<Link text="{i18n>Category}"/>
+					</Breadcrumbs>
+				</uxap:breadcrumbs>
+				<uxap:expandedHeading>
+					<Title text="{i18n>Category}"/>
+				</uxap:expandedHeading>
+				<uxap:actions>
+					<Button id="EditButtonObjectPageCategory" text="{i18n>ButtonEdit}" icon="sap-icon://edit" type="Ghost" press="onEditButton" enabled="{= !${stateModel>/EditMode}}"/>
+					<Button id="DeleteButtonObjectPageCategory" text="{i18n>ButtonDelete}" icon="sap-icon://delete" type="Reject" press=""/>
+				</uxap:actions>
+			</uxap:ObjectPageDynamicHeaderTitle>
+		</uxap:headerTitle>
+		<uxap:headerContent>
+			<FlexBox visible="{= !${stateModel>/EditMode}}">
+				<FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
+					<Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+					<Text id="ProductsName" class="sapUiTinyMarginTop" maxLines="1" text="{oData>Name}"/>
+				</FlexBox>
+				<FlexBox direction="Row" alignItems="Start" class="sapUiTinyMarginBottom sapUiMediumMarginEnd">
+					<Label design="Bold" text="{i18n>ID}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+					<Text class="sapUiTinyMarginTop" text="{oData>ID}"/>
+				</FlexBox>
+			</FlexBox>
+		</uxap:headerContent>
+		<uxap:sections>
+			<uxap:ObjectPageSection showTitle="{stateModel>/EditMode}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection visible="{stateModel>/EditMode}">
+						<uxap:blocks>
+							<layout:VerticalLayout>
+								<FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
+									<Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+									<HBox>
+										<Input fieldGroupIds="groupValueObjectPageCategory" value="{path: 'oData>Name'}"/>
+									</HBox>
+								</FlexBox>
+							</layout:VerticalLayout>
+							<layout:VerticalLayout>
+								<FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
+									<Label design="Bold" text="{i18n>ID}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+									<HBox>
+										<Input fieldGroupIds="groupValueObjectPageCategory" value="{path: 'oData>ID'}"/>
+									</HBox>
+								</FlexBox>
+							</layout:VerticalLayout>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+					<uxap:ObjectPageSubSection>
+						<uxap:blocks>
+							<Table id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{oData>Products}">
+								<headerToolbar>
+									<Toolbar class="sapUiMediumMarginTop">
+										<Title text="{i18n>Products}" level="H2"/>
+										<ToolbarSpacer/>
+										<SearchField id="CategoriesSearch" search="onCategoriesSearch" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
+										<Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>ButtonCreate}" press="" enabled="{= !${stateModel>/EditMode}}"/>
+										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>ButtonDelete}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd"/>
+									</Toolbar>
+								</headerToolbar>
+								<columns>
+									<Column minScreenWidth="Tablet" demandPopin="true">
+										<Text text="{i18n>Name}"/>
+									</Column>
+									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+										<Text text="{i18n>Price}"/>
+									</Column>
+									<Column minScreenWidth="Tablet" demandPopin="true">
+										<Text text="{i18n>Description}"/>
+									</Column>
+									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+										<Text text="{i18n>ReleaseDate}"/>
+									</Column>
+									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+										<Text text="{i18n>DiscontinuedDate}"/>
+									</Column>
+									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+										<Text text="{i18n>Rating}"/>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem type="Active" press="onProductPress">
+										<Text text="{oData>Name}" />
+										<Text text="{oData>Price}" />
+										<Text text="{oData>Description}" />
+										<Text text="{path: 'oData>ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+										<Text text="{path: 'oData>DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+										<RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{oData>Rating}" tooltip="Rating Product" editable="false"/>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+		</uxap:sections>
+		<uxap:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Accept" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onSaveButtonPress"/>
+				<Button id="CancelButtonObjectPageCategory" type="Reject" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onCancelButtonPress"/>
+			</OverflowToolbar>
+		</uxap:footer>
+	</uxap:ObjectPageLayout>
+</mvc:View>
