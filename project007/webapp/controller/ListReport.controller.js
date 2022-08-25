@@ -26,7 +26,7 @@ sap.ui.define(
       _setStateModel: function () {
         var oStateModel = new JSONModel({
           StatusButtons: false,
-          EditMode: false,
+          EditMode:      false,
         });
 
         this.getView().setModel(oStateModel, "stateModel");
@@ -36,9 +36,8 @@ sap.ui.define(
        * Selects a row.
        */
       onSelectionTable: function () {
-        var oStateModel = this.getView().getModel("stateModel");
-        var bIsSelectedContexts =
-          this.byId("CategoriesTable").getSelectedContexts();
+        var oStateModel         = this.getView().getModel("stateModel");
+        var bIsSelectedContexts = this.byId("CategoriesTable").getSelectedContexts();
 
         oStateModel.setProperty("/StatusButtons", !!bIsSelectedContexts.length);
       },
@@ -48,12 +47,14 @@ sap.ui.define(
        */
       onCancelButton: function () {
         var oStateModel = this.getView().getModel("stateModel");
+        var oODataModel = this.getView().getModel("oData");
 
-        this.byId("CategoriesTable")
-          .getItems()
-          .forEach((elem) => (elem.mProperties.selected = false));
+        this.byId("CategoriesTable").getItems().forEach((elem) => (elem.mProperties.selected = false));
+        this.byId("CategoriesTable").setMode("MultiSelect");
+
         oStateModel.setProperty("/StatusButtons", false);
         oStateModel.setProperty("/EditMode", false);
+        oODataModel.resetChanges();
       },
 
       /**
@@ -64,6 +65,23 @@ sap.ui.define(
       onEditButton: function () {
         var oStateModel = this.getView().getModel("stateModel");
         oStateModel.setProperty("/EditMode", true);
+        this.byId("CategoriesTable").setMode("None");
+      },
+
+      /**
+       * Dialog product edit "Save" button press event handler.
+       */
+      onSaveButton: function () {
+        var that = this;
+        var oODataModel = this.getView().getModel("oData");
+
+        if (oODataModel.hasPendingChanges()) {
+          oODataModel.submitChanges();
+          this.onCancelButton();
+          MessageToast.show(that.getResourceBundle("CategorySuccessEdited"));
+        } else {
+          MessageToast.show(that.getResourceBundle("CategoryNotEdited"));
+        }
       },
 
       /**
@@ -153,7 +171,7 @@ sap.ui.define(
        *
        */
       onOpenDialogCategory: function () {
-        var that = this;
+        var that        = this;
         var oODataModel = this.getView().getModel("oData");
         this.getView().setBusy(true);
 
@@ -174,7 +192,7 @@ sap.ui.define(
        */
       onDialogCategoryClosePress: function () {
         var oODataModel = this.getView().getModel("oData");
-        var oCtx = this.oDialog.getBindingContext();
+        var oCtx        = this.oDialog.getBindingContext();
 
         oODataModel.deleteCreatedEntry(oCtx);
         this.oDialog.close();
@@ -195,18 +213,18 @@ sap.ui.define(
        *
        */
       onDeleteButton: function () {
-        var that = this;
-        var oODataModel = this.getView().getModel("oData");
-        var aSelectedCategory = this.byId("CategoriesTable")
-          .getSelectedContexts()
-          .map((oCategory) => oCategory.getPath());
+        var that              = this;
+        var oODataModel       = this.getView().getModel("oData");
+        var oStateModel       = this.getView().getModel("stateModel");
+        var aSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().map((oCategory) => oCategory.getPath());
 
         aSelectedCategory.forEach((sPath) => {
           oODataModel.remove(`${sPath}`, {
             success: function () {
               that.getView().setBusy(false);
               MessageToast.show(`${sPath} was remove`);
-              that.onSelectionTable()
+              that.onSelectionTable();
+              oStateModel.setProperty("/StatusButtons", false);
             },
             error: function () {
               MessageBox.error("Error!!!");
@@ -229,7 +247,6 @@ sap.ui.define(
             actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
             emphasizedAction: MessageBox.Action.OK,
             onClose: function (sAction) {
-
               if (sAction === "OK") {
                 that.onDeleteButton();
                 MessageToast.show(that.getResourceBundle("MessageDeleteSuccess"));
