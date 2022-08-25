@@ -144,6 +144,7 @@ sap.ui.define(
 
         this.oDialog.setBindingContext(oEntryCtx);
         this.oDialog.setModel(oODataModel);
+        oView.setBusy(false);
         this.oDialog.open();
       },
 
@@ -154,6 +155,7 @@ sap.ui.define(
       onOpenDialogCategory: function () {
         var that = this;
         var oODataModel = this.getView().getModel("oData");
+        this.getView().setBusy(true);
 
         oODataModel.read(`/Categories`, {
           success: function (mData) {
@@ -184,11 +186,60 @@ sap.ui.define(
        * @param {string} sQuery create type.
        */
       onCreateCategory: function () {
-        var oODataModel = this.getView().getModel("oData");
-
-        oODataModel.submitChanges();
+        this.getView().getModel("oData").submitChanges();
         this.onDialogCategoryClosePress();
-        MessageToast.show(this.getResourceBundle("SuccessCreatedCategory"));
+      },
+
+      /**
+       * Deletes product.
+       *
+       */
+      onDeleteButton: function () {
+        var that = this;
+        var oODataModel = this.getView().getModel("oData");
+        var aSelectedCategory = this.byId("CategoriesTable")
+          .getSelectedContexts()
+          .map((oCategory) => oCategory.getPath());
+
+        aSelectedCategory.forEach((sPath) => {
+          oODataModel.remove(`${sPath}`, {
+            success: function () {
+              that.getView().setBusy(false);
+              MessageToast.show(`${sPath} was remove`);
+              that.onSelectionTable()
+            },
+            error: function () {
+              MessageBox.error("Error!!!");
+            },
+          });
+        });
+      },
+
+      /**
+       * Asks for confirmation of deletion.
+       *
+       */
+      onWarningMessageDialogPress: function () {
+        var that = this;
+        this.getView().setBusy(true);
+
+        MessageBox.confirm(
+          that.getResourceBundle("WarningMessage") + ` Category?`,
+          {
+            actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+            emphasizedAction: MessageBox.Action.OK,
+            onClose: function (sAction) {
+
+              if (sAction === "OK") {
+                that.onDeleteButton();
+                MessageToast.show(that.getResourceBundle("MessageDeleteSuccess"));
+              } else {
+                that.getView().setBusy(false);
+                MessageToast.show(that.getResourceBundle("MessageNotDeleteSuccess"));
+              }
+            },
+          }
+        );
       },
     });
   }
