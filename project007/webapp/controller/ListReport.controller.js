@@ -140,7 +140,8 @@ sap.ui.define(
        *
        * @param {number} nIDNewCategory ID new category.
        */
-      openDialog: function (nIDNewCategory) {
+      openDialog: function (aCategories) {
+        var nNewCategoryID = aCategories[aCategories.length-1].ID+1;
         var oView = this.getView();
         var oODataModel = oView.getModel("oData");
 
@@ -156,7 +157,7 @@ sap.ui.define(
         var oEntryCtx = oODataModel.createEntry("/Categories", {
           properties: {
             Name: "TEST NEW Category",
-            ID: nIDNewCategory,
+            ID: nNewCategoryID,
           },
         });
 
@@ -176,8 +177,9 @@ sap.ui.define(
         this.getView().setBusy(true);
 
         oODataModel.read(`/Categories`, {
+          urlParameters: {$orderby: "ID"},
           success: function (mData) {
-            that.openDialog(mData.results.length);
+            that.openDialog(mData.results);
           },
           error: function () {
             MessageBox.error("Error!!!");
