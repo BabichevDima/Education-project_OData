@@ -155,7 +155,7 @@ sap.ui.define(
 
         var oEntryCtx = oODataModel.createEntry("/Categories", {
           properties: {
-            Name: "NEW Category",
+            Name: "TEST NEW Category",
             ID: nIDNewCategory,
           },
         });
@@ -219,7 +219,7 @@ sap.ui.define(
         var aSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().map((oCategory) => oCategory.getPath());
 
         aSelectedCategory.forEach((sPath) => {
-          oODataModel.remove(`${sPath}`, {
+          oODataModel.remove(sPath, {
             success: function () {
               that.getView().setBusy(false);
               MessageToast.show(`${sPath} was remove`);
@@ -252,7 +252,7 @@ sap.ui.define(
                 MessageToast.show(that.getResourceBundle("MessageDeleteSuccess"));
               } else {
                 that.getView().setBusy(false);
-                MessageToast.show(that.getResourceBundle("MessageNotDeleteSuccess"));
+                MessageToast.show(that.getResourceBundle("MessageNotDeleteSuccessCategory"));
               }
             },
           }

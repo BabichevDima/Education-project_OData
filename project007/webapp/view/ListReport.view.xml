@@ -78,7 +78,7 @@
                             <Text maxLines="1" text="{oData>Name}" visible="{= !${stateModel>/EditMode}}"/>
                             <Input fieldGroupIds="groupEditValueProduct" value="{path: 'oData>Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
                         </HBox>
-                        <Text maxLines="1" text="(EditMode: {stateModel>/EditMode}) {oData>ID}" class="sapUiSmallMarginEnd"/>
+                        <Text maxLines="1" text="{oData>ID}" class="sapUiSmallMarginEnd"/>
                     </ColumnListItem>
                 </items>
             </Table>
