@@ -1,6 +1,6 @@
 sap.ui.define(
   [
-    "project007/controller/BaseController",
+    "webapp/controller/BaseController",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/Fragment",
     "sap/m/MessageBox",
@@ -9,7 +9,7 @@ sap.ui.define(
   function (BaseController, JSONModel, Fragment, MessageBox, MessageToast) {
     "use strict";
 
-    return BaseController.extend("project007.controller.ListReport", {
+    return BaseController.extend("webapp.controller.ListReport", {
       /**
        * Controller's "init" lifecycle method.
        */
@@ -78,9 +78,9 @@ sap.ui.define(
         if (oODataModel.hasPendingChanges()) {
           oODataModel.submitChanges();
           this.onCancelButton();
-          MessageToast.show(that.getResourceBundle("CategorySuccessEdited"));
+          MessageToast.show(that.i18n("CategorySuccessEdited"));
         } else {
-          MessageToast.show(that.getResourceBundle("CategoryNotEdited"));
+          MessageToast.show(that.i18n("CategoryNotEdited"));
         }
       },
 
@@ -97,7 +97,7 @@ sap.ui.define(
         if (!this._pValueHelpDialog) {
           this._pValueHelpDialog = Fragment.load({
             id: oView.getId(),
-            name: "project007.view.fragments.ValueHelpDialog",
+            name: "webapp.view.fragments.ValueHelpDialog",
             controller: this,
           }).then(function (oValueHelpDialog) {
             oView.addDependent(oValueHelpDialog);
@@ -131,7 +131,7 @@ sap.ui.define(
             CategoryId: nCategoryId,
           });
         } else {
-          MessageBox.warning(this.getResourceBundle("WarningEditMode"));
+          MessageBox.warning(this.i18n("WarningEditMode"));
         }
       },
 
@@ -148,7 +148,7 @@ sap.ui.define(
         if (!this.oDialog) {
           this.oDialog = sap.ui.xmlfragment(
             oView.getId(),
-            `project007.view.fragments.CategoryDialog`,
+            `webapp.view.fragments.CategoryDialog`,
             this
           );
           oView.addDependent(this.oDialog);
@@ -241,20 +241,21 @@ sap.ui.define(
        */
       onWarningMessageDialogPress: function () {
         var that = this;
+        var nSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().length;
         this.getView().setBusy(true);
 
         MessageBox.confirm(
-          that.getResourceBundle("WarningMessage") + ` Category?`,
+          that.i18n("WarningMessage", nSelectedCategory === 1 ? "Category" : "Categories"),
           {
             actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
             emphasizedAction: MessageBox.Action.OK,
             onClose: function (sAction) {
               if (sAction === "OK") {
                 that.onDeleteButton();
-                MessageToast.show(that.getResourceBundle("MessageDeleteSuccess"));
+                MessageToast.show(that.i18n("MessageDeleteSuccess"));
               } else {
                 that.getView().setBusy(false);
-                MessageToast.show(that.getResourceBundle("MessageNotDeleteSuccessCategory"));
+                MessageToast.show(that.i18n("MessageNotDeleteSuccessCategory"));
               }
             },
           }

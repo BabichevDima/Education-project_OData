@@ -1,4 +1,4 @@
-<mvc:View controllerName="project007.controller.ProductInfo"
+<mvc:View controllerName="webapp.controller.ProductInfo"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:uxap="sap.uxap"
 	xmlns="sap.m"

@@ -2,7 +2,7 @@
 
 specVersion: "2.5"
 metadata:
-  name: project007
+  name: webapp
 type: application
 server:
   customMiddleware:

@@ -40,7 +40,7 @@ sap.ui.define([
 								"tileType": "sap.ushell.ui.tile.StaticTile",
 								"properties": {
 									"title": "App with oData-V2",
-									"targetURL": "#project007-display"
+									"targetURL": "#webapp-display"
 								}
 							}]
 						}]
@@ -51,8 +51,8 @@ sap.ui.define([
 				"adapter": {
 					"config": {
 						"inbounds": {
-							"project007-display": {
-								"semanticObject": "project007",
+							"webapp-display": {
+								"semanticObject": "webapp",
 								"action": "display",
 								"description": "Freestyle application.",
 								"title": "App with oData-V2",
@@ -61,8 +61,8 @@ sap.ui.define([
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
-									"additionalInformation": "SAPUI5.Component=project007",
-									"url": sap.ui.require.toUrl("project007")
+									"additionalInformation": "SAPUI5.Component=webapp",
+									"url": sap.ui.require.toUrl("webapp")
 								}
 							}
 						}

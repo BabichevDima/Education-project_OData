@@ -1,4 +1,4 @@
-<mvc:View controllerName="project007.controller.ListReport"
+<mvc:View controllerName="webapp.controller.ListReport"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:f="sap.f"

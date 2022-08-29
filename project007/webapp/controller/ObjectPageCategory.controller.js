@@ -1,9 +1,9 @@
 sap.ui.define(
-  ["project007/controller/BaseController", "sap/ui/model/json/JSONModel"],
+  ["webapp/controller/BaseController", "sap/ui/model/json/JSONModel"],
   function (BaseController, JSONModel) {
     "use strict";
 
-    return BaseController.extend("project007.controller.ObjectPageCategory", {
+    return BaseController.extend("webapp.controller.ObjectPageCategory", {
       /**
        * Controller's init lifecycle method.
        */

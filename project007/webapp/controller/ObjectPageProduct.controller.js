@@ -1,10 +1,10 @@
 // this.getOwnerComponent().getRouter().getHashChanger()
 sap.ui.define(
-  ["project007/controller/BaseController"],
+  ["webapp/controller/BaseController"],
   function (BaseController) {
     "use strict";
 
-    return BaseController.extend("project007.controller.ObjectPageProduct", {
+    return BaseController.extend("webapp.controller.ObjectPageProduct", {
       /**
        * Controller's "init" lifecycle method.
        */

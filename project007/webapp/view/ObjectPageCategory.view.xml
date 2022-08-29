@@ -1,4 +1,4 @@
-<mvc:View controllerName="project007.controller.ObjectPageCategory"
+<mvc:View controllerName="webapp.controller.ObjectPageCategory"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:uxap="sap.uxap"
 	xmlns="sap.m"

@@ -2,7 +2,7 @@
 
 specVersion: "2.5"
 metadata:
-  name: project007
+  name: webapp
 type: application
 framework:
   name: SAPUI5
@@ -43,5 +43,5 @@ server:
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: project007
+        component: webapp
         ui5Theme: sap_fiori_3

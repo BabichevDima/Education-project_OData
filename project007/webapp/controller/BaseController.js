@@ -6,7 +6,7 @@ sap.ui.define(
   function (Controller) {
     "use strict";
 
-    return Controller.extend("project007.controller.BaseController", {
+    return Controller.extend("webapp.controller.BaseController", {
       /**
        * Go to next page demo.
        *
@@ -21,14 +21,12 @@ sap.ui.define(
        * Returns a value from the i18n model.
        *
        * @param {string} sText value name.
+       * @param {string} sRecipient extra options.
        *
        * @returns {string} value.
        */
-      getResourceBundle: function (sText) {
-        return this.getView()
-          .getModel("i18n")
-          .getResourceBundle()
-          .getText(sText);
+      i18n: function (sText, sRecipient) {
+        return this.getView().getModel("i18n").getResourceBundle().getText(sText, [sRecipient]);
       },
 
       /**
