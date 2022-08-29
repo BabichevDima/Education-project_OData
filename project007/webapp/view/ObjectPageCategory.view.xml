@@ -18,8 +18,8 @@
 					<Title text="{i18n>Category}"/>
 				</uxap:expandedHeading>
 				<uxap:actions>
-					<Button id="EditButtonObjectPageCategory" text="{i18n>ButtonEdit}" icon="sap-icon://edit" type="Ghost" press="onEditButton" enabled="{= !${stateModel>/EditMode}}"/>
-					<Button id="DeleteButtonObjectPageCategory" text="{i18n>ButtonDelete}" icon="sap-icon://delete" type="Reject" press=""/>
+					<Button id="EditButtonObjectPageCategory" text="{i18n>EditButton}" icon="sap-icon://edit" type="Ghost" press="onEditButton" enabled="{= !${stateModel>/EditMode}}"/>
+					<Button id="DeleteButtonObjectPageCategory" text="{i18n>DeleteButton}" icon="sap-icon://delete" type="Reject" press=""/>
 				</uxap:actions>
 			</uxap:ObjectPageDynamicHeaderTitle>
 		</uxap:headerTitle>
@@ -66,8 +66,8 @@
 										<Title text="{i18n>Products}" level="H2"/>
 										<ToolbarSpacer/>
 										<SearchField id="CategoriesSearch" search="onCategoriesSearch" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
-										<Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>ButtonCreate}" press="" enabled="{= !${stateModel>/EditMode}}"/>
-										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>ButtonDelete}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd"/>
+										<Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>CreateButton}" press="" enabled="{= !${stateModel>/EditMode}}"/>
+										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd"/>
 									</Toolbar>
 								</headerToolbar>
 								<columns>

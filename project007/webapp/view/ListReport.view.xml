@@ -56,9 +56,9 @@
                     <Toolbar class="sapUiMediumMarginTop">
                         <Title text="{i18n>Category}" level="H2"/>
                         <ToolbarSpacer/>
-                        <Button id="CreateButton" type="Accept" icon="sap-icon://create" text="{i18n>ButtonCreate}" press="onOpenDialogCategory" enabled="{= !${stateModel>/StatusButtons}}" visible="{=!${stateModel>/EditMode}}"/>
-                        <Button id="EditButton" type="Ghost" icon="sap-icon://edit" text="{i18n>ButtonEdit}" enabled="{=!${stateModel>/StatusButtons}}" press="onEditButton" visible="{=!${stateModel>/EditMode}}"/>
-                        <Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>ButtonDelete}" enabled="{stateModel>/StatusButtons}" press="onWarningMessageDialogPress" visible="{=!${stateModel>/EditMode}}"/>
+                        <Button id="CreateButton" type="Accept" icon="sap-icon://create" text="{i18n>CreateButton}" press="onOpenDialogCategory" enabled="{= !${stateModel>/StatusButtons}}" visible="{=!${stateModel>/EditMode}}"/>
+                        <Button id="EditButton" type="Ghost" icon="sap-icon://edit" text="{i18n>EditButton}" enabled="{=!${stateModel>/StatusButtons}}" press="onEditButton" visible="{=!${stateModel>/EditMode}}"/>
+                        <Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" enabled="{stateModel>/StatusButtons}" press="onDeleteCategoryButton" visible="{=!${stateModel>/EditMode}}"/>
                     </Toolbar>
                 </headerToolbar>
                 <columns>

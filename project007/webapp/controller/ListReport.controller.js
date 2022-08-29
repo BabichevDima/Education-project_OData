@@ -175,8 +175,9 @@ sap.ui.define(
           success: function (mData) {
             that.openDialog(mData.results);
           },
-          error: function () {
-            MessageBox.error("Error!!!");
+          error: function (response) {
+            MessageBox.error(response.message);
+            that.getView().setBusy(false);
           },
         });
       },
@@ -184,31 +185,36 @@ sap.ui.define(
       /**
        * "Search stores" event handler of the "SearchField".
        *
-       * @param {sap.ui.base.Event} oEvent event object.
        */
       onDialogCategoryClosePress: function () {
+        this._closeCategoryDialog();
+      },
+
+      /**
+       * Close dialog.
+       *
+       */
+      _closeCategoryDialog() {
         var oODataModel = this.getView().getModel();
         var oCtx        = this.oDialog.getBindingContext();
-
         oODataModel.deleteCreatedEntry(oCtx);
         this.oDialog.close();
-      },
+    },
 
       /**
        * Creates element.
        *
-       * @param {string} sQuery create type.
        */
       onCreateCategory: function () {
         this.getView().getModel().submitChanges();
-        this.onDialogCategoryClosePress();
+        this._closeCategoryDialog();
       },
 
       /**
        * Deletes product.
        *
        */
-      onDeleteButton: function () {
+       onConfirmDeletion: function () {
         var that              = this;
         var oODataModel       = this.getView().getModel();
         var oStateModel       = this.getView().getModel("stateModel");
@@ -233,7 +239,7 @@ sap.ui.define(
        * Asks for confirmation of deletion.
        *
        */
-      onWarningMessageDialogPress: function () {
+      onDeleteCategoryButton: function () {
         var that = this;
         var nSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().length;
         this.getView().setBusy(true);
@@ -244,8 +250,8 @@ sap.ui.define(
             actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
             emphasizedAction: MessageBox.Action.OK,
             onClose: function (sAction) {
-              if (sAction === "OK") {
-                that.onDeleteButton();
+              if (sAction === MessageBox.Action.OK) {
+                that.onConfirmDeletion();
                 MessageToast.show(that.i18n("MessageDeleteSuccess"));
               } else {
                 that.getView().setBusy(false);

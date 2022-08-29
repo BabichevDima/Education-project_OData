@@ -57,8 +57,8 @@
 										<m:Title text="{i18n>Suppliers}" level="H2"/>
 										<m:ToolbarSpacer/>
 										<m:SearchField id="SuppliersSearch" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
-										<m:Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>ButtonCreate}"/>
-										<m:Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>ButtonDelete}" class="sapUiSmallMarginBeginEnd"/>
+										<m:Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>CreateButton}"/>
+										<m:Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" class="sapUiSmallMarginBeginEnd"/>
 									</m:Toolbar>
 								</m:headerToolbar>
 								<m:columns>

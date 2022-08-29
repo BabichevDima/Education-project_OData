@@ -19,8 +19,8 @@
 					<Title text="{i18n>Product}"/>
 				</uxap:expandedHeading>
 				<uxap:actions>
-					<Button id="EditProductsButton" text="{i18n>ButtonEdit}" icon="sap-icon://edit" type="Ghost" press=""/>
-					<Button id="DeleteCategoryButton" text="{i18n>ButtonDelete}" icon="sap-icon://delete" type="Reject"/>
+					<Button id="EditProductsButton" text="{i18n>EditButton}" icon="sap-icon://edit" type="Ghost" press=""/>
+					<Button id="DeleteCategoryButton" text="{i18n>DeleteButton}" icon="sap-icon://delete" type="Reject"/>
 				</uxap:actions>
 			</uxap:ObjectPageDynamicHeaderTitle>
 		</uxap:headerTitle>
@@ -59,8 +59,8 @@
 										<Title text="{i18n>Suppliers}" level="H2"/>
 										<ToolbarSpacer/>
 										<SearchField id="SuppliersSearch" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
-										<Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>ButtonCreate}"/>
-										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>ButtonDelete}" class="sapUiSmallMarginBeginEnd"/>
+										<Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>CreateButton}"/>
+										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" class="sapUiSmallMarginBeginEnd"/>
 									</Toolbar>
 								</headerToolbar>
 								<columns>

@@ -13,7 +13,7 @@
 		</f:SimpleForm>
 
 		<buttons>
-			<Button text="{i18n>ButtonCreate}" press="onCreateCategory" id="CreateCategory"/>
+			<Button text="{i18n>CreateButton}" press="onCreateCategory" id="CreateCategory"/>
 			<Button text="{i18n>ButtonClose}" press="onDialogCategoryClosePress" id="CloseDialogCategory"/>
 		</buttons>
 	</Dialog>
