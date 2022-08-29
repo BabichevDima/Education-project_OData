@@ -14,11 +14,11 @@
 					</m:Breadcrumbs>
 				</breadcrumbs>
 				<expandedHeading>
-					<m:Title text="{oData>Name}" wrapping="true"/>
+					<m:Title text="{Name}" wrapping="true"/>
 				</expandedHeading>
 				<snappedHeading>
 					<m:FlexBox fitContainer="true" alignItems="Center">
-						<m:Title text="{oData>Name}" wrapping="true"/>
+						<m:Title text="{Name}" wrapping="true"/>
 					</m:FlexBox>
 				</snappedHeading>
 				<actions>
@@ -32,7 +32,7 @@
 				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
 					<m:Label text="{i18n>Description}:"/>
 					<m:VBox>
-						<m:Text text="{oData>Description}"/>
+						<m:Text text="{Description}"/>
 					</m:VBox>
 				</layout:VerticalLayout>
 			</m:FlexBox>
@@ -51,7 +51,7 @@
 				<subSections>
 					<ObjectPageSubSection>
 						<blocks>
-							<m:Table id="ProductsTableSuppliers" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{oData>/Suppliers}">
+							<m:Table id="ProductsTableSuppliers" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{/Suppliers}">
 								<m:headerToolbar>
 									<m:Toolbar class="sapUiMediumMarginTop">
 										<m:Title text="{i18n>Suppliers}" level="H2"/>
@@ -71,8 +71,8 @@
 								</m:columns>
 								<m:items>
 									<m:ColumnListItem>
-										<m:Text text="{oData>Name}"/>
-										<m:Text text="{oData>ID}" class="sapUiSmallMarginEnd"/>
+										<m:Text text="{Name}"/>
+										<m:Text text="{ID}" class="sapUiSmallMarginEnd"/>
 									</m:ColumnListItem>
 								</m:items>
 							</m:Table>

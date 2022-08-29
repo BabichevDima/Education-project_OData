@@ -38,7 +38,7 @@ sap.ui.define(
        */
       _onPatternMatched: function (oEvent) {
         var that = this;
-        var oDataModel = this.getView().getModel("oData");
+        var oDataModel = this.getView().getModel();
         this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
 
         oDataModel.metadataLoaded().then(function () {
@@ -47,8 +47,7 @@ sap.ui.define(
           });
 
           that.getView().bindObject({
-            path: sKey,
-            model: "oData",
+            path: sKey
           });
         });
       },
@@ -91,7 +90,7 @@ sap.ui.define(
       onProductPress: function (oEvent) {
         var nProductId = oEvent
           .getSource()
-          .getBindingContext("oData")
+          .getBindingContext()
           .getObject("ID");
 
         this.navigate("ProductInfo", {

@@ -47,10 +47,9 @@ sap.ui.define(
        */
       onCancelButton: function () {
         var oStateModel = this.getView().getModel("stateModel");
-        var oODataModel = this.getView().getModel("oData");
+        var oODataModel = this.getView().getModel();
 
-        this.byId("CategoriesTable").getItems().forEach((elem) => (elem.mProperties.selected = false));
-        this.byId("CategoriesTable").setMode("MultiSelect");
+        this.byId("CategoriesTable").removeSelections(true);
 
         oStateModel.setProperty("/StatusButtons", false);
         oStateModel.setProperty("/EditMode", false);
@@ -65,22 +64,20 @@ sap.ui.define(
       onEditButton: function () {
         var oStateModel = this.getView().getModel("stateModel");
         oStateModel.setProperty("/EditMode", true);
-        this.byId("CategoriesTable").setMode("None");
       },
 
       /**
        * Dialog product edit "Save" button press event handler.
        */
       onSaveButton: function () {
-        var that = this;
-        var oODataModel = this.getView().getModel("oData");
+        var oODataModel = this.getView().getModel();
 
         if (oODataModel.hasPendingChanges()) {
           oODataModel.submitChanges();
           this.onCancelButton();
-          MessageToast.show(that.i18n("CategorySuccessEdited"));
+          MessageToast.show(this.i18n("CategorySuccessEdited"));
         } else {
-          MessageToast.show(that.i18n("CategoryNotEdited"));
+          MessageToast.show(this.i18n("CategoryNotEdited"));
         }
       },
 
@@ -89,7 +86,7 @@ sap.ui.define(
        *
        * @param {sap.ui.base.Event} oEvent event object.
        */
-      handleValueHelp: function (oEvent) {
+      openVHDialog: function (oEvent) {
         var sInputValue = oEvent.getSource().getValue();
         var oView = this.getView();
         oView.setBusy(true);
@@ -123,16 +120,13 @@ sap.ui.define(
       onCategoryPress: function (oEvent) {
         var nCategoryId = oEvent
           .getSource()
-          .getBindingContext("oData")
+          .getBindingContext()
           .getObject("ID");
 
-        if (!this.getView().getModel("stateModel").getProperty("/EditMode")) {
-          this.navigate("ObjectPageCategory", {
-            CategoryId: nCategoryId,
-          });
-        } else {
-          MessageBox.warning(this.i18n("WarningEditMode"));
-        }
+        this.navigate("ObjectPageCategory", {
+          CategoryId: nCategoryId,
+        });
+
       },
 
       /**
@@ -143,7 +137,7 @@ sap.ui.define(
       openDialog: function (aCategories) {
         var nNewCategoryID = aCategories[aCategories.length-1].ID+1;
         var oView = this.getView();
-        var oODataModel = oView.getModel("oData");
+        var oODataModel = oView.getModel();
 
         if (!this.oDialog) {
           this.oDialog = sap.ui.xmlfragment(
@@ -173,7 +167,7 @@ sap.ui.define(
        */
       onOpenDialogCategory: function () {
         var that        = this;
-        var oODataModel = this.getView().getModel("oData");
+        var oODataModel = this.getView().getModel();
         this.getView().setBusy(true);
 
         oODataModel.read(`/Categories`, {
@@ -193,7 +187,7 @@ sap.ui.define(
        * @param {sap.ui.base.Event} oEvent event object.
        */
       onDialogCategoryClosePress: function () {
-        var oODataModel = this.getView().getModel("oData");
+        var oODataModel = this.getView().getModel();
         var oCtx        = this.oDialog.getBindingContext();
 
         oODataModel.deleteCreatedEntry(oCtx);
@@ -206,7 +200,7 @@ sap.ui.define(
        * @param {string} sQuery create type.
        */
       onCreateCategory: function () {
-        this.getView().getModel("oData").submitChanges();
+        this.getView().getModel().submitChanges();
         this.onDialogCategoryClosePress();
       },
 
@@ -216,7 +210,7 @@ sap.ui.define(
        */
       onDeleteButton: function () {
         var that              = this;
-        var oODataModel       = this.getView().getModel("oData");
+        var oODataModel       = this.getView().getModel();
         var oStateModel       = this.getView().getModel("stateModel");
         var aSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().map((oCategory) => oCategory.getPath());
 

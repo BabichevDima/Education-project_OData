@@ -28,23 +28,23 @@
 			<FlexBox>
 				<FlexBox alignItems="Start" class="sapUiMediumMarginEnd">
 					<Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-					<Text id="ProductsName" class="sapUiTinyMarginTop" maxLines="1" text="{oData>Name}"/>
+					<Text id="ProductsName" class="sapUiTinyMarginTop" maxLines="1" text="{Name}"/>
 				</FlexBox>
 				<FlexBox alignItems="Start" class="sapUiMediumMarginEnd">
 					<Label design="Bold" text="{i18n>Price}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-					<Text class="sapUiTinyMarginTop" text="{oData>Price}"/>
+					<Text class="sapUiTinyMarginTop" text="{Price}"/>
 				</FlexBox>
 				<FlexBox alignItems="Start" class="sapUiMediumMarginEnd">
 					<Label design="Bold" text="{i18n>ReleaseDate}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-					<Text wrapping="false" class="sapUiTinyMarginTop" text="{path: 'oData>ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+					<Text wrapping="false" class="sapUiTinyMarginTop" text="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
 				</FlexBox>
-				<FlexBox alignItems="Start" class="sapUiMediumMarginEnd" visible="{= ${oData>DiscontinuedDate} ? true : false }">
+				<FlexBox alignItems="Start" class="sapUiMediumMarginEnd" visible="{= ${DiscontinuedDate} ? true : false }">
 					<Label design="Bold" text="{i18n>DiscontinuedDate}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-					<Text wrapping="false" class="sapUiTinyMarginTop" text="{path: 'oData>DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+					<Text wrapping="false" class="sapUiTinyMarginTop" text="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
 				</FlexBox>
 				<FlexBox alignItems="Start" class="sapUiMediumMarginEnd">
 					<Label design="Bold" text="{i18n>Rating}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-					<RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{oData>Rating}" tooltip="Rating Product" editable="false"/>
+					<RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{Rating}" tooltip="Rating Product" editable="false"/>
 				</FlexBox>
 			</FlexBox>
 		</uxap:headerContent>
@@ -53,7 +53,7 @@
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection>
 						<uxap:blocks>
-							<Table id="ProductsTableSuppliers" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{oData>/Suppliers}">
+							<Table id="ProductsTableSuppliers" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{/Suppliers}">
 								<headerToolbar>
 									<Toolbar class="sapUiMediumMarginTop">
 										<Title text="{i18n>Suppliers}" level="H2"/>
@@ -73,8 +73,8 @@
 								</columns>
 								<items>
 									<ColumnListItem>
-										<Text text="{oData>Name}"/>
-										<Text text="{oData>ID}" class="sapUiSmallMarginEnd"/>
+										<Text text="{Name}"/>
+										<Text text="{ID}" class="sapUiSmallMarginEnd"/>
 									</ColumnListItem>
 								</items>
 							</Table>

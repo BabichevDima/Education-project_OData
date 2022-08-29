@@ -21,7 +21,7 @@ sap.ui.define(
        */
       _onPatternMatched: function (oEvent) {
         var that          = this;
-        var oDataModel    = this.getView().getModel("oData");
+        var oDataModel    = this.getView().getModel();
         this.sCategoryId  = oEvent.getParameter("arguments").CategoryId;
         this.sProductId   = oEvent.getParameter("arguments").productId;
 
@@ -31,8 +31,7 @@ sap.ui.define(
           });
 
           that.getView().bindObject({
-            path: sKey,
-            model: "oData",
+            path: sKey
           });
         });
       },

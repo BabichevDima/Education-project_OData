@@ -4,14 +4,14 @@
 	<SelectDialog
 		id="valueHelpDialog"
 		title="{i18n>SelectProduct}"
-		items="{oData>/Categories}"
-		search="handleValueHelpSearch"
-		confirm="handleValueHelpClose"
-		cancel="handleValueHelpClose"
+		items="{/Categories}"
+		search="openVHDialogSearch"
+		confirm="openVHDialogClose"
+		cancel="openVHDialogClose"
 		multiSelect="true">
 		<StandardListItem
 			iconDensityAware="false"
 			iconInset="true"
-			title="{oData>ID}" />
+			title="{ID}" />
 	</SelectDialog>
 </core:FragmentDefinition>

@@ -27,11 +27,11 @@
 			<FlexBox visible="{= !${stateModel>/EditMode}}">
 				<FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
 					<Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-					<Text id="ProductsName" class="sapUiTinyMarginTop" maxLines="1" text="{oData>Name}"/>
+					<Text id="ProductsName" class="sapUiTinyMarginTop" maxLines="1" text="{Name}"/>
 				</FlexBox>
 				<FlexBox direction="Row" alignItems="Start" class="sapUiTinyMarginBottom sapUiMediumMarginEnd">
 					<Label design="Bold" text="{i18n>ID}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
-					<Text class="sapUiTinyMarginTop" text="{oData>ID}"/>
+					<Text class="sapUiTinyMarginTop" text="{ID}"/>
 				</FlexBox>
 			</FlexBox>
 		</uxap:headerContent>
@@ -44,7 +44,7 @@
 								<FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
 									<Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
 									<HBox>
-										<Input fieldGroupIds="groupValueObjectPageCategory" value="{path: 'oData>Name'}"/>
+										<Input fieldGroupIds="groupValueObjectPageCategory" value="{path: 'Name'}"/>
 									</HBox>
 								</FlexBox>
 							</layout:VerticalLayout>
@@ -52,7 +52,7 @@
 								<FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
 									<Label design="Bold" text="{i18n>ID}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
 									<HBox>
-										<Input fieldGroupIds="groupValueObjectPageCategory" value="{path: 'oData>ID'}"/>
+										<Input fieldGroupIds="groupValueObjectPageCategory" value="{path: 'ID'}"/>
 									</HBox>
 								</FlexBox>
 							</layout:VerticalLayout>
@@ -60,7 +60,7 @@
 					</uxap:ObjectPageSubSection>
 					<uxap:ObjectPageSubSection>
 						<uxap:blocks>
-							<Table id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{oData>Products}">
+							<Table id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{Products}">
 								<headerToolbar>
 									<Toolbar class="sapUiMediumMarginTop">
 										<Title text="{i18n>Products}" level="H2"/>
@@ -92,12 +92,12 @@
 								</columns>
 								<items>
 									<ColumnListItem type="Active" press="onProductPress">
-										<Text text="{oData>Name}" />
-										<Text text="{oData>Price}" />
-										<Text text="{oData>Description}" />
-										<Text text="{path: 'oData>ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
-										<Text text="{path: 'oData>DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
-										<RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{oData>Rating}" tooltip="Rating Product" editable="false"/>
+										<Text text="{Name}" />
+										<Text text="{Price}" />
+										<Text text="{Description}" />
+										<Text text="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+										<Text text="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+										<RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{Rating}" tooltip="Rating Product" editable="false"/>
 									</ColumnListItem>
 								</items>
 							</Table>
