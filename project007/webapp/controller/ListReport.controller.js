@@ -5,8 +5,10 @@ sap.ui.define(
     "sap/ui/core/Fragment",
     "sap/m/MessageBox",
     "sap/m/MessageToast",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
   ],
-  function (BaseController, JSONModel, Fragment, MessageBox, MessageToast) {
+  function (BaseController, JSONModel, Fragment, MessageBox, MessageToast, Filter, FilterOperator) {
     "use strict";
 
     return BaseController.extend("webapp.controller.ListReport", {
@@ -79,37 +81,6 @@ sap.ui.define(
         } else {
           MessageToast.show(this.i18n("CategoryNotEdited"));
         }
-      },
-
-      /**
-       * Opens the dialog VH.
-       *
-       * @param {sap.ui.base.Event} oEvent event object.
-       */
-      openVHDialog: function (oEvent) {
-        var sInputValue = oEvent.getSource().getValue();
-        var oView = this.getView();
-        oView.setBusy(true);
-
-        if (!this._pValueHelpDialog) {
-          this._pValueHelpDialog = Fragment.load({
-            id: oView.getId(),
-            name: "webapp.view.fragments.ValueHelpDialog",
-            controller: this,
-          }).then(function (oValueHelpDialog) {
-            oView.addDependent(oValueHelpDialog);
-            return oValueHelpDialog;
-          });
-        }
-        this._pValueHelpDialog
-          .then(function (oValueHelpDialog) {
-            oValueHelpDialog.open(sInputValue);
-            oView.setBusy(false);
-          })
-          .catch(function () {
-            MessageBox.error();
-            oView.setBusy(false);
-          });
       },
 
       /**
@@ -270,6 +241,42 @@ sap.ui.define(
             },
           }
         );
+      },
+
+      /**
+      * Combine all filters.
+      */
+       combineFilters: function() {
+        var oStateModel         = this.getView().getModel("stateModel");
+        var sAllFieldValue      = oStateModel.getProperty("/AllField")?.trim();
+        var aCategoryNameValue  = this._getArrayCategories();
+        var oItemsBinding       = this.byId("CategoriesTable").getBinding("items");
+        var aFilters            = [];
+
+        if (sAllFieldValue && !isNaN(sAllFieldValue)){
+          aFilters.push(new Filter("ID", FilterOperator.EQ, sAllFieldValue));
+        } else if (sAllFieldValue){
+          aFilters.push(new Filter("Name", FilterOperator.Contains, sAllFieldValue));
+        }
+
+        if (aCategoryNameValue) {
+          aFilters.push(...aCategoryNameValue.map((sValue) => {return new Filter("Name", FilterOperator.Contains, sValue)}));
+        }
+        oItemsBinding.filter(aFilters)
+      },
+
+      /**
+       * Get an array of suppliers.
+       * 
+       * @returns {Array} Suppliers.
+       * 
+       * @private
+       */
+      _getArrayCategories: function () {
+       var aSelectedItems = this.byId("Category").getSelectedItems();
+       if(aSelectedItems.length){
+        return aSelectedItems.map(oItem => oItem.getText())
+       }
       },
     });
   }

@@ -26,21 +26,14 @@
                         <fb:filterItems>
                             <fb:FilterItem name="ProductName" label="Search">
                                 <fb:control>
-                                    <Input id="searchFieldName" placeholder="{i18n>PlaceholderSerch}" valueLiveUpdate="true" liveChange="combineFilters('Name')" value="{oFilterModel>/name}"/>
+                                    <SearchField id="searchFieldName" search="combineFilters" placeholder="{i18n>PlaceholderSerch}" showRefreshButton='true' value="{stateModel>/AllField}"/>
                                 </fb:control>
                             </fb:FilterItem>
                             <fb:FilterItem name="ProductSuppliers" label="Categories">
                                 <fb:control>
-                                    <MultiComboBox selectedKeys="" id="Category" selectionFinish="combineFilters('Categories')" items="{/Categories}">
+                                    <MultiComboBox selectedKeys="{stateModel>/selectedSuppliers}" id="Category" selectionFinish="combineFilters" items="{/Categories}">
                                         <core:Item key="{Name}" text="{Name}"/>
                                     </MultiComboBox>
-                                </fb:control>
-                            </fb:FilterItem>
-                            <fb:FilterItem name="ProductCategory" label="{i18n>ID}">
-                                <fb:control>
-                                    <MultiInput id="multiInput" suggestionItems="{path: '/Categories', sorter: { path: 'Name' }}" valueHelpRequest="openVHDialog" tokenChange="combineFilters('Categories')">
-                                        <core:Item text="{ID}" />
-                                    </MultiInput>
                                 </fb:control>
                             </fb:FilterItem>
                         </fb:filterItems>
