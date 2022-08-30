@@ -7,8 +7,8 @@
 |**Generation Platform**<br>Visual Studio Code|
 |**Floorplan Used**<br>simple|
 |**Service Type**<br>OData Url|
-|**Service URL**<br>https://services.odata.org/V2/OData/OData.svc
-|**Module Name**<br>project007|
+|**Service URL**<br>https://services.odata.org/V2/(S(ptqjs5sdf30yyyt531gqk1))/OData/OData.svc
+|**Module Name**<br>webapp|
 |**Application Title**<br>App with oData-V2|
 |**Namespace**<br>|
 |**UI5 Theme**<br>sap_fiori_3|
@@ -16,7 +16,7 @@
 |**Enable Code Assist Libraries**<br>False|
 |**Add Eslint configuration**<br>False|
 
-## project007
+## webapp
 
 Freestyle application.
 

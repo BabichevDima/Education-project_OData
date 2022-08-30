@@ -2,7 +2,7 @@
 
 specVersion: "2.5"
 metadata:
-  name: project007
+  name: webapp
 type: application
 framework:
   name: SAPUI5
@@ -36,12 +36,12 @@ server:
       beforeMiddleware: csp
       configuration:
         service:
-          urlPath: /V2/OData/OData.svc
+          urlPath: /V2/(S(ptqjs5sdf30yyyt531gqk1))/OData/OData.svc
           metadataXmlPath: ./webapp/localService/metadata.xml
           mockdataRootPath: ./webapp/localService/data
           generateMockData: true
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: project007
+        component: webapp
         ui5Theme: sap_fiori_3

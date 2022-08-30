@@ -1,10 +1,10 @@
 // this.getOwnerComponent().getRouter().getHashChanger()
 sap.ui.define(
-  ["project007/controller/BaseController"],
+  ["webapp/controller/BaseController"],
   function (BaseController) {
     "use strict";
 
-    return BaseController.extend("project007.controller.ObjectPageProduct", {
+    return BaseController.extend("webapp.controller.ObjectPageProduct", {
       /**
        * Controller's "init" lifecycle method.
        */
@@ -21,7 +21,7 @@ sap.ui.define(
        */
       _onPatternMatched: function (oEvent) {
         var that          = this;
-        var oDataModel    = this.getView().getModel("oData");
+        var oDataModel    = this.getView().getModel();
         this.sCategoryId  = oEvent.getParameter("arguments").CategoryId;
         this.sProductId   = oEvent.getParameter("arguments").productId;
 
@@ -31,8 +31,7 @@ sap.ui.define(
           });
 
           that.getView().bindObject({
-            path: sKey,
-            model: "oData",
+            path: sKey
           });
         });
       },

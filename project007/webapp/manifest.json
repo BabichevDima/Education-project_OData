@@ -1,7 +1,7 @@
 {
   "_version": "1.40.0",
   "sap.app": {
-    "id": "project007",
+    "id": "webapp",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -17,9 +17,11 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "V2/OData/OData.svc",
+        "uri": "/V2/(S(ptqjs5sdf30yyyt531gqk1))/OData/OData.svc",
         "type": "OData",
         "settings": {
+          "annotations": [],
+          "localUri": "localService/metadata.xml",
           "odataVersion": "2.0"
         }
       }
@@ -64,10 +66,10 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "project007.i18n.i18n"
+          "bundleName": "webapp.i18n.i18n"
         }
       },
-      "oData": {
+      "": {
         "dataSource": "mainService",
         "settings": {
           "defaultBindingMode": "TwoWay",
@@ -89,7 +91,7 @@
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
         "async": true,
-        "viewPath": "project007.view",
+        "viewPath": "webapp.view",
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false,
@@ -138,7 +140,7 @@
       }
     },
     "rootView": {
-      "viewName": "project007.view.App",
+      "viewName": "webapp.view.App",
       "type": "XML",
       "async": true,
       "id": "App"

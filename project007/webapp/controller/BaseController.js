@@ -1,12 +1,14 @@
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller"],
+  ["sap/ui/core/mvc/Controller",
+  "webapp/model/formatter",],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller) {
+  function (Controller, formatter) {
     "use strict";
 
-    return Controller.extend("project007.controller.BaseController", {
+    return Controller.extend("webapp.controller.BaseController", {
+      formatter: formatter,
       /**
        * Go to next page demo.
        *
@@ -21,11 +23,12 @@ sap.ui.define(
        * Returns a value from the i18n model.
        *
        * @param {string} sText value name.
+       * @param {string} sRecipient extra options.
        *
        * @returns {string} value.
        */
-      getResourceBundle: function (sText) {
-        return this.getView().getModel("i18n").getResourceBundle().getText(sText);
+      i18n: function (sText, sRecipient) {
+        return this.getView().getModel("i18n").getResourceBundle().getText(sText, [sRecipient]);
       },
 
       /**
@@ -33,6 +36,15 @@ sap.ui.define(
        */
       onNavToCategoriesOverview: function () {
         this.navigate("ListReport");
+      },
+
+      /**
+       * Register the view with the message manager.
+       */
+      onRegisterManager: function () {
+        var oMessageManager = sap.ui.getCore().getMessageManager();
+        oMessageManager.registerObject(this.getView(), true);
+        this.getView().setModel(oMessageManager.getMessageModel(), "messages");
       },
     });
   }

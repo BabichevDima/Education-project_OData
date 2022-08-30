@@ -1,6 +1,6 @@
 /* global QUnit */
 
-sap.ui.require(["project007/test/integration/AllJourneys"
+sap.ui.require(["webapp/test/integration/AllJourneys"
 ], function () {
 	QUnit.config.autostart = false;
 	QUnit.start();

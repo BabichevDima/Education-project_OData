@@ -1,7 +1,7 @@
 /*global QUnit*/
 
 sap.ui.define([
-	"project007/controller/ListReport.controller"
+	"webapp/controller/ListReport.controller"
 ], function (Controller) {
 	"use strict";
 

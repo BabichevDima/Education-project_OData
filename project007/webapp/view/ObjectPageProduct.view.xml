@@ -2,7 +2,7 @@
 	xmlns="sap.uxap"
 	xmlns:layout="sap.ui.layout"
 	xmlns:m="sap.m"
-	xmlns:personal="project007.controller.blocks" controllerName="project007.controller.ObjectPageProduct" height="100%">
+	xmlns:personal="webapp.controller.blocks" controllerName="webapp.controller.ObjectPageProduct" height="100%">
 	<ObjectPageLayout id="ObjectPageProduct" enableLazyLoading="true" upperCaseAnchorBar="false">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
@@ -14,11 +14,11 @@
 					</m:Breadcrumbs>
 				</breadcrumbs>
 				<expandedHeading>
-					<m:Title text="{oData>Name}" wrapping="true"/>
+					<m:Title text="{Name}" wrapping="true"/>
 				</expandedHeading>
 				<snappedHeading>
 					<m:FlexBox fitContainer="true" alignItems="Center">
-						<m:Title text="{oData>Name}" wrapping="true"/>
+						<m:Title text="{Name}" wrapping="true"/>
 					</m:FlexBox>
 				</snappedHeading>
 				<actions>
@@ -32,7 +32,7 @@
 				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
 					<m:Label text="{i18n>Description}:"/>
 					<m:VBox>
-						<m:Text text="{oData>Description}"/>
+						<m:Text text="{Description}"/>
 					</m:VBox>
 				</layout:VerticalLayout>
 			</m:FlexBox>
@@ -51,14 +51,14 @@
 				<subSections>
 					<ObjectPageSubSection>
 						<blocks>
-							<m:Table id="ProductsTableSuppliers" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{oData>/Suppliers}">
+							<m:Table id="ProductsTableSuppliers" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{/Suppliers}">
 								<m:headerToolbar>
 									<m:Toolbar class="sapUiMediumMarginTop">
 										<m:Title text="{i18n>Suppliers}" level="H2"/>
 										<m:ToolbarSpacer/>
 										<m:SearchField id="SuppliersSearch" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
-										<m:Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>ButtonCreate}"/>
-										<m:Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>ButtonDelete}" class="sapUiSmallMarginBeginEnd"/>
+										<m:Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>CreateButton}"/>
+										<m:Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" class="sapUiSmallMarginBeginEnd"/>
 									</m:Toolbar>
 								</m:headerToolbar>
 								<m:columns>
@@ -71,8 +71,8 @@
 								</m:columns>
 								<m:items>
 									<m:ColumnListItem>
-										<m:Text text="{oData>Name}"/>
-										<m:Text text="{oData>ID}" class="sapUiSmallMarginEnd"/>
+										<m:Text text="{Name}"/>
+										<m:Text text="{ID}" class="sapUiSmallMarginEnd"/>
 									</m:ColumnListItem>
 								</m:items>
 							</m:Table>
