@@ -204,6 +204,7 @@ sap.ui.define(
        */
       _closeCategoryDialog() {
         var oODataModel = this.getView().getModel();
+        var oView = this.getView();
 
         this._oDialog.then(function (oDialog) {
           var oCtx = oDialog.getBindingContext();
@@ -235,13 +236,11 @@ sap.ui.define(
         aSelectedCategory.forEach((sPath) => {
           oODataModel.remove(sPath, {
             success: function () {
-              that.getView().setBusy(false);
-              MessageToast.show(`${sPath} was remove`);
               that.onSelectionTable();
               oStateModel.setProperty("/StatusButtons", false);
             },
             error: function () {
-              MessageBox.error("Error!!!");
+              MessageBox.error(that.i18n("MessageDeleteError"));
             },
           });
         });
@@ -254,7 +253,6 @@ sap.ui.define(
       onDeleteCategoryButton: function () {
         var that = this;
         var nSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().length;
-        this.getView().setBusy(true);
 
         MessageBox.confirm(
           that.i18n("WarningMessage", nSelectedCategory === 1 ? "Category" : "Categories"),
