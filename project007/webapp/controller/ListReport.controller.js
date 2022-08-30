@@ -139,26 +139,34 @@ sap.ui.define(
         var oView = this.getView();
         var oODataModel = oView.getModel();
 
-        if (!this.oDialog) {
-          this.oDialog = sap.ui.xmlfragment(
-            oView.getId(),
-            `webapp.view.fragments.CategoryDialog`,
-            this
-          );
-          oView.addDependent(this.oDialog);
+        if (!this._oDialog) {
+          this._oDialog = Fragment.load({
+            id: oView.getId(),
+            name: "webapp.view.fragments.CategoryDialog",
+            controller: this,
+          }).then(function (oDialog) {
+            oView.addDependent(oDialog);
+            return oDialog;
+          });
         }
+        this._oDialog
+          .then(function (oDialog) {
+            var oEntryCtx = oODataModel.createEntry("/Categories", {
+              properties: {
+                Name: "TEST NEW Category",
+                ID: nNewCategoryID,
+              },
+            });
 
-        var oEntryCtx = oODataModel.createEntry("/Categories", {
-          properties: {
-            Name: "TEST NEW Category",
-            ID: nNewCategoryID,
-          },
-        });
-
-        this.oDialog.setBindingContext(oEntryCtx);
-        this.oDialog.setModel(oODataModel);
-        oView.setBusy(false);
-        this.oDialog.open();
+            oDialog.setBindingContext(oEntryCtx);
+            oDialog.setModel(oODataModel);
+            oView.setBusy(false);
+            oDialog.open();
+          })
+          .catch(function () {
+            MessageBox.error();
+            oView.setBusy(false);
+          });
       },
 
       /**
@@ -196,10 +204,14 @@ sap.ui.define(
        */
       _closeCategoryDialog() {
         var oODataModel = this.getView().getModel();
-        var oCtx        = this.oDialog.getBindingContext();
-        oODataModel.deleteCreatedEntry(oCtx);
-        this.oDialog.close();
-    },
+
+        this._oDialog.then(function (oDialog) {
+          var oCtx = oDialog.getBindingContext();
+          oODataModel.deleteCreatedEntry(oCtx);
+          oDialog.close();
+          oView.setBusy(false);
+        })
+      },
 
       /**
        * Creates element.
