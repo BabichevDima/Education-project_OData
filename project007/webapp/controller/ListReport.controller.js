@@ -260,7 +260,7 @@ sap.ui.define(
         }
 
         if (aCategoryNameValue) {
-          aFilters.push(...aCategoryNameValue.map((sValue) => {return new Filter("Name", FilterOperator.Contains, sValue)}));
+          aFilters.push(...aCategoryNameValue.map(sValue => new Filter("Name", FilterOperator.Contains, sValue)));
         }
         oItemsBinding.filter(aFilters)
       },
