@@ -26,12 +26,12 @@
                         <fb:filterItems>
                             <fb:FilterItem name="ProductName" label="Search">
                                 <fb:control>
-                                    <SearchField id="searchField" search="combineFilters" placeholder="{i18n>PlaceholderSerch}" showRefreshButton='true' value="{stateModel>/AllField}"/>
+                                    <SearchField id="searchField" search="setQueryRoute('Name')" placeholder="{i18n>PlaceholderSerch}" showRefreshButton='true' value="{stateModel>/AllField}"/>
                                 </fb:control>
                             </fb:FilterItem>
                             <fb:FilterItem name="ProductSuppliers" label="Categories">
                                 <fb:control>
-                                    <MultiComboBox selectedKeys="{stateModel>/selectedSuppliers}" id="Category" selectionFinish="combineFilters" items="{/Categories}">
+                                    <MultiComboBox selectedKeys="{stateModel>/selectedSuppliers}" id="Category" selectionFinish="setQueryRoute('Category')" items="{/Categories}">
                                         <core:Item key="{Name}" text="{Name}"/>
                                     </MultiComboBox>
                                 </fb:control>

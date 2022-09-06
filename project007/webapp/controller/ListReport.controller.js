@@ -28,6 +28,20 @@ sap.ui.define(
       onInit: function () {
         this._setStateModel();
         this.onRegisterManager();
+        this.getOwnerComponent().getRouter().getRoute("ListReport").attachPatternMatched(this.onPatternMatched, this);
+      },
+
+      /**
+       * Product overview route pattern matched event handler.
+       *
+       * @param {sap.ui.base.Event} oEvent event object.
+       */
+      onPatternMatched: function (oEvent) {
+        this.oArgs           = oEvent.getParameter("arguments");
+        this.oArgs["?query"] = this.oArgs["?query"] || {};
+
+        this._setValueInFilterBar()
+        this.combineFilters();
       },
 
       /**
@@ -186,6 +200,7 @@ sap.ui.define(
       /**
        * Close dialog.
        *
+       * @private
        */
       _closeCategoryDialog() {
         var oODataModel = this.getView().getModel();
@@ -269,7 +284,7 @@ sap.ui.define(
       combineFilters: function () {
         var oStateModel        = this.getView().getModel("stateModel");
         var sAllFieldValue     = oStateModel.getProperty("/AllField")?.trim();
-        var aCategoryNameValue = this._getArrayCategories();
+        var aCategoryNameValue = this.byId("Category").getSelectedKeys();
         var oItemsBinding      = this.byId("CategoriesTable").getBinding("items");
         var aFilters           = [];
 
@@ -292,26 +307,12 @@ sap.ui.define(
       },
 
       /**
-       * Get an array of suppliers.
-       *
-       * @returns {Array} Suppliers.
-       *
-       * @private
-       */
-      _getArrayCategories: function () {
-        var aSelectedItems = this.byId("Category").getSelectedItems();
-        if (aSelectedItems.length) {
-          return aSelectedItems.map((oItem) => oItem.getText());
-        }
-      },
-
-      /**
        * Sort products button press event handler.
        *
        * @param {string} sPropertyName sorting type.
        */
       onSortButtonPress: function (sPropertyName) {
-        var oStateModel   = this.getView().getModel("stateModel");
+        var oStateModel = this.getView().getModel("stateModel");
         var oItemsBinding = this.byId("CategoriesTable").getBinding("items");
 
         oItemsBinding.sort(this.getSorter(sPropertyName, oStateModel));
@@ -356,6 +357,43 @@ sap.ui.define(
           }
         });
         return oSorter;
+      },
+
+      /**
+       * Sets parameters in Route.
+       *
+       * @param {string} sNameFilter
+       */
+      setQueryRoute: function (sNameFilter) {
+        switch (sNameFilter) {
+          case "Name":
+            this.byId("searchField").getValue()
+              ? (this.oArgs["?query"].Name = this.byId("searchField").getValue())
+              : delete this.oArgs["?query"].Name;
+            break;
+          case "Category":
+            this.byId("Category").getSelectedKeys().length
+              ? (this.oArgs["?query"].Category = this.byId("Category").getSelectedKeys())
+              : delete this.oArgs["?query"].Category;
+            break;
+        }
+        this.navigate("ListReport", this.oArgs, true);
+      },
+
+       /**
+       * Sets value in filter bar.
+       *
+       * @private
+       */
+      _setValueInFilterBar: function() {
+        if(this.oArgs["?query"].Name){
+          this.byId("searchField").setValue(this.oArgs["?query"].Name);
+        }
+
+        if (this.oArgs["?query"].Category){
+          var aSelectedCategories = this.oArgs["?query"].Category.split(",");
+          this.byId("Category").setSelectedKeys(aSelectedCategories);
+        }
       },
     });
   }
