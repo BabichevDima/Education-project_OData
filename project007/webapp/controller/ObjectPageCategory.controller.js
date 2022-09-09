@@ -107,7 +107,8 @@ sap.ui.define(
        *
        */
       onDeleteCategoryButton: function () {
-        var that = this;
+        var that        = this;
+        var oODataModel = this.getView().getModel();
         that.getView().setBusy(true);
 
         MessageBox.confirm(that.i18n("WarningMessage", "Category"), {
@@ -115,6 +116,7 @@ sap.ui.define(
           emphasizedAction: MessageBox.Action.OK,
           onClose: function (sAction) {
             if (sAction === MessageBox.Action.OK) {
+              oODataModel.resetChanges();
               that.onConfirmDeletion();
             } else {
               that.getView().setBusy(false);

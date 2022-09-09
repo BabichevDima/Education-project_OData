@@ -44,7 +44,7 @@
 								<FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
 									<Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
 									<HBox>
-										<Input fieldGroupIds="groupValueObjectPageCategory" value="{path: 'Name'}"/>
+										<Input fieldGroupIds="groupValueObjectPageCategory" value="{ path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}"/>
 									</HBox>
 								</FlexBox>
 							</layout:VerticalLayout>
