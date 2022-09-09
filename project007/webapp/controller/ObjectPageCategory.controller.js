@@ -39,9 +39,9 @@ sap.ui.define(
        * @private
        */
       _onPatternMatched: function (oEvent) {
-        var that          = this;
-        var oDataModel    = this.getView().getModel();
-        this.sCategoryId  = oEvent.getParameter("arguments").CategoryId;
+        var that         = this;
+        var oDataModel   = this.getView().getModel();
+        this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
 
         oDataModel.metadataLoaded().then(function () {
           var sKey = oDataModel.createKey("/Categories", {
@@ -123,7 +123,7 @@ sap.ui.define(
        *
        */
       onConfirmDeletion: function () {
-        var aPathLink   = this.byId("ProductsTableCategories").getBinding("items").getContexts().map((oProduct) => oProduct.getPath());
+        var aPathLink = this.byId("ProductsTableCategories").getBinding("items").getContexts().map((oProduct) => oProduct.getPath());
 
         aPathLink.length ? this._deleteCategoryWithProducts(aPathLink) : this._deleteCategory();
       },
