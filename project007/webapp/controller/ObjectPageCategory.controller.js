@@ -107,6 +107,7 @@ sap.ui.define(
        */
       onDeleteCategoryButton: function () {
         var that = this;
+        that.getView().setBusy(true);
 
         MessageBox.confirm(that.i18n("WarningMessage", "Category"), {
           actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
@@ -115,6 +116,7 @@ sap.ui.define(
             if (sAction === MessageBox.Action.OK) {
               that.onConfirmDeletion();
             } else {
+              that.getView().setBusy(false);
               MessageToast.show(that.i18n("MessageCategoryNotDeleted"));
             }
           },
@@ -132,10 +134,12 @@ sap.ui.define(
 
         oODataModel.remove(sKey,{
           success: function () {
+            that.getView().setBusy(false);
             that.onNavToCategoriesOverview();
             MessageToast.show(that.i18n("MessageDeleteSuccess"));
           },
           error: function () {
+            that.getView().setBusy(false);
             MessageBox.error(that.i18n("MessageDeleteError"));
           },
         });
