@@ -46,8 +46,8 @@ sap.ui.define(
        * @private
        */
       _onPatternMatched: function (oEvent) {
-        var that = this;
-        var oDataModel = this.getView().getModel();
+        var that         = this;
+        var oDataModel   = this.getView().getModel();
         this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
 
         oDataModel.metadataLoaded().then(function () {
@@ -82,10 +82,8 @@ sap.ui.define(
        * Selects a row.
        */
       onSelectionTableCategories: function () {
-        var oStateModel = this.getView().getModel("stateModel");
-        var bIsSelectedContexts = this.byId(
-          "ProductsTableCategories"
-        ).getSelectedContexts();
+        var oStateModel         = this.getView().getModel("stateModel");
+        var bIsSelectedContexts = this.byId("ProductsTableCategories").getSelectedContexts();
 
         oStateModel.setProperty("/StatusButtons", !!bIsSelectedContexts.length);
       },
@@ -131,14 +129,9 @@ sap.ui.define(
        *
        */
       onConfirmDeletion: function () {
-        var aPathLink = this.byId("ProductsTableCategories")
-          .getBinding("items")
-          .getContexts()
-          .map((oProduct) => oProduct.getPath());
+        var aPathLink = this.byId("ProductsTableCategories").getBinding("items").getContexts().map((oProduct) => oProduct.getPath());
 
-        aPathLink.length
-          ? this._deleteCategoryWithProducts(aPathLink)
-          : this._deleteCategory();
+        aPathLink.length ? this._deleteCategoryWithProducts(aPathLink) : this._deleteCategory();
       },
 
       /**
@@ -147,11 +140,9 @@ sap.ui.define(
        * @private
        */
       _deleteCategory: function () {
-        var that = this;
+        var that        = this;
         var oODataModel = this.getView().getModel();
-        var sKey = oODataModel.createKey("/Categories", {
-          ID: that.sCategoryId,
-        });
+        var sKey        = oODataModel.createKey("/Categories", {ID: that.sCategoryId});
 
         oODataModel.remove(sKey, {
           success: function () {
@@ -174,13 +165,13 @@ sap.ui.define(
        * @private
        */
       _deleteCategoryWithProducts: function (aPathLink) {
-        var that = this;
+        var that        = this;
         var oODataModel = this.getView().getModel();
 
         oODataModel.setUseBatch(true);
 
         var aDeferredGroups = oODataModel.getDeferredGroups();
-        aDeferredGroups = aDeferredGroups.concat(["myID"]);
+        aDeferredGroups     = aDeferredGroups.concat(["myID"]);
         oODataModel.setDeferredGroups(aDeferredGroups);
 
         var nContentID = 1;
