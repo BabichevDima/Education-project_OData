@@ -118,14 +118,10 @@ sap.ui.define(
        * @param {sap.ui.base.Event} oEvent event object.
        */
       onCategoryPress: function (oEvent) {
-        var nCategoryId = oEvent
-          .getSource()
-          .getBindingContext()
-          .getObject("ID");
+        var nCategoryId = oEvent.getSource().getBindingContext().getObject("ID");
 
-        this.navigate("ObjectPageCategory", {
-          CategoryId: nCategoryId,
-        });
+        this.onCancelButton();
+        this.navigate("ObjectPageCategory", {CategoryId: nCategoryId});
       },
 
       /**
@@ -271,7 +267,8 @@ sap.ui.define(
                 MessageToast.show(that.i18n("MessageDeleteSuccess"));
               } else {
                 that.getView().setBusy(false);
-                MessageToast.show(that.i18n("MessageNotDeleteSuccessCategory"));
+                that.onCancelButton();
+                MessageToast.show(that.i18n("MessageCategoryNotDeleted"));
               }
             },
           }

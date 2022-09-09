@@ -1,6 +1,11 @@
 sap.ui.define(
-  ["webapp/controller/BaseController", "sap/ui/model/json/JSONModel"],
-  function (BaseController, JSONModel) {
+  [
+    "webapp/controller/BaseController",
+    "sap/ui/model/json/JSONModel",
+    "sap/m/MessageBox",
+    "sap/m/MessageToast",
+  ],
+  function (BaseController, JSONModel, MessageBox, MessageToast) {
     "use strict";
 
     return BaseController.extend("webapp.controller.ObjectPageCategory", {
@@ -47,7 +52,7 @@ sap.ui.define(
           });
 
           that.getView().bindObject({
-            path: sKey
+            path: sKey,
           });
         });
       },
@@ -88,14 +93,51 @@ sap.ui.define(
        * @param {sap.ui.base.Event} oEvent event object.
        */
       onProductPress: function (oEvent) {
-        var nProductId = oEvent
-          .getSource()
-          .getBindingContext()
-          .getObject("ID");
+        var nProductId = oEvent.getSource().getBindingContext().getObject("ID");
 
         this.navigate("ProductInfo", {
           CategoryId: this.sCategoryId,
           productId: nProductId,
+        });
+      },
+
+      /**
+       * Asks for confirmation of deletion.
+       *
+       */
+      onDeleteCategoryButton: function () {
+        var that = this;
+
+        MessageBox.confirm(that.i18n("WarningMessage", "Category"), {
+          actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+          emphasizedAction: MessageBox.Action.OK,
+          onClose: function (sAction) {
+            if (sAction === MessageBox.Action.OK) {
+              that.onConfirmDeletion();
+            } else {
+              MessageToast.show(that.i18n("MessageCategoryNotDeleted"));
+            }
+          },
+        });
+      },
+
+      /**
+       * Deletes Category.
+       *
+       */
+      onConfirmDeletion: function () {
+        var that         = this;
+        var oODataModel  = this.getView().getModel();
+        var sKey         = oODataModel.createKey("/Categories", { ID: that.sCategoryId});
+
+        oODataModel.remove(sKey,{
+          success: function () {
+            that.onNavToCategoriesOverview();
+            MessageToast.show(that.i18n("MessageDeleteSuccess"));
+          },
+          error: function () {
+            MessageBox.error(that.i18n("MessageDeleteError"));
+          },
         });
       },
     });
