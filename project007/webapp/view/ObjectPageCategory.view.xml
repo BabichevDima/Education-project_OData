@@ -19,7 +19,7 @@
 				</uxap:expandedHeading>
 				<uxap:actions>
 					<Button id="EditButtonObjectPageCategory" text="{i18n>EditButton}" icon="sap-icon://edit" type="Ghost" press="onEditButton" enabled="{= !${stateModel>/EditMode}}"/>
-					<Button id="DeleteButtonObjectPageCategory" text="{i18n>DeleteButton}" icon="sap-icon://delete" type="Reject" press=""/>
+					<Button id="DeleteButtonObjectPageCategory" text="{i18n>DeleteButton}" icon="sap-icon://delete" type="Reject" press="onDeleteCategoryButton"/>
 				</uxap:actions>
 			</uxap:ObjectPageDynamicHeaderTitle>
 		</uxap:headerTitle>
