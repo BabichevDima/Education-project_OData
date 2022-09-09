@@ -32,15 +32,10 @@ sap.ui.define(
       },
 
       /**
-       * Open list report page button press event handler.
+       * Open products overview page button press event handler.
        */
       onNavToCategoriesOverview: function () {
-        var oStateModel = this.getView().getModel("stateModel");
-        var EditMode    = oStateModel.getProperty("/EditMode");
-
-        if (!EditMode) {
-          this.navigate("ListReport");
-        }
+        this.navigate("ListReport");
       },
 
       /**
