@@ -13,15 +13,8 @@ sap.ui.define(
        * Controller's init lifecycle method.
        */
       onInit: function () {
-        this.onRegisterManager();
         this.getOwnerComponent().getRouter().getRoute("ObjectPageCategory").attachPatternMatched(this._onPatternMatched, this);
         this._setStateModel();
-
-        this.getView().addEventDelegate({
-          onBeforeHide: function() {
-            this.onCancelButton();
-          },
-        }, this)
       },
 
       /**
@@ -64,8 +57,9 @@ sap.ui.define(
       /**
        * Edits table fields.
        *
+       * @param {sap.ui.base.Event} oEvent event object.
        */
-      onEditButton: function () {
+      onEditButton: function (oEvent) {
         var oStateModel = this.getView().getModel("stateModel");
         oStateModel.setProperty("/EditMode", true);
       },
@@ -148,7 +142,7 @@ sap.ui.define(
           success: function () {
             that.getView().setBusy(false);
             MessageToast.show(that.i18n("MessageDeleteSuccess"));
-            that.navigate("ListReport", null, true);
+            that.onNavToCategoriesOverview();
           },
           error: function () {
             that.getView().setBusy(false);
@@ -159,8 +153,6 @@ sap.ui.define(
 
       /**
        * Deletes Category with Products.
-       * 
-       * @param {array} aPathLink array Path.
        *
        * @private
        */
@@ -194,7 +186,7 @@ sap.ui.define(
           success: function (result) {
             that.getView().setBusy(false);
             MessageToast.show(that.i18n("MessageDeleteSuccess"));
-            that.navigate("ListReport", null, true);
+            that.onNavToCategoriesOverview();
           },
           error: function () {
             that.getView().setBusy(false);
@@ -202,56 +194,7 @@ sap.ui.define(
             console.log("error");
           },
         });
-      },
-
-      /**
-       * "Save" button press event handler.
-       */
-      onSaveButton: function () {
-        var oODataModel = this.getView().getModel();
-
-        oODataModel.submitChanges();
-        this.onCancelButton();
-        MessageToast.show(this.i18n("SuccessEdited"));
-      },
-
-      /**
-       * Close edit mode.
-       */
-      onCancelButton: function () {
-        var oStateModel = this.getView().getModel("stateModel");
-        var oODataModel = this.getView().getModel();
-
-        this.byId("ProductsTableCategories").removeSelections(true);
-
-        oStateModel.setProperty("/StatusButtons", false);
-        oStateModel.setProperty("/EditMode", false);
-        oODataModel.resetChanges();
-      },
-
-      /**
-       * Cancel button click action.
-       * 
-       */
-      onConfirmCancelEditMode: function () {
-        var that = this;
-
-        if (this.getView().getModel().hasPendingChanges()) {
-          MessageBox.confirm(that.i18n("ConfirmMessage"), {
-            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-            emphasizedAction: MessageBox.Action.YES,
-            onClose: function (sAction) {
-              if (sAction === MessageBox.Action.YES) {
-                that.onSaveButton();
-              } else {
-                that.onCancelButton();
-              }
-            },
-          });
-        } else {
-          that.onCancelButton();
-        }
-      },
+      }
     });
   }
 );
