@@ -42,6 +42,8 @@ sap.ui.define(
 
         this._setValueInFilterBar()
         this.combineFilters();
+        
+        this.getView().getModel().setUseBatch(false);
       },
 
       /**

@@ -13,10 +13,7 @@ sap.ui.define(
        * Controller's init lifecycle method.
        */
       onInit: function () {
-        this.getOwnerComponent()
-          .getRouter()
-          .getRoute("ObjectPageCategory")
-          .attachPatternMatched(this._onPatternMatched, this);
+        this.getOwnerComponent().getRouter().getRoute("ObjectPageCategory").attachPatternMatched(this._onPatternMatched, this);
         this._setStateModel();
       },
 
@@ -42,9 +39,9 @@ sap.ui.define(
        * @private
        */
       _onPatternMatched: function (oEvent) {
-        var that = this;
-        var oDataModel = this.getView().getModel();
-        this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
+        var that          = this;
+        var oDataModel    = this.getView().getModel();
+        this.sCategoryId  = oEvent.getParameter("arguments").CategoryId;
 
         oDataModel.metadataLoaded().then(function () {
           var sKey = oDataModel.createKey("/Categories", {
@@ -79,10 +76,8 @@ sap.ui.define(
        * Selects a row.
        */
       onSelectionTableCategories: function () {
-        var oStateModel = this.getView().getModel("stateModel");
-        var bIsSelectedContexts = this.byId(
-          "ProductsTableCategories"
-        ).getSelectedContexts();
+        var oStateModel         = this.getView().getModel("stateModel");
+        var bIsSelectedContexts = this.byId("ProductsTableCategories").getSelectedContexts();
 
         oStateModel.setProperty("/StatusButtons", !!bIsSelectedContexts.length);
       },
@@ -128,15 +123,26 @@ sap.ui.define(
        *
        */
       onConfirmDeletion: function () {
-        var that         = this;
-        var oODataModel  = this.getView().getModel();
-        var sKey         = oODataModel.createKey("/Categories", { ID: that.sCategoryId});
+        var aPathLink   = this.byId("ProductsTableCategories").getBinding("items").getContexts().map((oProduct) => oProduct.getPath());
 
-        oODataModel.remove(sKey,{
+        aPathLink.length ? this._deleteCategoryWithProducts(aPathLink) : this._deleteCategory();
+      },
+
+      /**
+       * Deletes Category.
+       *
+       * @private
+       */
+      _deleteCategory: function () {
+        var that        = this;
+        var oODataModel = this.getView().getModel();
+        var sKey        = oODataModel.createKey("/Categories", {ID: that.sCategoryId});
+
+        oODataModel.remove(sKey, {
           success: function () {
             that.getView().setBusy(false);
-            that.onNavToCategoriesOverview();
             MessageToast.show(that.i18n("MessageDeleteSuccess"));
+            that.onNavToCategoriesOverview();
           },
           error: function () {
             that.getView().setBusy(false);
@@ -144,6 +150,51 @@ sap.ui.define(
           },
         });
       },
+
+      /**
+       * Deletes Category with Products.
+       *
+       * @private
+       */
+      _deleteCategoryWithProducts: function (aPathLink) {
+        var that        = this;
+        var oODataModel = this.getView().getModel();
+
+        oODataModel.setUseBatch(true);
+
+        var aDeferredGroups = oODataModel.getDeferredGroups();
+        aDeferredGroups     = aDeferredGroups.concat(["myID"]);
+        oODataModel.setDeferredGroups(aDeferredGroups);
+
+        var nContentID = 1;
+        aPathLink.forEach((sPath) => {
+          oODataModel.remove(`${sPath}/Category`, {
+            headers: { "Content-ID": nContentID },
+            groupId: "myID",
+          });
+          nContentID++;
+
+          oODataModel.remove(sPath, {
+            headers: { "Content-ID": nContentID },
+            groupId: "myID",
+          });
+          nContentID++;
+        });
+
+        oODataModel.submitChanges({
+          groupId: "myID",
+          success: function (result) {
+            that.getView().setBusy(false);
+            MessageToast.show(that.i18n("MessageDeleteSuccess"));
+            that.onNavToCategoriesOverview();
+          },
+          error: function () {
+            that.getView().setBusy(false);
+            MessageBox.error(that.i18n("MessageDeleteError"));
+            console.log("error");
+          },
+        });
+      }
     });
   }
 );
