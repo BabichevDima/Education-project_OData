@@ -4,8 +4,10 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageBox",
     "sap/m/MessageToast",
+    "sap/ui/core/Fragment",
+    "sap/ui/core/ValueState",
   ],
-  function (BaseController, JSONModel, MessageBox, MessageToast) {
+  function (BaseController, JSONModel, MessageBox, MessageToast, Fragment, ValueState) {
     "use strict";
 
     return BaseController.extend("webapp.controller.ObjectPageCategory", {
@@ -14,7 +16,10 @@ sap.ui.define(
        */
       onInit: function () {
         this.onRegisterManager();
-        this.getOwnerComponent().getRouter().getRoute("ObjectPageCategory").attachPatternMatched(this._onPatternMatched, this);
+        this.getOwnerComponent()
+          .getRouter()
+          .getRoute("ObjectPageCategory")
+          .attachPatternMatched(this._onPatternMatched, this);
         this._setStateModel();
 
         this.getView().addEventDelegate(
@@ -49,8 +54,8 @@ sap.ui.define(
        * @private
        */
       _onPatternMatched: function (oEvent) {
-        var that         = this;
-        var oDataModel   = this.getView().getModel();
+        var that = this;
+        var oDataModel = this.getView().getModel();
         this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
 
         oDataModel.metadataLoaded().then(function () {
@@ -85,8 +90,10 @@ sap.ui.define(
        * Selects a row.
        */
       onSelectionTableCategories: function () {
-        var oStateModel         = this.getView().getModel("stateModel");
-        var bIsSelectedContexts = this.byId("ProductsTableCategories").getSelectedContexts();
+        var oStateModel = this.getView().getModel("stateModel");
+        var bIsSelectedContexts = this.byId(
+          "ProductsTableCategories"
+        ).getSelectedContexts();
 
         oStateModel.setProperty("/StatusButtons", !!bIsSelectedContexts.length);
       },
@@ -110,7 +117,7 @@ sap.ui.define(
        *
        */
       onDeleteCategoryButton: function () {
-        var that        = this;
+        var that = this;
         var oODataModel = this.getView().getModel();
         that.getView().setBusy(true);
 
@@ -134,9 +141,14 @@ sap.ui.define(
        *
        */
       onConfirmDeletion: function () {
-        var aPathLink = this.byId("ProductsTableCategories").getBinding("items").getContexts().map((oProduct) => oProduct.getPath());
+        var aPathLink = this.byId("ProductsTableCategories")
+          .getBinding("items")
+          .getContexts()
+          .map((oProduct) => oProduct.getPath());
 
-        aPathLink.length ? this._deleteCategoryWithProducts(aPathLink) : this._deleteCategory();
+        aPathLink.length
+          ? this._deleteCategoryWithProducts(aPathLink)
+          : this._deleteCategory();
       },
 
       /**
@@ -145,9 +157,11 @@ sap.ui.define(
        * @private
        */
       _deleteCategory: function () {
-        var that        = this;
+        var that = this;
         var oODataModel = this.getView().getModel();
-        var sKey        = oODataModel.createKey("/Categories", {ID: that.sCategoryId});
+        var sKey = oODataModel.createKey("/Categories", {
+          ID: that.sCategoryId,
+        });
 
         oODataModel.remove(sKey, {
           success: function () {
@@ -170,13 +184,13 @@ sap.ui.define(
        * @private
        */
       _deleteCategoryWithProducts: function (aPathLink) {
-        var that        = this;
+        var that = this;
         var oODataModel = this.getView().getModel();
 
         oODataModel.setUseBatch(true);
 
         var aDeferredGroups = oODataModel.getDeferredGroups();
-        aDeferredGroups     = aDeferredGroups.concat(["myID"]);
+        aDeferredGroups = aDeferredGroups.concat(["myID"]);
         oODataModel.setDeferredGroups(aDeferredGroups);
 
         var nContentID = 1;
@@ -263,12 +277,19 @@ sap.ui.define(
        *
        */
       onDeleteProductButton: function () {
-        var that             = this;
-        var nSelectedProduct = this.byId("ProductsTableCategories").getSelectedContexts().length;
+        var that = this;
+        var nSelectedProduct = this.byId(
+          "ProductsTableCategories"
+        ).getSelectedContexts().length;
 
         this.getView().setBusy(true);
 
-        MessageBox.confirm(that.i18n("WarningMessage", nSelectedProduct === 1 ? "Product" : "Products"), {
+        MessageBox.confirm(
+          that.i18n(
+            "WarningMessage",
+            nSelectedProduct === 1 ? "Product" : "Products"
+          ),
+          {
             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
             emphasizedAction: MessageBox.Action.YES,
             onClose: function (sAction) {
@@ -288,18 +309,20 @@ sap.ui.define(
        *
        */
       onConfirmDeletionProduct: function () {
-        var that             = this;
-        var oODataModel      = this.getView().getModel();
-        var oStateModel      = this.getView().getModel("stateModel");
-        var bEditMode        = oStateModel.getProperty("/EditMode");
-        var oProductTable    = this.byId("ProductsTableCategories");
+        var that = this;
+        var oODataModel = this.getView().getModel();
+        var oStateModel = this.getView().getModel("stateModel");
+        var bEditMode = oStateModel.getProperty("/EditMode");
+        var oProductTable = this.byId("ProductsTableCategories");
         var nSelectedProduct = oProductTable.getSelectedContexts().length;
-        var aSelectedProduct = oProductTable.getSelectedContexts().map((oProduct) => oProduct.getPath());
+        var aSelectedProduct = oProductTable
+          .getSelectedContexts()
+          .map((oProduct) => oProduct.getPath());
 
         oODataModel.setUseBatch(true);
 
         var aDeferredGroups = oODataModel.getDeferredGroups();
-        aDeferredGroups     = aDeferredGroups.concat(["deleteProductID"]);
+        aDeferredGroups = aDeferredGroups.concat(["deleteProductID"]);
         oODataModel.setDeferredGroups(aDeferredGroups);
 
         var nContentID = 1;
@@ -325,8 +348,15 @@ sap.ui.define(
           groupId: "deleteProductID",
           success: function () {
             that.getView().setBusy(false);
-            bEditMode ? oProductTable.removeSelections(true) : that.onCancelButton();
-            MessageToast.show(that.i18n("MessageDeleteSuccess", nSelectedProduct === 1 ? "Product" : "Products"));
+            bEditMode
+              ? oProductTable.removeSelections(true)
+              : that.onCancelButton();
+            MessageToast.show(
+              that.i18n(
+                "MessageDeleteSuccess",
+                nSelectedProduct === 1 ? "Product" : "Products"
+              )
+            );
           },
           error: function () {
             that.getView().setBusy(false);
@@ -334,6 +364,148 @@ sap.ui.define(
             MessageBox.error(that.i18n("MessageDeleteError"));
           },
         });
+      },
+
+      /**
+       * Opens dialog.
+       *
+       */
+      onOpenDialogProduct: function () {
+        var that = this;
+        var oODataModel = this.getView().getModel();
+        this.getView().setBusy(true);
+
+        oODataModel.read(`/Products`, {
+          urlParameters: { $orderby: "ID" },
+          success: function (mData) {
+            that.openDialog(mData.results);
+          },
+          error: function (response) {
+            MessageBox.error(response.message);
+            that.getView().setBusy(false);
+          },
+        });
+      },
+
+      /**
+       * Downloads dialog.
+       *
+       * @param {Array} aProduct Product array.
+       */
+      openDialog: function (aProduct) {
+        var that          = this;
+        var nNewProductID = aProduct[aProduct.length - 1].ID + 1;
+        var oView         = this.getView();
+        var oODataModel   = oView.getModel();
+
+        if (!this._oDialogProduct) {
+          this._oDialogProduct = Fragment.load({
+            id: oView.getId(),
+            name: "webapp.view.fragments.ProductDialog",
+            controller: this,
+          }).then(function (oDialog) {
+            oView.addDependent(oDialog);
+            return oDialog;
+          });
+        }
+        this._oDialogProduct
+          .then(function (oDialog) {
+            var oEntryCtx = oODataModel.createEntry(`/Categories(${that.sCategoryId})/Products`, {
+              properties: {
+                Name: null,
+                Description: null,
+                ReleaseDate: null,
+                DiscontinuedDate: null,
+                Rating: null,
+                Price: null,
+                ID: nNewProductID,
+              },
+            });
+
+            oDialog.setBindingContext(oEntryCtx);
+            oDialog.setModel(oODataModel);
+            oDialog.open();
+          })
+          .catch(function () {
+            MessageBox.error();
+            oView.setBusy(false);
+          });
+      },
+
+      // /**
+      //  * Event handler on clicking the close button in the product creation dialog
+      //  *
+      //  */
+      // onDialogCategoryClosePress: function () {
+      //   this._closeCategoryDialog();
+      // },
+
+      /**
+       * Close dialog.
+       *
+       */
+       onDialogCategoryClosePress() {
+        var oODataModel = this.getView().getModel();
+        var oView = this.getView();
+
+        this._oDialogProduct.then(function (oDialog) {
+          var oCtx = oDialog.getBindingContext();
+          oODataModel.deleteCreatedEntry(oCtx);
+          oView.setBusy(false);
+          oDialog.close();
+        });
+      },
+
+      /**
+       * Creates element.
+       *
+       */
+      onCreateProduct: function () {
+        var nNewProductReleaseDate = this.byId("NewProductReleaseDate");
+        var nNewProductRating      = this.byId("NewProductRating");
+        var nNewProductPrice       = this.byId("NewProductPrice");
+        var aRequiredFields        = [nNewProductReleaseDate, nNewProductPrice];
+        var bCheck                 = false;
+        // var nCountError            = this.getView().getModel("messages")?.getData().length;
+
+        // var oMessageProcessor      = new sap.ui.core.message.ControlMessageProcessor();
+        // var oMessageManager        = sap.ui.getCore().getMessageManager();
+
+
+          aRequiredFields.forEach((oField) => {
+            if(!oField.getValue()){
+              // oMessageManager.registerMessageProcessor(oMessageProcessor);
+              // oMessageManager.addMessages(
+              //   new sap.ui.core.message.Message({
+              //     persistent: true,
+              //     message: "Empty field",
+              //     description: "Empty field",
+              //     type: sap.ui.core.MessageType.Error,
+              //     processor: oMessageProcessor,
+              //     target: "Price",
+              //     // target: "NewProductPrice/value",
+              //   })
+              // );
+              bCheck = true;
+            }
+          })
+
+
+        if (bCheck || !nNewProductRating.getValue()) {
+          MessageBox.alert(this.i18n("AlertMessage"));
+        } else {
+          this.getView().getModel().submitChanges();
+          this.onDialogCategoryClosePress();
+        }
+      },
+
+      /**
+       * check field.
+       *
+       * @param {sap.ui.base.Event} oEvent event object.
+       */
+      checkField: function (oEvent) {
+        // oEvent.getSource().setValueState(ValueState.None);
       },
     });
   }
