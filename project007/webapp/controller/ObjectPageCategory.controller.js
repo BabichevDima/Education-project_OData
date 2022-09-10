@@ -268,15 +268,12 @@ sap.ui.define(
 
         this.getView().setBusy(true);
 
-        MessageBox.confirm(
-          that.i18n("WarningMessage", nSelectedProduct === 1 ? "Product" : "Products"),
-          {
+        MessageBox.confirm(that.i18n("WarningMessage", nSelectedProduct === 1 ? "Product" : "Products"), {
             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
             emphasizedAction: MessageBox.Action.YES,
             onClose: function (sAction) {
               if (sAction === MessageBox.Action.YES) {
                 that.onConfirmDeletionProduct();
-                MessageToast.show(that.i18n("MessageDeleteSuccess"));
               } else {
                 that.getView().setBusy(false);
                 that.byId("ProductsTableCategories").removeSelections(true);
@@ -296,6 +293,7 @@ sap.ui.define(
         var oStateModel      = this.getView().getModel("stateModel");
         var bEditMode        = oStateModel.getProperty("/EditMode");
         var oProductTable    = this.byId("ProductsTableCategories");
+        var nSelectedProduct = oProductTable.getSelectedContexts().length;
         var aSelectedProduct = oProductTable.getSelectedContexts().map((oProduct) => oProduct.getPath());
 
         oODataModel.setUseBatch(true);
@@ -325,10 +323,10 @@ sap.ui.define(
 
         oODataModel.submitChanges({
           groupId: "deleteProductID",
-          success: function (result) {
+          success: function () {
             that.getView().setBusy(false);
             bEditMode ? oProductTable.removeSelections(true) : that.onCancelButton();
-            MessageToast.show(that.i18n("MessageDeleteSuccess"));
+            MessageToast.show(that.i18n("MessageDeleteSuccess", nSelectedProduct === 1 ? "Product" : "Products"));
           },
           error: function () {
             that.getView().setBusy(false);
