@@ -17,11 +17,14 @@ sap.ui.define(
         this.getOwnerComponent().getRouter().getRoute("ObjectPageCategory").attachPatternMatched(this._onPatternMatched, this);
         this._setStateModel();
 
-        this.getView().addEventDelegate({
-          onBeforeHide: function() {
-            this.onCancelButton();
+        this.getView().addEventDelegate(
+          {
+            onBeforeHide: function () {
+              this.onCancelButton();
+            },
           },
-        }, this)
+          this
+        );
       },
 
       /**
@@ -161,7 +164,7 @@ sap.ui.define(
 
       /**
        * Deletes Category with Products.
-       * 
+       *
        * @param {array} aPathLink array Path.
        *
        * @private
@@ -201,7 +204,6 @@ sap.ui.define(
           error: function () {
             that.getView().setBusy(false);
             MessageBox.error(that.i18n("MessageDeleteError"));
-            console.log("error");
           },
         });
       },
@@ -228,12 +230,13 @@ sap.ui.define(
 
         oStateModel.setProperty("/StatusButtons", false);
         oStateModel.setProperty("/EditMode", false);
+        oODataModel.setUseBatch(false);
         oODataModel.resetChanges();
       },
 
       /**
        * Cancel button click action.
-       * 
+       *
        */
       onConfirmCancelEditMode: function () {
         var that = this;
@@ -256,10 +259,83 @@ sap.ui.define(
       },
 
       /**
-      * Opens dialog.
-      *
-      */
-      onOpenDialogProduct: function () {
+       * Asks for confirmation of deletion.
+       *
+       */
+      onDeleteProductButton: function () {
+        var that             = this;
+        var nSelectedProduct = this.byId("ProductsTableCategories").getSelectedContexts().length;
+
+        this.getView().setBusy(true);
+
+        MessageBox.confirm(
+          that.i18n("WarningMessage", nSelectedProduct === 1 ? "Product" : "Products"),
+          {
+            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+            emphasizedAction: MessageBox.Action.YES,
+            onClose: function (sAction) {
+              if (sAction === MessageBox.Action.YES) {
+                that.onConfirmDeletionProduct();
+                MessageToast.show(that.i18n("MessageDeleteSuccess"));
+              } else {
+                that.getView().setBusy(false);
+                that.byId("ProductsTableCategories").removeSelections(true);
+              }
+            },
+          }
+        );
+      },
+
+      /**
+       * Deletes product.
+       *
+       */
+      onConfirmDeletionProduct: function () {
+        var that             = this;
+        var oODataModel      = this.getView().getModel();
+        var oStateModel      = this.getView().getModel("stateModel");
+        var bEditMode        = oStateModel.getProperty("/EditMode");
+        var oProductTable    = this.byId("ProductsTableCategories");
+        var aSelectedProduct = oProductTable.getSelectedContexts().map((oProduct) => oProduct.getPath());
+
+        oODataModel.setUseBatch(true);
+
+        var aDeferredGroups = oODataModel.getDeferredGroups();
+        aDeferredGroups     = aDeferredGroups.concat(["deleteProductID"]);
+        oODataModel.setDeferredGroups(aDeferredGroups);
+
+        var nContentID = 1;
+        aSelectedProduct.forEach((sPath) => {
+          oODataModel.remove(`${sPath}/$links/Category`, {
+            headers: { "Content-ID": nContentID },
+            groupId: "deleteProductID",
+          });
+          nContentID++;
+          oODataModel.remove(`${sPath}/$links/Supplier`, {
+            headers: { "Content-ID": nContentID },
+            groupId: "deleteProductID",
+          });
+          nContentID++;
+          oODataModel.remove(sPath, {
+            headers: { "Content-ID": nContentID },
+            groupId: "deleteProductID",
+          });
+          nContentID++;
+        });
+
+        oODataModel.submitChanges({
+          groupId: "deleteProductID",
+          success: function (result) {
+            that.getView().setBusy(false);
+            bEditMode ? oProductTable.removeSelections(true) : that.onCancelButton();
+            MessageToast.show(that.i18n("MessageDeleteSuccess"));
+          },
+          error: function () {
+            that.getView().setBusy(false);
+            that.onCancelButton();
+            MessageBox.error(that.i18n("MessageDeleteError"));
+          },
+        });
       },
     });
   }

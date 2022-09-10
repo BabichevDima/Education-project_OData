@@ -65,7 +65,7 @@
 										<ToolbarSpacer/>
 										<SearchField id="CategoriesSearch" search="onCategoriesSearch" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
 										<Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>CreateButton}" press="onOpenDialogProduct"/>
-										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd"/>
+										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd" press="onDeleteProductButton"/>
 									</Toolbar>
 								</headerToolbar>
 								<columns>
@@ -94,11 +94,11 @@
 											<Input fieldGroupIds="groupEditValueProduct" value="{ path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
 											<Text text="{Name}" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
-										<HBox justifyContent="Start">
+										<HBox justifyContent="End">
 											<Input fieldGroupIds="groupEditValueProduct" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
 											<Text text="{Price}" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
-										<HBox justifyContent="End">
+										<HBox justifyContent="Start">
 											<Input fieldGroupIds="groupEditValueProduct" value="{ path: 'Description', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
 											<Text text="{Description}" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
