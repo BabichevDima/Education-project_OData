@@ -24,11 +24,12 @@ sap.ui.define(
        *
        * @param {string} sText value name.
        * @param {string} sRecipient extra options.
+       * @param {string} sSuffix extra options.
        *
        * @returns {string} value.
        */
-      i18n: function (sText, sRecipient) {
-        return this.getView().getModel("i18n").getResourceBundle().getText(sText, [sRecipient]);
+      i18n: function (sText, sRecipient, sSuffix) {
+        return this.getView().getModel("i18n").getResourceBundle().getText(sText, [sRecipient, sSuffix]);
       },
 
       /**

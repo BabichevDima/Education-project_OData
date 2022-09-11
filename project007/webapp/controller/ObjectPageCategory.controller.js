@@ -6,8 +6,9 @@ sap.ui.define(
     "sap/m/MessageToast",
     "sap/ui/core/Fragment",
     "sap/ui/core/ValueState",
+    "sap/ui/core/Core",
   ],
-  function (BaseController, JSONModel, MessageBox, MessageToast, Fragment, ValueState) {
+  function (BaseController, JSONModel, MessageBox, MessageToast, Fragment, ValueState, Core) {
     "use strict";
 
     return BaseController.extend("webapp.controller.ObjectPageCategory", {
@@ -432,14 +433,6 @@ sap.ui.define(
           });
       },
 
-      // /**
-      //  * Event handler on clicking the close button in the product creation dialog
-      //  *
-      //  */
-      // onDialogCategoryClosePress: function () {
-      //   this._closeCategoryDialog();
-      // },
-
       /**
        * Close dialog.
        *
@@ -454,6 +447,10 @@ sap.ui.define(
           oView.setBusy(false);
           oDialog.close();
         });
+
+        var aRequiredFields = [this.byId("NewProductReleaseDate"), this.byId("NewProductPrice")];
+        aRequiredFields.forEach(oField => oField.setValueState(ValueState.None));
+        Core.getMessageManager().removeAllMessages();
       },
 
       /**
@@ -466,33 +463,20 @@ sap.ui.define(
         var nNewProductPrice       = this.byId("NewProductPrice");
         var aRequiredFields        = [nNewProductReleaseDate, nNewProductPrice];
         var bCheck                 = false;
-        // var nCountError            = this.getView().getModel("messages")?.getData().length;
-
-        // var oMessageProcessor      = new sap.ui.core.message.ControlMessageProcessor();
-        // var oMessageManager        = sap.ui.getCore().getMessageManager();
-
+        var nCountError            = this.getView().getModel("messages")?.getData().length;
 
           aRequiredFields.forEach((oField) => {
             if(!oField.getValue()){
-              // oMessageManager.registerMessageProcessor(oMessageProcessor);
-              // oMessageManager.addMessages(
-              //   new sap.ui.core.message.Message({
-              //     persistent: true,
-              //     message: "Empty field",
-              //     description: "Empty field",
-              //     type: sap.ui.core.MessageType.Error,
-              //     processor: oMessageProcessor,
-              //     target: "Price",
-              //     // target: "NewProductPrice/value",
-              //   })
-              // );
+              oField.setValueState(ValueState.Error);
               bCheck = true;
             }
           })
 
-
         if (bCheck || !nNewProductRating.getValue()) {
           MessageBox.alert(this.i18n("AlertMessage"));
+        } else if (nCountError) {
+          var sSuffix = nCountError === 1 ? "" : "s";
+          MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
         } else {
           this.getView().getModel().submitChanges();
           this.onDialogCategoryClosePress();
@@ -505,7 +489,7 @@ sap.ui.define(
        * @param {sap.ui.base.Event} oEvent event object.
        */
       checkField: function (oEvent) {
-        // oEvent.getSource().setValueState(ValueState.None);
+        oEvent.getSource().setValueState(ValueState.None);
       },
     });
   }
