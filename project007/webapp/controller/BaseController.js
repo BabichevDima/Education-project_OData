@@ -52,18 +52,6 @@ sap.ui.define(
         this.oMessageManager.registerObject(this.getView(), true);
         this.getView().setModel(this.oMessageManager.getMessageModel(), "messages");
       },
-
-      /**
-       * Сollects an array.
-       * 
-       * @param {array} aFieldGroupId array elements.
-       * @param {string} sQuery type control.
-       * 
-       * @returns array elements.
-       */
-      collectsArray: function (aFieldGroupId, sQuery){
-        return aFieldGroupId.filter(oItem => oItem.isA(`sap.m.${sQuery}`));
-      },
     });
   }
 );
