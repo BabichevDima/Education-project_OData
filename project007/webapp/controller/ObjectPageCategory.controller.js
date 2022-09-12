@@ -229,9 +229,16 @@ sap.ui.define(
       onSaveButton: function () {
         var oODataModel = this.getView().getModel();
 
-        oODataModel.submitChanges();
-        this.onCancelButton();
-        MessageToast.show(this.i18n("SuccessEdited"));
+        var nCountError = this.getView().getModel("messages")?.getData().length;
+
+        if (nCountError) {
+          var sSuffix = nCountError === 1 ? "" : "s";
+          MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
+        } else {
+          oODataModel.submitChanges();
+          this.onCancelButton();
+          MessageToast.show(this.i18n("SuccessEdited"));
+        }
       },
 
       /**
