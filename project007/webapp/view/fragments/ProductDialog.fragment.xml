@@ -4,31 +4,28 @@
 	<Dialog title="{i18n>TitleDialogProduct}" id="DialogProduct">
 		<f:SimpleForm maxContainerCols="1" layout="ResponsiveGridLayout" labelSpanL="12" labelSpanM="12" emptySpanL="0" emptySpanM="0" columnsL="1" columnsM="1">
 			<f:content>
-				<Label text="{i18n>Name}"/>
-				<Input valueLiveUpdate="true" placeholder="{i18n>PlaceholderFieldName}" value="{path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 0, maxLength: 40}}"/>
+				<Label text="{i18n>Name}" required="true"/>
+				<Input fieldGroupIds="groupValueNewProduct" liveChange="checkField" valueLiveUpdate="true" placeholder="{i18n>PlaceholderFieldName}" value="{path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 0, maxLength: 40}}"/>
 
-				<Label text="{i18n>Description}"/>
-				<Input valueLiveUpdate="true" placeholder="{i18n>PlaceholderDescription}" value="{path: 'Description', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 0, maxLength: 40}}"/>
+				<Label text="{i18n>Description}" required="true"/>
+				<Input fieldGroupIds="groupValueNewProduct" liveChange="checkField" valueLiveUpdate="true" placeholder="{i18n>PlaceholderDescription}" value="{path: 'Description', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 0, maxLength: 40}}"/>
 
 				<Label text="{i18n>ReleaseDate}" required="true"/>
-				<DatePicker change="checkField" id="NewProductReleaseDate" value="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}"/>
+				<DatePicker fieldGroupIds="groupValueNewProduct" change="checkField" id="NewProductReleaseDate" value="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}"/>
 
-				<Label text="{i18n>DiscontinuedDate}"/>
-				<DatePicker value="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}"/>
+				<Label text="{i18n>DiscontinuedDate}" required="true"/>
+				<DatePicker fieldGroupIds="groupValueNewProduct" change="checkField" value="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}"/>
 
-				<Label text="{i18n>Rating}" required="true"/>
-				<RatingIndicator id="NewProductRating" maxValue="5" class="sapUiSmallMarginBottom" value="{Rating}" tooltip="Rating Product"/>
+				<Label text="{i18n>Rating}"/>
+				<RatingIndicator fieldGroupIds="groupValueNewProduct" id="NewProductRating" maxValue="5" class="sapUiSmallMarginBottom" value="{Rating}" tooltip="Rating Product"/>
 
 				<Label text="{i18n>Price}" required="true"/>
-				<Input liveChange="checkField" valueLiveUpdate="true" id="NewProductPrice" type="Number" placeholder="{i18n>PlaceholderPrice}" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}"/>
-
-				<Label text="{i18n>ID}" required="true"/>
-				<Input editable="false" value="{ID}"/>
+				<Input fieldGroupIds="groupValueNewProduct" liveChange="checkField" valueLiveUpdate="true" id="NewProductPrice" type="Number" placeholder="{i18n>PlaceholderPrice}" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}"/>
 			</f:content>
 		</f:SimpleForm>
 
 		<buttons>
-			<Button text="{i18n>CreateButton}" press="onCreateProduct" id="CreateProduct"/>
+			<Button text="{i18n>CreateButton}" press="onCreate('Product')" id="CreateProduct"/>
 			<Button text="{i18n>ButtonClose}" press="onDialogCategoryClosePress" id="CloseDialogProduct"/>
 		</buttons>
 	</Dialog>

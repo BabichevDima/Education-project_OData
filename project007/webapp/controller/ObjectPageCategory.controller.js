@@ -224,24 +224,6 @@ sap.ui.define(
       },
 
       /**
-       * "Save" button press event handler.
-       */
-      onSaveButton: function () {
-        var oODataModel = this.getView().getModel();
-
-        var nCountError = this.getView().getModel("messages")?.getData().length;
-
-        if (nCountError) {
-          var sSuffix = nCountError === 1 ? "" : "s";
-          MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
-        } else {
-          oODataModel.submitChanges();
-          this.onCancelButton();
-          MessageToast.show(this.i18n("SuccessEdited"));
-        }
-      },
-
-      /**
        * Close edit mode.
        */
       onCancelButton: function () {
@@ -269,7 +251,7 @@ sap.ui.define(
             emphasizedAction: MessageBox.Action.YES,
             onClose: function (sAction) {
               if (sAction === MessageBox.Action.YES) {
-                that.onSaveButton();
+                that.onCreate();
               } else {
                 that.onCancelButton();
               }
@@ -462,42 +444,24 @@ sap.ui.define(
 
       /**
        * Creates element.
-       *
+       * 
+       * @param {string} sProperty type new element.
+       * 
        */
-      onCreateProduct: function () {
-        var nNewProductReleaseDate = this.byId("NewProductReleaseDate");
-        var nNewProductRating      = this.byId("NewProductRating");
-        var nNewProductPrice       = this.byId("NewProductPrice");
-        var aRequiredFields        = [nNewProductReleaseDate, nNewProductPrice];
-        var bCheck                 = false;
-        var nCountError            = this.getView().getModel("messages")?.getData().length;
+      onCreate: function (sProperty) {
+        var nCountError  = this.getView().getModel("messages")?.getData().length;
+        var sSuffix      = nCountError === 1 ? "" : "s";
 
-          aRequiredFields.forEach((oField) => {
-            if(!oField.getValue()){
-              oField.setValueState(ValueState.Error);
-              bCheck = true;
-            }
-          })
-
-        if (bCheck || !nNewProductRating.getValue()) {
+        if (this._checkFields(sProperty === "Product" ? "groupValueNewProduct" : "groupEditValueProduct")) {
           MessageBox.alert(this.i18n("AlertMessage"));
         } else if (nCountError) {
-          var sSuffix = nCountError === 1 ? "" : "s";
           MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
         } else {
           this.getView().getModel().submitChanges();
-          this.onDialogCategoryClosePress();
+          sProperty === "Product" ? this.onDialogCategoryClosePress() : this.onCancelButton();
+          MessageToast.show(this.i18n(sProperty === "Product" ? "SuccessCreatedProduct" : "SuccessEdited"));
         }
-      },
-
-      /**
-       * check field.
-       *
-       * @param {sap.ui.base.Event} oEvent event object.
-       */
-      checkField: function (oEvent) {
-        oEvent.getSource().setValueState(ValueState.None);
-      },
+      }
     });
   }
 );
