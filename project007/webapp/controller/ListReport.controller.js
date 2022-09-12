@@ -42,7 +42,7 @@ sap.ui.define(
 
         this._setValueInFilterBar()
         this.combineFilters();
-        
+
         this.getView().getModel().setUseBatch(false);
       },
 
@@ -123,7 +123,7 @@ sap.ui.define(
         var nCategoryId = oEvent.getSource().getBindingContext().getObject("ID");
 
         this.onCancelButton();
-        this.navigate("ObjectPageCategory", {CategoryId: nCategoryId});
+        this.navigate("ObjectPageCategory", {CategoryId: nCategoryId, mode: "display"});
       },
 
       /**

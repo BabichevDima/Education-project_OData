@@ -17,20 +17,7 @@ sap.ui.define(
        */
       onInit: function () {
         this.onRegisterManager();
-        this.getOwnerComponent()
-          .getRouter()
-          .getRoute("ObjectPageCategory")
-          .attachPatternMatched(this._onPatternMatched, this);
-        this._setStateModel();
-
-        this.getView().addEventDelegate(
-          {
-            onBeforeHide: function () {
-              this.onCancelButton();
-            },
-          },
-          this
-        );
+        this.getOwnerComponent().getRouter().getRoute("ObjectPageCategory").attachPatternMatched(this._onPatternMatched, this);
       },
 
       /**
@@ -40,7 +27,7 @@ sap.ui.define(
        */
       _setStateModel: function () {
         var oStateModel = new JSONModel({
-          EditMode: false,
+          EditMode: this.editMode,
           StatusButtons: false,
         });
 
@@ -55,9 +42,11 @@ sap.ui.define(
        * @private
        */
       _onPatternMatched: function (oEvent) {
-        var that = this;
-        var oDataModel = this.getView().getModel();
+        var that         = this;
+        var oDataModel   = this.getView().getModel();
         this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
+        this.editMode    = oEvent.getParameter("arguments").mode === "edit";
+        this._setStateModel();
 
         oDataModel.metadataLoaded().then(function () {
           var sKey = oDataModel.createKey("/Categories", {
@@ -75,16 +64,7 @@ sap.ui.define(
        *
        */
       onEditButton: function () {
-        var oStateModel = this.getView().getModel("stateModel");
-        oStateModel.setProperty("/EditMode", true);
-      },
-
-      /**
-       * Close edit mode.
-       */
-      onCancelButtonPress: function () {
-        var oStateModel = this.getView().getModel("stateModel");
-        oStateModel.setProperty("/EditMode", false);
+        this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId, mode: "edit"}, true);
       },
 
       /**
@@ -228,7 +208,6 @@ sap.ui.define(
        */
       onSaveButton: function () {
         var oODataModel = this.getView().getModel();
-
         var nCountError = this.getView().getModel("messages")?.getData().length;
 
         if (nCountError) {
@@ -244,16 +223,18 @@ sap.ui.define(
       /**
        * Close edit mode.
        */
-      onCancelButton: function () {
+      onCancelButton: function (bSwitchToDisplayMode) {
         var oStateModel = this.getView().getModel("stateModel");
         var oODataModel = this.getView().getModel();
 
         this.byId("ProductsTableCategories").removeSelections(true);
 
         oStateModel.setProperty("/StatusButtons", false);
-        oStateModel.setProperty("/EditMode", false);
         oODataModel.setUseBatch(false);
         oODataModel.resetChanges();
+        if (!bSwitchToDisplayMode) {
+          this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId, mode: "display"}, true);
+        }
       },
 
       /**
@@ -263,15 +244,15 @@ sap.ui.define(
       onConfirmCancelEditMode: function () {
         var that = this;
 
-        if (this.getView().getModel().hasPendingChanges()) {
+        if (this.getView().getModel().hasPendingChanges() || this.getView().getModel("messages")?.getData().length) {
           MessageBox.confirm(that.i18n("ConfirmMessage"), {
             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
             emphasizedAction: MessageBox.Action.YES,
             onClose: function (sAction) {
               if (sAction === MessageBox.Action.YES) {
-                that.onSaveButton();
-              } else {
                 that.onCancelButton();
+              } else {
+                that.onSaveButton();
               }
             },
           });
@@ -305,7 +286,7 @@ sap.ui.define(
                 that.onConfirmDeletionProduct();
               } else {
                 that.getView().setBusy(false);
-                that.byId("ProductsTableCategories").removeSelections(true);
+                that.onCancelButton(true);
               }
             },
           }
@@ -319,8 +300,6 @@ sap.ui.define(
       onConfirmDeletionProduct: function () {
         var that = this;
         var oODataModel = this.getView().getModel();
-        var oStateModel = this.getView().getModel("stateModel");
-        var bEditMode = oStateModel.getProperty("/EditMode");
         var oProductTable = this.byId("ProductsTableCategories");
         var nSelectedProduct = oProductTable.getSelectedContexts().length;
         var aSelectedProduct = oProductTable
@@ -356,9 +335,7 @@ sap.ui.define(
           groupId: "deleteProductID",
           success: function () {
             that.getView().setBusy(false);
-            bEditMode
-              ? oProductTable.removeSelections(true)
-              : that.onCancelButton();
+            that.onCancelButton(true);
             MessageToast.show(
               that.i18n(
                 "MessageDeleteSuccess",
