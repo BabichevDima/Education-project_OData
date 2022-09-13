@@ -43,15 +43,15 @@
         </f:header>
 
         <f:content>
-            <Table selectionChange="onSelectionTable" id="CategoriesTable" sticky="HeaderToolbar,ColumnHeaders" inset="false" width="auto" mode="{= ${stateModel>/EditMode} ? 'None' : 'MultiSelect'}"
+            <Table selectionChange="onSelectionTable" id="CategoriesTable" sticky="HeaderToolbar,ColumnHeaders" inset="false" width="auto" mode="MultiSelect"
              items="{/Categories}">
                 <headerToolbar>
                     <Toolbar class="sapUiMediumMarginTop">
                         <Title text="{i18n>Category}" level="H2"/>
                         <ToolbarSpacer/>
-                        <Button id="CreateButton" type="Accept" icon="sap-icon://create" text="{i18n>CreateButton}" press="onOpenDialogCategory" enabled="{= !${stateModel>/StatusButtons}}" visible="{=!${stateModel>/EditMode}}"/>
-                        <Button id="EditButton" type="Ghost" icon="sap-icon://edit" text="{i18n>EditButton}" enabled="{=!${stateModel>/StatusButtons}}" press="onEditButton" visible="{=!${stateModel>/EditMode}}"/>
-                        <Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" enabled="{stateModel>/StatusButtons}" press="onDeleteCategoryButton" visible="{=!${stateModel>/EditMode}}"/>
+                        <Button id="CreateButton" type="Accept" icon="sap-icon://create" text="{i18n>CreateButton}" press="onOpenDialogCategory"/>
+                        <Button id="EditButton" type="Ghost" icon="sap-icon://edit" text="{i18n>EditButton}" press="onEditButton" visible="{=!${stateModel>/EditMode}}"/>
+                        <Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" enabled="{stateModel>/StatusButtons}" press="onDeleteCategoryButton"/>
                     </Toolbar>
                 </headerToolbar>
                 <columns>
@@ -83,8 +83,8 @@
         <f:footer>
             <OverflowToolbar>
                 <ToolbarSpacer/>
-                <Button type="Accept" id="SaveButton" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onSaveButton" visible="{stateModel>/EditMode}"/>
-                <Button id="CancelButton" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onCancelButton" visible="{stateModel>/EditMode}"/>
+                <Button type="Accept" id="SaveButton" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onCreate" visible="{stateModel>/EditMode}"/>
+                <Button id="CancelButton" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onConfirmCancelEditMode" visible="{stateModel>/EditMode}"/>
             </OverflowToolbar>
         </f:footer>
     </f:DynamicPage>
