@@ -231,7 +231,6 @@ sap.ui.define(
       onConfirmDeletion: function () {
         var that = this;
         var oODataModel = this.getView().getModel();
-        var oStateModel = this.getView().getModel("stateModel");
         var aSelectedCategory = this.byId("CategoriesTable")
           .getSelectedContexts()
           .map((oCategory) => oCategory.getPath());
@@ -240,7 +239,7 @@ sap.ui.define(
           oODataModel.remove(sPath, {
             success: function () {
               that.onSelectionTable();
-              oStateModel.setProperty("/StatusButtons", false);
+              that.byId("CategoriesTable").removeSelections(true);
             },
             error: function () {
               MessageBox.error(that.i18n("MessageDeleteError"));
@@ -255,8 +254,7 @@ sap.ui.define(
        */
       onDeleteCategoryButton: function () {
         var that = this;
-        var nSelectedCategory =
-          this.byId("CategoriesTable").getSelectedContexts().length;
+        var nSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().length;
 
         MessageBox.confirm(
           that.i18n(
@@ -269,10 +267,10 @@ sap.ui.define(
             onClose: function (sAction) {
               if (sAction === MessageBox.Action.OK) {
                 that.onConfirmDeletion();
-                MessageToast.show(that.i18n("MessageDeleteSuccess"));
+                MessageToast.show(that.i18n("MessageDeleteSuccess", nSelectedCategory === 1 ? "Category" : "Categories"));
               } else {
                 that.getView().setBusy(false);
-                that.onCancelButton();
+                that.byId("CategoriesTable").removeSelections(true);
                 MessageToast.show(that.i18n("MessageCategoryNotDeleted"));
               }
             },
