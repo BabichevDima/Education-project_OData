@@ -4,7 +4,7 @@
 	<Dialog title="{i18n>TitleDialogCategory}" id="DialogCategory">
 		<f:SimpleForm maxContainerCols="1" layout="ResponsiveGridLayout" labelSpanL="12" labelSpanM="12" emptySpanL="0" emptySpanM="0" columnsL="1" columnsM="1">
 			<f:content>
-				<Label text="{i18n>Name}"/>
+				<Label text="{i18n>Name}" required="true"/>
 				<Input fieldGroupIds="groupValueNewCategory" liveChange="checkField" valueLiveUpdate="true" placeholder="{i18n>PlaceholderFieldName}" value="{path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 40}}"/>
 			</f:content>
 		</f:SimpleForm>

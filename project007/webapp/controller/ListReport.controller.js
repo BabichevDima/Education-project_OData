@@ -92,6 +92,30 @@ sap.ui.define(
       },
 
       /**
+       * Cancel button click action.
+       *
+       */
+      onConfirmCancelEditMode: function () {
+       var that = this;
+       var bCheck = this._checkFields("groupEditValueProduct");
+       var nCountError = this.getView().getModel("messages")?.getData();
+
+       if (this.getView().getModel().hasPendingChanges() || bCheck || nCountError) {
+         MessageBox.confirm(that.i18n("ConfirmMessage"), {
+           actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+           emphasizedAction: MessageBox.Action.YES,
+           onClose: function (sAction) {
+             if (sAction === MessageBox.Action.YES) {
+               that.onCancelButton();
+             }
+           },
+         });
+       } else {
+         that.onCancelButton();
+       }
+      },
+
+      /**
        * Edits table fields.
        *
        * @param {sap.ui.base.Event} oEvent event object.

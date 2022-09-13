@@ -246,8 +246,9 @@ sap.ui.define(
       onConfirmCancelEditMode: function () {
         var that = this;
         var bCheck = this._checkFields("groupEditValueProduct");
+        var nCountError = this.getView().getModel("messages")?.getData();
 
-        if (this.getView().getModel().hasPendingChanges() || bCheck) {
+        if (this.getView().getModel().hasPendingChanges() || bCheck || nCountError) {
           MessageBox.confirm(that.i18n("ConfirmMessage"), {
             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
             emphasizedAction: MessageBox.Action.YES,

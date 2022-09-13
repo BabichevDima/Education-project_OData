@@ -84,7 +84,7 @@
             <OverflowToolbar>
                 <ToolbarSpacer/>
                 <Button type="Accept" id="SaveButton" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onCreate" visible="{stateModel>/EditMode}"/>
-                <Button id="CancelButton" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onCancelButton" visible="{stateModel>/EditMode}"/>
+                <Button id="CancelButton" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onConfirmCancelEditMode" visible="{stateModel>/EditMode}"/>
             </OverflowToolbar>
         </f:footer>
     </f:DynamicPage>
