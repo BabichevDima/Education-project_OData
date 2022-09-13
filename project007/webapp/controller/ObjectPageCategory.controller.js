@@ -245,15 +245,14 @@ sap.ui.define(
        */
       onConfirmCancelEditMode: function () {
         var that = this;
+        var bCheck = this._checkFields("groupEditValueProduct");
 
-        if (this.getView().getModel().hasPendingChanges()) {
+        if (this.getView().getModel().hasPendingChanges() || bCheck) {
           MessageBox.confirm(that.i18n("ConfirmMessage"), {
             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
             emphasizedAction: MessageBox.Action.YES,
             onClose: function (sAction) {
               if (sAction === MessageBox.Action.YES) {
-                that.onCreate();
-              } else {
                 that.onCancelButton();
               }
             },
