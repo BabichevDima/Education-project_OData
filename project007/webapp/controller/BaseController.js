@@ -135,6 +135,8 @@ sap.ui.define(
               MessageBox.alert(this.i18n("AlertMessage"));
             } else if (nCountError) {
               MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
+            } else if (this._checkData()) {
+              MessageBox.alert(this.i18n("AlertInvalidDateMessage"));
             } else {
               this.getView().getModel().submitChanges();
               this.onDialogCategoryClosePress();
@@ -165,6 +167,23 @@ sap.ui.define(
             break;
         }
       },
+
+      /**
+       * Check Data.
+       *
+       */
+      _checkData: function () {
+        var sReleaseDate = this.byId("NewProductReleaseDate");
+        var sDiscontinuedDate = this.byId("NewProductDiscontinuedDate");
+        var bCheck = false;
+
+        if (sReleaseDate.getValue() > sDiscontinuedDate.getValue()) {
+          bCheck = true;
+          sDiscontinuedDate.setValue("");
+          sDiscontinuedDate.setValueState(ValueState.Error);
+        }
+        return bCheck
+      }
     });
   }
 );

@@ -14,7 +14,7 @@
 				<DatePicker fieldGroupIds="groupValueNewProduct" change="checkField" id="NewProductReleaseDate" value="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}"/>
 
 				<Label text="{i18n>DiscontinuedDate}" required="true"/>
-				<DatePicker fieldGroupIds="groupValueNewProduct" change="checkField" value="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}"/>
+				<DatePicker fieldGroupIds="groupValueNewProduct" change="checkField" id="NewProductDiscontinuedDate" value="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}"/>
 
 				<Label text="{i18n>Rating}"/>
 				<RatingIndicator fieldGroupIds="groupValueNewProduct" id="NewProductRating" maxValue="5" class="sapUiSmallMarginBottom" value="{Rating}" tooltip="Rating Product"/>
