@@ -40,7 +40,7 @@ sap.ui.define(
        * Open products overview page button press event handler.
        */
       onNavToCategory: function () {
-        this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId,});
+        this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId, mode: "display"});
       }
     });
   }
