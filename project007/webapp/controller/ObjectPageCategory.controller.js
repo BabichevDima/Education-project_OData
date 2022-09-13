@@ -228,6 +228,7 @@ sap.ui.define(
         var oODataModel = this.getView().getModel();
 
         this.byId("ProductsTableCategories").removeSelections(true);
+        this._collectsFields("groupEditValueProduct").forEach(oField => oField.setValueState(ValueState.None));
 
         oStateModel.setProperty("/StatusButtons", false);
         oODataModel.setUseBatch(false);
@@ -243,16 +244,16 @@ sap.ui.define(
        */
       onConfirmCancelEditMode: function () {
         var that = this;
+        var bCheck = this._checkFields("groupEditValueProduct");
+        var nCountError = this.getView().getModel("messages")?.getData();
 
-        if (this.getView().getModel().hasPendingChanges() || this.getView().getModel("messages")?.getData().length) {
+        if (this.getView().getModel().hasPendingChanges() || bCheck || nCountError) {
           MessageBox.confirm(that.i18n("ConfirmMessage"), {
             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
             emphasizedAction: MessageBox.Action.YES,
             onClose: function (sAction) {
               if (sAction === MessageBox.Action.YES) {
                 that.onCancelButton();
-              } else {
-                that.onSaveButton();
               }
             },
           });
@@ -432,49 +433,9 @@ sap.ui.define(
           oDialog.close();
         });
 
-        var aRequiredFields = [this.byId("NewProductReleaseDate"), this.byId("NewProductPrice")];
-        aRequiredFields.forEach(oField => oField.setValueState(ValueState.None));
+        this._collectsFields("groupValueNewProduct").forEach(oField => oField.setValueState(ValueState.None));
         Core.getMessageManager().removeAllMessages();
-      },
-
-      /**
-       * Creates element.
-       *
-       */
-      onCreateProduct: function () {
-        var nNewProductReleaseDate = this.byId("NewProductReleaseDate");
-        var nNewProductRating      = this.byId("NewProductRating");
-        var nNewProductPrice       = this.byId("NewProductPrice");
-        var aRequiredFields        = [nNewProductReleaseDate, nNewProductPrice];
-        var bCheck                 = false;
-        var nCountError            = this.getView().getModel("messages")?.getData().length;
-
-          aRequiredFields.forEach((oField) => {
-            if(!oField.getValue()){
-              oField.setValueState(ValueState.Error);
-              bCheck = true;
-            }
-          })
-
-        if (bCheck || !nNewProductRating.getValue()) {
-          MessageBox.alert(this.i18n("AlertMessage"));
-        } else if (nCountError) {
-          var sSuffix = nCountError === 1 ? "" : "s";
-          MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
-        } else {
-          this.getView().getModel().submitChanges();
-          this.onDialogCategoryClosePress();
-        }
-      },
-
-      /**
-       * check field.
-       *
-       * @param {sap.ui.base.Event} oEvent event object.
-       */
-      checkField: function (oEvent) {
-        oEvent.getSource().setValueState(ValueState.None);
-      },
+      }
     });
   }
 );

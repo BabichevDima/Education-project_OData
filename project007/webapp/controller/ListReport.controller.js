@@ -8,6 +8,7 @@ sap.ui.define(
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/model/Sorter",
+    "sap/ui/core/ValueState",
   ],
   function (
     BaseController,
@@ -17,7 +18,8 @@ sap.ui.define(
     MessageToast,
     Filter,
     FilterOperator,
-    Sorter
+    Sorter,
+    ValueState
   ) {
     "use strict";
 
@@ -83,10 +85,35 @@ sap.ui.define(
         var oODataModel = this.getView().getModel();
 
         this.byId("CategoriesTable").removeSelections(true);
+        this._collectsFields("groupEditValueProduct").forEach(oField => oField.setValueState(ValueState.None));
 
         oStateModel.setProperty("/StatusButtons", false);
         oStateModel.setProperty("/EditMode", false);
         oODataModel.resetChanges();
+      },
+
+      /**
+       * Cancel button click action.
+       *
+       */
+      onConfirmCancelEditMode: function () {
+       var that = this;
+       var bCheck = this._checkFields("groupEditValueProduct");
+       var nCountError = this.getView().getModel("messages")?.getData();
+
+       if (this.getView().getModel().hasPendingChanges() || bCheck || nCountError) {
+         MessageBox.confirm(that.i18n("ConfirmMessage"), {
+           actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+           emphasizedAction: MessageBox.Action.YES,
+           onClose: function (sAction) {
+             if (sAction === MessageBox.Action.YES) {
+               that.onCancelButton();
+             }
+           },
+         });
+       } else {
+         that.onCancelButton();
+       }
       },
 
       /**
@@ -150,7 +177,7 @@ sap.ui.define(
           .then(function (oDialog) {
             var oEntryCtx = oODataModel.createEntry("/Categories", {
               properties: {
-                Name: "TEST NEW Category",
+                Name: null,
                 ID: nNewCategoryID,
               },
             });
@@ -192,6 +219,7 @@ sap.ui.define(
        *
        */
       onDialogCategoryClosePress: function () {
+        this._collectsFields("groupValueNewCategory").forEach(oField => oField.setValueState(ValueState.None));
         this._closeCategoryDialog();
       },
 
@@ -228,7 +256,6 @@ sap.ui.define(
       onConfirmDeletion: function () {
         var that = this;
         var oODataModel = this.getView().getModel();
-        var oStateModel = this.getView().getModel("stateModel");
         var aSelectedCategory = this.byId("CategoriesTable")
           .getSelectedContexts()
           .map((oCategory) => oCategory.getPath());
@@ -237,7 +264,7 @@ sap.ui.define(
           oODataModel.remove(sPath, {
             success: function () {
               that.onSelectionTable();
-              oStateModel.setProperty("/StatusButtons", false);
+              that.byId("CategoriesTable").removeSelections(true);
             },
             error: function () {
               MessageBox.error(that.i18n("MessageDeleteError"));
@@ -252,8 +279,7 @@ sap.ui.define(
        */
       onDeleteCategoryButton: function () {
         var that = this;
-        var nSelectedCategory =
-          this.byId("CategoriesTable").getSelectedContexts().length;
+        var nSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().length;
 
         MessageBox.confirm(
           that.i18n(
@@ -266,10 +292,10 @@ sap.ui.define(
             onClose: function (sAction) {
               if (sAction === MessageBox.Action.OK) {
                 that.onConfirmDeletion();
-                MessageToast.show(that.i18n("MessageDeleteSuccess"));
+                MessageToast.show(that.i18n("MessageDeleteSuccess", nSelectedCategory === 1 ? "Category" : "Categories"));
               } else {
                 that.getView().setBusy(false);
-                that.onCancelButton();
+                that.byId("CategoriesTable").removeSelections(true);
                 MessageToast.show(that.i18n("MessageCategoryNotDeleted"));
               }
             },

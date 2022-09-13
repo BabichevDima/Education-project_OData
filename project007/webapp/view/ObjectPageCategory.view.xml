@@ -44,7 +44,7 @@
 								<FlexBox direction="Row" alignItems="Start" class="sapUiMediumMarginEnd">
 									<Label design="Bold" text="{i18n>Name}:" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
 									<HBox>
-										<Input fieldGroupIds="groupValueObjectPageCategory" value="{ path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}"/>
+										<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}"/>
 									</HBox>
 								</FlexBox>
 							</layout:VerticalLayout>
@@ -91,23 +91,23 @@
 								<items>
 									<ColumnListItem type="{= ${stateModel>/EditMode} ? 'Inactive' : 'Active'}" press="onProductPress">
 										<HBox justifyContent="Start">
-											<Input fieldGroupIds="groupEditValueProduct" value="{ path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+											<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
 											<Text text="{Name}" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
 										<HBox justifyContent="End">
-											<Input fieldGroupIds="groupEditValueProduct" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
+											<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
 											<Text text="{Price}" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
 										<HBox justifyContent="Start">
-											<Input fieldGroupIds="groupEditValueProduct" value="{ path: 'Description', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+											<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Description', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
 											<Text text="{Description}" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
 										<HBox justifyContent="End">
-											<DatePicker change="changeDatePicker" fieldGroupIds="groupEditValueProduct" value="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{stateModel>/EditMode}"/>
+											<DatePicker change="checkField" fieldGroupIds="groupEditValueProduct" value="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{stateModel>/EditMode}"/>
 											<Text text="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
 										<HBox justifyContent="End">
-											<DatePicker change="changeDatePicker" fieldGroupIds="groupEditValueProduct" value="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{stateModel>/EditMode}"/>
+											<DatePicker change="checkField" fieldGroupIds="groupEditValueProduct" value="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{stateModel>/EditMode}"/>
 											<Text text="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
 										<RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{Rating}" tooltip="Rating Product" editable="{stateModel>/EditMode}"/>
@@ -122,7 +122,7 @@
 		<uxap:footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>
-				<Button type="Accept" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onSaveButton"/>
+				<Button type="Accept" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onCreate"/>
 				<Button id="CancelButtonObjectPageCategory" type="Reject" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onConfirmCancelEditMode"/>
 			</OverflowToolbar>
 		</uxap:footer>
