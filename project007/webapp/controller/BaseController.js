@@ -3,11 +3,13 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "webapp/model/formatter",
     "sap/ui/core/ValueState",
+    "sap/m/MessageToast",
+    "sap/m/MessageBox",
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, formatter, ValueState) {
+  function (Controller, formatter, ValueState, MessageToast, MessageBox) {
     "use strict";
 
     return Controller.extend("webapp.controller.BaseController", {
@@ -53,7 +55,10 @@ sap.ui.define(
       onRegisterManager: function () {
         this.oMessageManager = sap.ui.getCore().getMessageManager();
         this.oMessageManager.registerObject(this.getView(), true);
-        this.getView().setModel(this.oMessageManager.getMessageModel(),"messages");
+        this.getView().setModel(
+          this.oMessageManager.getMessageModel(),
+          "messages"
+        );
       },
 
       /**
@@ -79,8 +84,8 @@ sap.ui.define(
        */
       _collectsFields: function (sGroupID) {
         var aFieldGroupId = this.getView().getControlsByFieldGroupId(sGroupID);
-        var aInput        = this.collectsArray(aFieldGroupId, "Input");
-        var aDatePicker   = this.collectsArray(aFieldGroupId, "DatePicker");
+        var aInput = this.collectsArray(aFieldGroupId, "Input");
+        var aDatePicker = this.collectsArray(aFieldGroupId, "DatePicker");
 
         return [...aInput, ...aDatePicker];
       },
@@ -112,6 +117,53 @@ sap.ui.define(
        */
       checkField: function (oEvent) {
         oEvent.getSource().setValueState(ValueState.None);
+      },
+
+      /**
+       * Creates element.
+       *
+       * @param {string} sProperty type new element.
+       *
+       */
+      onCreate: function (sProperty) {
+        var nCountError = this.getView().getModel("messages")?.getData().length;
+        var sSuffix = nCountError === 1 ? "" : "s";
+
+        switch (sProperty) {
+          case "Product":
+            if (this._checkFields("groupValueNewProduct")) {
+              MessageBox.alert(this.i18n("AlertMessage"));
+            } else if (nCountError) {
+              MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
+            } else {
+              this.getView().getModel().submitChanges();
+              this.onDialogCategoryClosePress();
+              MessageToast.show(this.i18n("SuccessCreatedProduct"));
+            }
+            break;
+          case "Category":
+            if (this._checkFields("groupValueNewCategory")) {
+              MessageBox.alert(this.i18n("AlertMessage"));
+            } else if (nCountError) {
+              MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
+            } else {
+              this.getView().getModel().submitChanges();
+              this.onDialogCategoryClosePress();
+              MessageToast.show(this.i18n("SuccessCreatedCategory"));
+            }
+            break;
+          default:
+            if (this._checkFields("groupEditValueProduct")) {
+              MessageBox.alert(this.i18n("AlertMessage"));
+            } else if (nCountError) {
+              MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
+            } else {
+              this.getView().getModel().submitChanges();
+              this.onCancelButton();
+              MessageToast.show(this.i18n("SuccessEdited"));
+            }
+            break;
+        }
       },
     });
   }

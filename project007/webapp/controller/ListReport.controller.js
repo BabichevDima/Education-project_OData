@@ -8,6 +8,7 @@ sap.ui.define(
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/model/Sorter",
+    "sap/ui/core/ValueState",
   ],
   function (
     BaseController,
@@ -17,7 +18,8 @@ sap.ui.define(
     MessageToast,
     Filter,
     FilterOperator,
-    Sorter
+    Sorter,
+    ValueState
   ) {
     "use strict";
 
@@ -150,7 +152,7 @@ sap.ui.define(
           .then(function (oDialog) {
             var oEntryCtx = oODataModel.createEntry("/Categories", {
               properties: {
-                Name: "TEST NEW Category",
+                Name: null,
                 ID: nNewCategoryID,
               },
             });
@@ -192,6 +194,7 @@ sap.ui.define(
        *
        */
       onDialogCategoryClosePress: function () {
+        this._collectsFields("groupValueNewCategory").forEach(oField => oField.setValueState(ValueState.None));
         this._closeCategoryDialog();
       },
 

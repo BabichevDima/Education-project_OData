@@ -231,6 +231,7 @@ sap.ui.define(
         var oODataModel = this.getView().getModel();
 
         this.byId("ProductsTableCategories").removeSelections(true);
+        this._collectsFields("groupEditValueProduct").forEach(oField => oField.setValueState(ValueState.None));
 
         oStateModel.setProperty("/StatusButtons", false);
         oStateModel.setProperty("/EditMode", false);
@@ -437,30 +438,8 @@ sap.ui.define(
           oDialog.close();
         });
 
-        var aRequiredFields = [this.byId("NewProductReleaseDate"), this.byId("NewProductPrice")];
-        aRequiredFields.forEach(oField => oField.setValueState(ValueState.None));
+        this._collectsFields("groupValueNewProduct").forEach(oField => oField.setValueState(ValueState.None));
         Core.getMessageManager().removeAllMessages();
-      },
-
-      /**
-       * Creates element.
-       * 
-       * @param {string} sProperty type new element.
-       * 
-       */
-      onCreate: function (sProperty) {
-        var nCountError  = this.getView().getModel("messages")?.getData().length;
-        var sSuffix      = nCountError === 1 ? "" : "s";
-
-        if (this._checkFields(sProperty === "Product" ? "groupValueNewProduct" : "groupEditValueProduct")) {
-          MessageBox.alert(this.i18n("AlertMessage"));
-        } else if (nCountError) {
-          MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
-        } else {
-          this.getView().getModel().submitChanges();
-          sProperty === "Product" ? this.onDialogCategoryClosePress() : this.onCancelButton();
-          MessageToast.show(this.i18n(sProperty === "Product" ? "SuccessCreatedProduct" : "SuccessEdited"));
-        }
       }
     });
   }

@@ -5,15 +5,12 @@
 		<f:SimpleForm maxContainerCols="1" layout="ResponsiveGridLayout" labelSpanL="12" labelSpanM="12" emptySpanL="0" emptySpanM="0" columnsL="1" columnsM="1">
 			<f:content>
 				<Label text="{i18n>Name}"/>
-				<Input valueLiveUpdate="true" placeholder="{i18n>PlaceholderFieldName}" value="{path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 40}}"/>
-
-				<Label text="{i18n>ID}" required="true"/>
-				<Input valueLiveUpdate="true" editable="false" value="{ID}"/>
+				<Input fieldGroupIds="groupValueNewCategory" liveChange="checkField" valueLiveUpdate="true" placeholder="{i18n>PlaceholderFieldName}" value="{path: 'Name', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 40}}"/>
 			</f:content>
 		</f:SimpleForm>
 
 		<buttons>
-			<Button text="{i18n>CreateButton}" press="onCreateCategory" id="CreateCategory"/>
+			<Button text="{i18n>CreateButton}" press="onCreate('Category')" id="CreateCategory"/>
 			<Button text="{i18n>ButtonClose}" press="onDialogCategoryClosePress" id="CloseDialogCategory"/>
 		</buttons>
 	</Dialog>
