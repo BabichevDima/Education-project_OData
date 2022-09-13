@@ -102,7 +102,7 @@ sap.ui.define(
       _checkFields: function (sGroupID) {
         var bCheck = false;
         this._collectsFields(sGroupID).forEach((oField) => {
-          if (!oField.getValue()) {
+          if (!oField.getValue().trim()) {
             oField.setValueState(ValueState.Error);
             bCheck = true;
           }

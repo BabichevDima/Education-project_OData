@@ -95,7 +95,7 @@
 											<Text text="{Name}" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
 										<HBox justifyContent="End">
-											<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
+											<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
 											<Text text="{Price}" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
 										<HBox justifyContent="Start">
