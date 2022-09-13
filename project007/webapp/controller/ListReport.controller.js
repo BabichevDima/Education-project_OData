@@ -85,6 +85,7 @@ sap.ui.define(
         var oODataModel = this.getView().getModel();
 
         this.byId("CategoriesTable").removeSelections(true);
+        this._collectsFields("groupEditValueProduct").forEach(oField => oField.setValueState(ValueState.None));
 
         oStateModel.setProperty("/StatusButtons", false);
         oStateModel.setProperty("/EditMode", false);
