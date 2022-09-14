@@ -36,6 +36,11 @@
                                     </MultiComboBox>
                                 </fb:control>
                             </fb:FilterItem>
+                            <fb:FilterItem name="ProductSuppliersStepInput" label="Categories">
+                                <fb:control>
+                                    <StepInput placeholder="Enter number" min="0" valueState="Success" change="handleChange"></StepInput>
+                                </fb:control>
+                            </fb:FilterItem>
                         </fb:filterItems>
                     </fb:FilterBar>
                 </f:content>
@@ -43,8 +48,7 @@
         </f:header>
 
         <f:content>
-            <Table selectionChange="onSelectionTable" id="CategoriesTable" sticky="HeaderToolbar,ColumnHeaders" inset="false" width="auto" mode="MultiSelect"
-             items="{/Categories}">
+            <Table selectionChange="onSelectionTable" id="CategoriesTable" sticky="HeaderToolbar,ColumnHeaders" inset="false" width="auto" mode="MultiSelect" items="{/Categories}">
                 <headerToolbar>
                     <Toolbar class="sapUiMediumMarginTop">
                         <Title text="{i18n>Category}" level="H2"/>

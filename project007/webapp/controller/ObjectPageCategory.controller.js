@@ -18,6 +18,18 @@ sap.ui.define(
       onInit: function () {
         this.onRegisterManager();
         this.getOwnerComponent().getRouter().getRoute("ObjectPageCategory").attachPatternMatched(this._onPatternMatched, this);
+        // this.getView().addEventDelegate(
+        //   {
+        //     onBeforeHide: function () {
+        //       if (this.editMode) {
+        //         history.pushState({page: 1}, "title 1", `?sap-ui-xx-viewCache=false#webapp-display&/Category/${this.sCategoryId}/edit`);
+        //         history.back();
+        //         history.go(0);
+        //       }
+        //     },
+        //   },
+        //   this
+        // );
       },
 
       /**
