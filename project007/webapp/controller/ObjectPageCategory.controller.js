@@ -19,16 +19,16 @@ sap.ui.define(
         this.onRegisterManager();
         this.getOwnerComponent().getRouter().getRoute("ObjectPageCategory").attachPatternMatched(this._onPatternMatched, this);
         // this.getView().addEventDelegate(
-        //   {
-        //     onBeforeHide: function () {
+          // {
+            // onBeforeHide: function () {
         //       if (this.editMode) {
         //         history.pushState({page: 1}, "title 1", `?sap-ui-xx-viewCache=false#webapp-display&/Category/${this.sCategoryId}/edit`);
         //         history.back();
         //         history.go(0);
         //       }
-        //     },
-        //   },
-        //   this
+            // },
+          // },
+          // this
         // );
       },
 
@@ -69,6 +69,10 @@ sap.ui.define(
             path: sKey,
           });
         });
+
+        // this.oArgs           = oEvent.getParameter("arguments");
+        // this.oArgs["?query"] = this.oArgs["?query"] || {};
+        // this.getAppState();
       },
 
       /**
@@ -447,7 +451,38 @@ sap.ui.define(
 
         this._collectsFields("groupValueNewProduct").forEach(oField => oField.setValueState(ValueState.None));
         Core.getMessageManager().removeAllMessages();
-      }
+      },
+
+      /**
+       * Install App State.
+       *
+       */
+      installAppState: function() {
+        // var sValue              = this.byId("SearchProduct").getValue().trim();
+        // var oStateToSave        = {searchValue: sValue};
+        // var oCrossAppNavigator  = sap.ushell.Container.getService("CrossApplicationNavigation");
+        // var oAppState           = oCrossAppNavigator.createEmptyAppState(this.getOwnerComponent());
+
+        // sValue ? this.oArgs["?query"]["sap-iapp-state"] = oAppState.getKey() : delete this.oArgs["?query"]["sap-iapp-state"];
+        // oAppState.setData(oStateToSave);
+        // oAppState.save();
+        // this.navigate("ObjectPageCategory", this.oArgs, true);
+      },
+
+      /**
+       * Get App State.
+       *
+       */
+       getAppState: function () {
+        // var that                 = this;
+        // var sAppStateKey         = this.oArgs["?query"]["sap-iapp-state"];
+        // var oCrossAppNavigator   = sap.ushell.Container.getService("CrossApplicationNavigation");
+        // var oComponent           = this.getOwnerComponent();
+
+        // oCrossAppNavigator.getAppState(oComponent, sAppStateKey).done(function (oSavedAppState) {
+        //   that.byId("SearchProduct").setValue(sAppStateKey ? oSavedAppState.getData().searchValue : null);
+        // });
+      },
     });
   }
 );

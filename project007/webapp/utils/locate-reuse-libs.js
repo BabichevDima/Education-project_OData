@@ -144,7 +144,7 @@ sap.registerComponentDependencyPaths(manifestUri)
             // set up test service for local testing
             server.init();
             // initialize the ushell sandbox component
-            sap.ushell.Container.createRenderer().placeAt("content");
+            sap.ushell.Container.createRenderer(bAsync = true).then((o)=>{o.placeAt("content")});
           });
         });
       } else {
@@ -165,7 +165,7 @@ sap.registerComponentDependencyPaths(manifestUri)
     } else {
       sap.ui.getCore().attachInit(function () {
         // initialize the ushell sandbox component
-        sap.ushell.Container.createRenderer().placeAt("content");
+        sap.ushell.Container.createRenderer(bAsync = true).then((o)=>{o.placeAt("content")});
       });
     }
   });

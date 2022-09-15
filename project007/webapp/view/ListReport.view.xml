@@ -36,7 +36,7 @@
                                     </MultiComboBox>
                                 </fb:control>
                             </fb:FilterItem>
-                            <fb:FilterItem name="ProductSuppliersStepInput" label="Categories">
+                            <fb:FilterItem name="ProductSuppliersStepInput" label="Categories Length">
                                 <fb:control>
                                     <StepInput placeholder="Enter number" min="0" valueState="Success" change="handleChange"></StepInput>
                                 </fb:control>

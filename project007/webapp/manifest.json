@@ -106,7 +106,7 @@
           "target": ["TargetListReport"]
         },
         {
-          "pattern": "Category/{CategoryId}/{mode}",
+          "pattern": "Category/{CategoryId}/{mode}:?query:",
           "name": "ObjectPageCategory",
           "target": ["TargetObjectPageCategory"]
         },
