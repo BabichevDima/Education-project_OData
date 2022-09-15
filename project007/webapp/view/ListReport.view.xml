@@ -36,9 +36,9 @@
                                     </MultiComboBox>
                                 </fb:control>
                             </fb:FilterItem>
-                            <fb:FilterItem name="ProductSuppliersStepInput" label="Categories Length">
+                            <fb:FilterItem name="ProductSuppliersStepInput" label="Category name characters amount">
                                 <fb:control>
-                                    <StepInput placeholder="Enter number" min="0" valueState="Success" change="handleChange"></StepInput>
+                                    <StepInput id="CategoryCharacters" placeholder="Enter number" min="0" valueState="Success" change="setQueryRoute('Characters')"></StepInput>
                                 </fb:control>
                             </fb:FilterItem>
                         </fb:filterItems>
@@ -48,7 +48,7 @@
         </f:header>
 
         <f:content>
-            <Table selectionChange="onSelectionTable" id="CategoriesTable" sticky="HeaderToolbar,ColumnHeaders" inset="false" width="auto" mode="MultiSelect" items="{/Categories}">
+            <Table selectionChange="onSelectionTable" id="CategoriesTable" sticky="HeaderToolbar,ColumnHeaders" inset="false" width="auto" mode="MultiSelect" items="{ path: '/Categories', parameters: {operationMode: 'Client'}}">
                 <headerToolbar>
                     <Toolbar class="sapUiMediumMarginTop">
                         <Title text="{i18n>Category}" level="H2"/>
