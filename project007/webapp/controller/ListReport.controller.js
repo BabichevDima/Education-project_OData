@@ -351,7 +351,7 @@ sap.ui.define(
             new Filter({
               path: "Name",
               test: function(oValue) {
-                return oValue.length > nCategoryCharacters
+                return oValue.length >= nCategoryCharacters
               }
             })
           )
