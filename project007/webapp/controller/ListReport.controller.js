@@ -256,20 +256,34 @@ sap.ui.define(
       onConfirmDeletion: function () {
         var that = this;
         var oODataModel = this.getView().getModel();
-        var aSelectedCategory = this.byId("CategoriesTable")
-          .getSelectedContexts()
-          .map((oCategory) => oCategory.getPath());
+        var aSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().map((oCategory) => oCategory.getPath());
 
+        oODataModel.setUseBatch(true);
+
+        var aDeferredGroups = oODataModel.getDeferredGroups();
+        aDeferredGroups = aDeferredGroups.concat(["deleteCategoryID"]);
+        oODataModel.setDeferredGroups(aDeferredGroups);
+
+        var nContentID = 1;
         aSelectedCategory.forEach((sPath) => {
           oODataModel.remove(sPath, {
-            success: function () {
-              that.onSelectionTable();
-              that.byId("CategoriesTable").removeSelections(true);
-            },
-            error: function () {
-              MessageBox.error(that.i18n("MessageDeleteError"));
-            },
+            headers: { "Content-ID": nContentID },
+            groupId: "deleteCategoryID"
           });
+          nContentID++;
+        });
+
+        oODataModel.submitChanges({
+          groupId: "deleteCategoryID",
+          success: function () {
+            that.onSelectionTable();
+            that.byId("CategoriesTable").removeSelections(true);
+            that.getView().setBusy(false);
+            oODataModel.setUseBatch(false);
+          },
+          error: function () {
+            MessageBox.error(that.i18n("MessageDeleteError"));
+          },
         });
       },
 
@@ -280,6 +294,7 @@ sap.ui.define(
       onDeleteCategoryButton: function () {
         var that = this;
         var nSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().length;
+        this.getView().setBusy(true);
 
         MessageBox.confirm(
           that.i18n(
@@ -296,6 +311,7 @@ sap.ui.define(
               } else {
                 that.getView().setBusy(false);
                 that.byId("CategoriesTable").removeSelections(true);
+                that.getView().getModel("stateModel").setProperty("/StatusButtons", false);
                 MessageToast.show(that.i18n("MessageCategoryNotDeleted"));
               }
             },
@@ -307,11 +323,12 @@ sap.ui.define(
        * Combine all filters.
        */
       combineFilters: function () {
-        var oStateModel        = this.getView().getModel("stateModel");
-        var sAllFieldValue     = oStateModel.getProperty("/AllField")?.trim();
-        var aCategoryNameValue = this.byId("Category").getSelectedKeys();
-        var oItemsBinding      = this.byId("CategoriesTable").getBinding("items");
-        var aFilters           = [];
+        var oStateModel         = this.getView().getModel("stateModel");
+        var sAllFieldValue      = oStateModel.getProperty("/AllField")?.trim();
+        var aCategoryNameValue  = this.byId("Category").getSelectedKeys();
+        var nCategoryCharacters = this.byId("CategoryCharacters").getValue();
+        var oItemsBinding       = this.byId("CategoriesTable").getBinding("items");
+        var aFilters            = [];
 
         if (sAllFieldValue && !isNaN(sAllFieldValue)) {
           aFilters.push(new Filter("ID", FilterOperator.EQ, sAllFieldValue));
@@ -328,6 +345,18 @@ sap.ui.define(
             )
           );
         }
+
+        if (nCategoryCharacters) {
+          aFilters.push(
+            new Filter({
+              path: "Name",
+              test: function(oValue) {
+                return oValue.length >= nCategoryCharacters
+              }
+            })
+          )
+        }
+
         oItemsBinding.filter(aFilters);
       },
 
@@ -401,6 +430,11 @@ sap.ui.define(
               ? (this.oArgs["?query"].Category = this.byId("Category").getSelectedKeys())
               : delete this.oArgs["?query"].Category;
             break;
+          case "Characters":
+            !this.byId("CategoryCharacters").getValue()
+              ? delete this.oArgs["?query"].Characters
+              : (this.oArgs["?query"].Characters = this.byId("CategoryCharacters").getValue());
+            break;
         }
         this.navigate("ListReport", this.oArgs, true);
       },
@@ -418,6 +452,10 @@ sap.ui.define(
         if (this.oArgs["?query"].Category){
           var aSelectedCategories = this.oArgs["?query"].Category.split(",");
           this.byId("Category").setSelectedKeys(aSelectedCategories);
+        }
+
+        if(this.oArgs["?query"].Characters){
+          this.byId("CategoryCharacters").setValue(this.oArgs["?query"].Characters);
         }
       },
     });

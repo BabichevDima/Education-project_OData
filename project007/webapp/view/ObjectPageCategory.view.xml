@@ -63,7 +63,7 @@
 									<Toolbar class="sapUiMediumMarginTop">
 										<Title text="{i18n>Products}" level="H2"/>
 										<ToolbarSpacer/>
-										<SearchField id="CategoriesSearch" search="onCategoriesSearch" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
+										<SearchField id="SearchProduct" placeholder="{i18n>PlaceholderSerchProduct}" showRefreshButton='true' width="300px"/>
 										<Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>CreateButton}" press="onOpenDialogProduct"/>
 										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd" press="onDeleteProductButton"/>
 									</Toolbar>

@@ -435,7 +435,7 @@ sap.ui.define(
 
         this._collectsFields("groupValueNewProduct").forEach(oField => oField.setValueState(ValueState.None));
         Core.getMessageManager().removeAllMessages();
-      }
+      },
     });
   }
 );

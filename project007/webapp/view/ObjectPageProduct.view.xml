@@ -8,7 +8,7 @@
 			<ObjectPageDynamicHeaderTitle>
 				<breadcrumbs>
 					<m:Breadcrumbs>
-						<m:Link text="{i18n>CategoriesOverview}" press="onNavToCategoriesOverview"/>
+						<m:Link text="{i18n>CategoriesOverview}" press="navigate('ListReport')"/>
 						<m:Link text="{i18n>Category}" press="onNavToCategory"/>
 						<m:Link text="{i18n>Product}"/>
 					</m:Breadcrumbs>
