@@ -431,9 +431,9 @@ sap.ui.define(
               : delete this.oArgs["?query"].Category;
             break;
           case "Characters":
-            !!this.byId("CategoryCharacters").getValue()
-              ? (this.oArgs["?query"].Characters = this.byId("CategoryCharacters").getValue())
-              : delete this.oArgs["?query"].Characters;
+            !this.byId("CategoryCharacters").getValue()
+              ? delete this.oArgs["?query"].Characters
+              : (this.oArgs["?query"].Characters = this.byId("CategoryCharacters").getValue());
             break;
         }
         this.navigate("ListReport", this.oArgs, true);
