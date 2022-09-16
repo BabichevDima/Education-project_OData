@@ -256,20 +256,34 @@ sap.ui.define(
       onConfirmDeletion: function () {
         var that = this;
         var oODataModel = this.getView().getModel();
-        var aSelectedCategory = this.byId("CategoriesTable")
-          .getSelectedContexts()
-          .map((oCategory) => oCategory.getPath());
+        var aSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().map((oCategory) => oCategory.getPath());
 
+        oODataModel.setUseBatch(true);
+
+        var aDeferredGroups = oODataModel.getDeferredGroups();
+        aDeferredGroups = aDeferredGroups.concat(["deleteCategoryID"]);
+        oODataModel.setDeferredGroups(aDeferredGroups);
+
+        var nContentID = 1;
         aSelectedCategory.forEach((sPath) => {
           oODataModel.remove(sPath, {
-            success: function () {
-              that.onSelectionTable();
-              that.byId("CategoriesTable").removeSelections(true);
-            },
-            error: function () {
-              MessageBox.error(that.i18n("MessageDeleteError"));
-            },
+            headers: { "Content-ID": nContentID },
+            groupId: "deleteCategoryID"
           });
+          nContentID++;
+        });
+
+        oODataModel.submitChanges({
+          groupId: "deleteCategoryID",
+          success: function () {
+            that.onSelectionTable();
+            that.byId("CategoriesTable").removeSelections(true);
+            that.getView().setBusy(false);
+            oODataModel.setUseBatch(false);
+          },
+          error: function () {
+            MessageBox.error(that.i18n("MessageDeleteError"));
+          },
         });
       },
 
@@ -280,6 +294,7 @@ sap.ui.define(
       onDeleteCategoryButton: function () {
         var that = this;
         var nSelectedCategory = this.byId("CategoriesTable").getSelectedContexts().length;
+        this.getView().setBusy(true);
 
         MessageBox.confirm(
           that.i18n(
