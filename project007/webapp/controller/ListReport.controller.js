@@ -311,6 +311,7 @@ sap.ui.define(
               } else {
                 that.getView().setBusy(false);
                 that.byId("CategoriesTable").removeSelections(true);
+                that.getView().getModel("stateModel").setProperty("/StatusButtons", false);
                 MessageToast.show(that.i18n("MessageCategoryNotDeleted"));
               }
             },
