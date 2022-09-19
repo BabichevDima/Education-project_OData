@@ -16,6 +16,7 @@ sap.ui.define(
        * Controller's init lifecycle method.
        */
       onInit: function () {
+        this._setStateModel();
         this.onRegisterManager();
         this.getOwnerComponent().getRouter().getRoute("ObjectPageCategory").attachPatternMatched(this._onPatternMatched, this);
       },
@@ -27,7 +28,7 @@ sap.ui.define(
        */
       _setStateModel: function () {
         var oStateModel = new JSONModel({
-          EditMode: this.editMode,
+          EditMode: false,
           StatusButtons: false,
         });
 
@@ -44,9 +45,11 @@ sap.ui.define(
       _onPatternMatched: function (oEvent) {
         var that         = this;
         var oDataModel   = this.getView().getModel();
+        var oStateModel = this.getView().getModel("stateModel");
         this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
         this.editMode    = oEvent.getParameter("arguments").mode === "edit";
-        this._setStateModel();
+
+        oStateModel.setProperty("/EditMode", this.editMode);
 
         oDataModel.metadataLoaded().then(function () {
           var sKey = oDataModel.createKey("/Categories", {
@@ -57,6 +60,25 @@ sap.ui.define(
             path: sKey,
           });
         });
+
+        this.oArgs           = oEvent.getParameter("arguments");
+        this.oArgs["?query"] = this.oArgs["?query"] || {};
+        this.getAppState();
+      },
+
+      /**
+       * Controller's lifecycle method. This method is called every time the View is rendered, after the HTML is placed in the DOM-Tree.
+       *
+       * This internal logic is responsible for counting the number of Products.
+       *
+       */
+      onAfterRendering: function () {
+        var oStateModel = this.getView().getModel("stateModel");
+        var oBinding    = this.byId('ProductsTableCategories').getBinding('items');
+
+        oBinding.attachChange(function() {
+          oStateModel.setProperty("/ProductsCount", oBinding.getLength());
+        })
       },
 
       /**
@@ -435,6 +457,43 @@ sap.ui.define(
 
         this._collectsFields("groupValueNewProduct").forEach(oField => oField.setValueState(ValueState.None));
         Core.getMessageManager().removeAllMessages();
+      },
+
+      /**
+       * Install App State.
+       *
+       */
+      installAppState: function() {
+        var sValue             = this.byId("SearchProduct").getValue().trim();
+        var oStateToSave       = {searchValue: sValue};
+        var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+        var oAppState          = oCrossAppNavigator.createEmptyAppState(this.getOwnerComponent());
+
+
+        sValue ? this.oArgs["?query"]["sap-iapp-state"] = oAppState.getKey() : delete this.oArgs["?query"]["sap-iapp-state"];
+        oAppState.setData(oStateToSave);
+        oAppState.save();
+        this.navigate("ObjectPageCategory", this.oArgs, true);
+      },
+
+      /**
+       * Get App State.
+       *
+       */
+      getAppState: function () {
+        var that               = this;
+        var sAppStateKey       = this.oArgs["?query"]["sap-iapp-state"];
+        var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+        var oComponent         = this.getOwnerComponent();
+
+        if (sAppStateKey) {
+          oCrossAppNavigator.getAppState(oComponent, sAppStateKey).done(function (oSavedAppState) {
+            console.log(oSavedAppState.getData());
+            that.byId("SearchProduct").setValue(oSavedAppState.getData().searchValue);
+          });
+        } else {
+          that.byId("SearchProduct").setValue('');
+        }
       },
     });
   }

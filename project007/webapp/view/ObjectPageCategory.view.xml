@@ -58,12 +58,12 @@
 					</uxap:ObjectPageSubSection>
 					<uxap:ObjectPageSubSection>
 						<uxap:blocks>
-							<Table id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{Products}">
+							<Table growing="true" growingThreshold="2" id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{Products}">
 								<headerToolbar>
 									<Toolbar class="sapUiMediumMarginTop">
-										<Title text="{i18n>Products}" level="H2"/>
+										<Title text="{i18n>Products} ({stateModel>/ProductsCount})" level="H2"/>
 										<ToolbarSpacer/>
-										<SearchField id="SearchProduct" placeholder="{i18n>PlaceholderSerchProduct}" showRefreshButton='true' width="300px"/>
+										<SearchField search="installAppState" id="SearchProduct" placeholder="{i18n>PlaceholderSerchProduct}" showRefreshButton='true' width="300px"/>
 										<Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>CreateButton}" press="onOpenDialogProduct"/>
 										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd" press="onDeleteProductButton"/>
 									</Toolbar>
