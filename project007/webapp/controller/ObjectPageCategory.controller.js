@@ -7,8 +7,10 @@ sap.ui.define(
     "sap/ui/core/Fragment",
     "sap/ui/core/ValueState",
     "sap/ui/core/Core",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
   ],
-  function (BaseController, JSONModel, MessageBox, MessageToast, Fragment, ValueState, Core) {
+  function (BaseController, JSONModel, MessageBox, MessageToast, Fragment, ValueState, Core, Filter, FilterOperator) {
     "use strict";
 
     return BaseController.extend("webapp.controller.ObjectPageCategory", {
@@ -490,12 +492,42 @@ sap.ui.define(
 
         if (sAppStateKey) {
           oCrossAppNavigator.getAppState(oComponent, sAppStateKey).done(function (oSavedAppState) {
-            console.log(oSavedAppState.getData());
-            that.byId("SearchProduct").setValue(oSavedAppState.getData().searchValue);
+            that.byId("SearchProduct").setValue(oSavedAppState.getData()?.searchValue);
+            that.filterProduct(oSavedAppState.getData()?.searchValue)
           });
         } else {
           that.byId("SearchProduct").setValue('');
+          that.filterProduct();
         }
+      },
+
+      /**
+       * Filters products.
+       * 
+       * @param {string} sValue
+       */
+       filterProduct: function (sValue) {
+        var oItemsBinding = this.byId("ProductsTableCategories").getBinding("items");
+        var aFilters      = [];
+
+        if (sValue && !isNaN(sValue)) {
+          aFilters.push(new Filter({
+            filters: [
+              new Filter("Price", FilterOperator.EQ, sValue),
+              new Filter("Rating", FilterOperator.EQ, sValue)
+            ],
+            and: false,
+          }))
+        } else if (sValue) {
+          aFilters.push(new Filter({
+            filters: [
+              new Filter("Name", FilterOperator.Contains, sValue),
+              new Filter("Description", FilterOperator.Contains, sValue)
+            ],
+            and: false,
+          }))
+        }
+        oItemsBinding.filter(aFilters);
       },
     });
   }
