@@ -96,7 +96,7 @@
 										</HBox>
 										<HBox justifyContent="End">
 											<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
-											<Text text="{Price}" visible="{= !${stateModel>/EditMode} }"/>
+											<ObjectNumber number="{ path: 'Price', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" state="{= ${Price} > 20 ? 'Error' : 'Success'}" unit="EUR" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
 										<HBox justifyContent="Start">
 											<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Description', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>

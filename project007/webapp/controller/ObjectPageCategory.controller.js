@@ -30,6 +30,7 @@ sap.ui.define(
         var oStateModel = new JSONModel({
           EditMode: false,
           StatusButtons: false,
+          Currency: "USD",
         });
 
         this.getView().setModel(oStateModel, "stateModel");
@@ -464,16 +465,17 @@ sap.ui.define(
        *
        */
       installAppState: function() {
-        var sValue             = this.byId("SearchProduct").getValue().trim();
-        var oStateToSave       = {searchValue: sValue};
-        var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
-        var oAppState          = oCrossAppNavigator.createEmptyAppState(this.getOwnerComponent());
-
-
-        sValue ? this.oArgs["?query"]["sap-iapp-state"] = oAppState.getKey() : delete this.oArgs["?query"]["sap-iapp-state"];
-        oAppState.setData(oStateToSave);
-        oAppState.save();
-        this.navigate("ObjectPageCategory", this.oArgs, true);
+        var sValue        = this.byId("SearchProduct").getValue().trim();
+        var oStateToSave  = {searchValue: sValue};
+        var that          = this;
+        sap.ushell.Container.getServiceAsync("CrossApplicationNavigation").then(function (oCrossAppNavigator) {
+          oCrossAppNavigator.createEmptyAppStateAsync(that.getOwnerComponent()).then(function (oAppState) {
+            sValue ? that.oArgs["?query"]["sap-iapp-state"] = oAppState.getKey() : delete that.oArgs["?query"]["sap-iapp-state"];
+            oAppState.setData(oStateToSave);
+            oAppState.save();
+            that.navigate("ObjectPageCategory", that.oArgs);
+          });
+        });
       },
 
       /**
