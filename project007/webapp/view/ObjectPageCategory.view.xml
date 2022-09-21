@@ -58,7 +58,8 @@
 					</uxap:ObjectPageSubSection>
 					<uxap:ObjectPageSubSection>
 						<uxap:blocks>
-							<Table growing="true" growingThreshold="2" id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{Products}">
+							<!-- <Table growing="true" growingThreshold="2" id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{Products}"> -->
+							<Table id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{Products}">
 								<headerToolbar>
 									<Toolbar class="sapUiMediumMarginTop">
 										<Title text="{i18n>Products} ({stateModel>/ProductsCount})" level="H2"/>

@@ -110,6 +110,23 @@ sap.ui.define(
         return bCheck;
       },
 
+      test: function(sGroupID){
+        var aFieldGroupId = this.getView().getControlsByFieldGroupId(sGroupID);
+        var aDatePicker   = this.collectsArray(aFieldGroupId, "DatePicker");
+        var bCheck        = false;
+
+        for (let i = 0; i < aDatePicker.length; i++){
+          var j = i + 1;
+          if (new Date(aDatePicker[i].getValue().trim()) > new Date(aDatePicker[j].getValue().trim())) {
+            aDatePicker[j].setValueState(ValueState.Error);
+            aDatePicker[j].setValue('');
+            bCheck = true;
+          }
+          i++
+        }
+        return bCheck
+      },
+
       /**
        * check field.
        *
@@ -155,7 +172,7 @@ sap.ui.define(
             }
             break;
           default:
-            if (this._checkFields("groupEditValueProduct")) {
+            if (this._checkFields("groupEditValueProduct") || this.test("groupEditValueProduct")) {
               MessageBox.alert(this.i18n("AlertMessage"));
             } else if (nCountError) {
               MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
