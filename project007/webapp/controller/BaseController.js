@@ -132,8 +132,6 @@ sap.ui.define(
 
         switch (sProperty) {
           case "Product":
-            this._createNewElement(sProperty, nCountError, sSuffix)
-            break;
           case "Category":
             this._createNewElement(sProperty, nCountError, sSuffix);
             break;
