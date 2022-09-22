@@ -1,8 +1,10 @@
 // this.getOwnerComponent().getRouter().getHashChanger()
 sap.ui.define(
   ["webapp/controller/BaseController",
-  "sap/ui/model/json/JSONModel"],
-  function (BaseController, JSONModel) {
+  "sap/ui/model/json/JSONModel",
+  "sap/m/MessageBox",
+  "sap/m/MessageToast"],
+  function (BaseController, JSONModel, MessageBox, MessageToast) {
     "use strict";
 
     return BaseController.extend("webapp.controller.ObjectPageProduct", {
@@ -58,9 +60,11 @@ sap.ui.define(
 
       /**
        * Open products overview page button press event handler.
+       * 
+       * @param {boolean} bReplace additional Param.
        */
-      onNavToCategory: function () {
-        this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId, mode: "display"});
+      onNavToCategory: function (bReplace) {
+        this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId, mode: "display"}, bReplace);
       },
 
       /**
@@ -69,6 +73,73 @@ sap.ui.define(
        */
       onEditButton: function () {
         this.navigate("ProductInfo", {CategoryId: this.sCategoryId, productId: this.sProductId, mode: "edit"}, true);
+      },
+
+      /**
+       * Asks for confirmation of deletion.
+       *
+       */
+       onDeleteProductButton: function () {
+        var that = this;
+        this.getView().setBusy(true);
+
+        MessageBox.confirm( that.i18n("WarningMessage", "Product"), {
+            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+            emphasizedAction: MessageBox.Action.YES,
+            onClose: function (sAction) {
+              if (sAction === MessageBox.Action.YES) {
+                that.onConfirmDeletionProduct();
+              } else {
+                that.getView().setBusy(false);
+              }
+            },
+          }
+        );
+      },
+
+      /**
+       * Deletes product.
+       *
+       */
+      onConfirmDeletionProduct: function () {
+        var that               = this;
+        var oODataModel        = this.getView().getModel();
+        var sPath              = `/Products(${this.sProductId})`
+        var nContentID         = 1;
+        var aDeferredGroups    = oODataModel.getDeferredGroups();
+        aDeferredGroups        = aDeferredGroups.concat(["deleteProductID"]);
+
+        oODataModel.setDeferredGroups(aDeferredGroups);
+        oODataModel.setUseBatch(true);
+        oODataModel.remove(`${sPath}/$links/Category`, {
+          headers: {"Content-ID": nContentID++},
+          groupId: "deleteProductID",
+        });
+
+        oODataModel.remove(`${sPath}/$links/Supplier`, {
+          headers: {"Content-ID": nContentID++},
+          groupId: "deleteProductID",
+        });
+
+        oODataModel.remove(sPath, {
+          headers: {"Content-ID": nContentID},
+          groupId: "deleteProductID",
+        });
+
+        oODataModel.submitChanges({
+          groupId: "deleteProductID",
+          success: function () {
+            that.getView().setBusy(false);
+            that.onNavToCategory(true);
+            MessageToast.show(that.i18n("MessageDeleteSuccess", "Product"));
+            oODataModel.setUseBatch(false);
+          },
+          error: function () {
+            that.getView().setBusy(false);
+            MessageBox.error(that.i18n("MessageDeleteError"));
+            oODataModel.setUseBatch(false);
+          },
+        });
       },
     });
   }

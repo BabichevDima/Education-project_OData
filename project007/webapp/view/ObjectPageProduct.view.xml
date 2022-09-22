@@ -25,7 +25,7 @@
 				</snappedHeading>
 				<actions>
 					<m:Button text="Edit" type="Emphasized" press="onEditButton"/>
-					<m:Button type="Transparent" text="Delete"/>
+					<m:Button type="Transparent" text="Delete" press="onDeleteProductButton"/>
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
 		</headerTitle>
@@ -56,40 +56,6 @@
 					<ObjectPageSubSection titleUppercase="false">
 						<blocks>
 							<additional:AdditionalInformation id="additionalInformation" columnLayout="2"/>
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
-
-			<ObjectPageSection titleUppercase="false" title="{i18n>Suppliers}">
-				<subSections>
-					<ObjectPageSubSection>
-						<blocks>
-							<m:Table id="ProductsTableSuppliers" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{/Suppliers}">
-								<m:headerToolbar>
-									<m:Toolbar class="sapUiMediumMarginTop">
-										<m:Title text="{i18n>Suppliers}" level="H2"/>
-										<m:ToolbarSpacer/>
-										<m:SearchField id="SuppliersSearch" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
-										<m:Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>CreateButton}"/>
-										<m:Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" class="sapUiSmallMarginBeginEnd"/>
-									</m:Toolbar>
-								</m:headerToolbar>
-								<m:columns>
-									<m:Column minScreenWidth="Tablet" demandPopin="true">
-										<m:Text text="{i18n>Name}"/>
-									</m:Column>
-									<m:Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-										<m:Text text="{i18n>ID}" class="sapUiSmallMarginEnd"/>
-									</m:Column>
-								</m:columns>
-								<m:items>
-									<m:ColumnListItem>
-										<m:Text text="{Name}"/>
-										<m:Text text="{ID}" class="sapUiSmallMarginEnd"/>
-									</m:ColumnListItem>
-								</m:items>
-							</m:Table>
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>
