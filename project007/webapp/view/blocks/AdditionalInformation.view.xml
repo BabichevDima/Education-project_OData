@@ -1,0 +1,24 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+	xmlns:forms="sap.ui.layout.form"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+
+	<forms:SimpleForm editable="true" layout="ColumnLayout">
+		<core:Title text="{Supplier/Name}"/>
+
+		<Label text="Country"/>
+		<Text text="{Supplier/Address/Country}"/>
+
+		<Label text="City"/>
+		<Text text="{Supplier/Address/City}"/>
+
+		<Label text="Street"/>
+		<Text text="{Supplier/Address/Street}"/>
+
+		<Label text="State"/>
+		<Text text="{Supplier/Address/State}"/>
+
+		<Label text="ZipCode"/>
+		<Text text="{Supplier/Address/ZipCode}"/>
+	</forms:SimpleForm>
+</mvc:View>

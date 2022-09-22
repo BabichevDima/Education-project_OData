@@ -172,8 +172,10 @@ sap.ui.define(
             }
             break;
           default:
-            if (this._checkFields("groupEditValueProduct") || this.test("groupEditValueProduct")) {
+            if (this._checkFields("groupEditValueProduct")) {
               MessageBox.alert(this.i18n("AlertMessage"));
+            } else if (this.test("groupEditValueProduct")) {
+              MessageBox.alert(this.i18n("AlertInvalidDateMessage"));
             } else if (nCountError) {
               MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
             } else {
@@ -194,7 +196,7 @@ sap.ui.define(
         var sDiscontinuedDate = this.byId("NewProductDiscontinuedDate");
         var bCheck = false;
 
-        if (sReleaseDate.getValue() > sDiscontinuedDate.getValue()) {
+        if (new Date(sReleaseDate.getValue()) > new Date(sDiscontinuedDate.getValue())) {
           bCheck = true;
           sDiscontinuedDate.setValue("");
           sDiscontinuedDate.setValueState(ValueState.Error);

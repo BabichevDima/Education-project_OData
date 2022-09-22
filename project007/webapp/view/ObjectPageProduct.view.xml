@@ -2,7 +2,12 @@
 	xmlns="sap.uxap"
 	xmlns:layout="sap.ui.layout"
 	xmlns:m="sap.m"
-	xmlns:personal="webapp.controller.blocks" controllerName="webapp.controller.ObjectPageProduct" height="100%">
+	xmlns:forms="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:personal="webapp.controller.blocks"
+	xmlns:additional="webapp.controller.blocks"
+	controllerName="webapp.controller.ObjectPageProduct"
+	height="100%">
 	<ObjectPageLayout id="ObjectPageProduct" enableLazyLoading="true" upperCaseAnchorBar="false">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
@@ -22,7 +27,7 @@
 					</m:FlexBox>
 				</snappedHeading>
 				<actions>
-					<m:Button text="Edit" type="Emphasized"/>
+					<m:Button text="Edit" type="Emphasized" press="teestim"/>
 					<m:Button type="Transparent" text="Delete"/>
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
@@ -47,6 +52,17 @@
 					</ObjectPageSubSection>
 				</subSections>
 			</ObjectPageSection>
+
+			<ObjectPageSection titleUppercase="false" title="Additional information">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<additional:AdditionalInformation id="additionalInformation" columnLayout="2"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
 			<ObjectPageSection titleUppercase="false" title="{i18n>Suppliers}">
 				<subSections>
 					<ObjectPageSubSection>
