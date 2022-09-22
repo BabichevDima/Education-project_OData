@@ -27,7 +27,7 @@
 					</forms:FormElement>
 					<forms:FormElement label="{i18n>Price}">
 						<forms:fields>
-							<Text text="{Price}"/>
+							<ObjectNumber number="{ path: 'Price', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" state="{= ${Price} > 20 ? 'Error' : 'Success'}" unit="EUR"/>
 						</forms:fields>
 					</forms:FormElement>
 				</forms:formElements>

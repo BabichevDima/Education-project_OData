@@ -49,6 +49,21 @@ sap.ui.define(
       },
 
       /**
+       * Controller's lifecycle method. This method is called every time the View is rendered, after the HTML is placed in the DOM-Tree.
+       *
+       * This internal logic is responsible for counting the number of Categories.
+       *
+       */
+      onAfterRendering: function () {
+        var oStateModel = this.getView().getModel("stateModel");
+        var oBinding    = this.byId('CategoriesTable').getBinding('items');
+
+        oBinding.attachChange(function() {
+          oStateModel.setProperty("/CategoriesCount", oBinding.getLength());
+        })
+      },
+
+      /**
        * Creates a view model to store locally on the view.
        *
        * @private

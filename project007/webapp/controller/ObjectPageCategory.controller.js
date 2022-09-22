@@ -7,8 +7,10 @@ sap.ui.define(
     "sap/ui/core/Fragment",
     "sap/ui/core/ValueState",
     "sap/ui/core/Core",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
   ],
-  function (BaseController, JSONModel, MessageBox, MessageToast, Fragment, ValueState, Core) {
+  function (BaseController, JSONModel, MessageBox, MessageToast, Fragment, ValueState, Core, Filter, FilterOperator) {
     "use strict";
 
     return BaseController.extend("webapp.controller.ObjectPageCategory", {
@@ -18,6 +20,7 @@ sap.ui.define(
       onInit: function () {
         this.onRegisterManager();
         this.getOwnerComponent().getRouter().getRoute("ObjectPageCategory").attachPatternMatched(this._onPatternMatched, this);
+        this._setStateModel();
       },
 
       /**
@@ -27,7 +30,7 @@ sap.ui.define(
        */
       _setStateModel: function () {
         var oStateModel = new JSONModel({
-          EditMode: this.editMode,
+          EditMode: false,
           StatusButtons: false,
         });
 
@@ -44,10 +47,11 @@ sap.ui.define(
       _onPatternMatched: function (oEvent) {
         var that         = this;
         var oDataModel   = this.getView().getModel();
+        var oStateModel  = this.getView().getModel("stateModel");
         this.sCategoryId = oEvent.getParameter("arguments").CategoryId;
         this.editMode    = oEvent.getParameter("arguments").mode === "edit";
-        this._setStateModel();
 
+        oStateModel.setProperty("/EditMode", this.editMode);
         oDataModel.metadataLoaded().then(function () {
           var sKey = oDataModel.createKey("/Categories", {
             ID: that.sCategoryId,
@@ -57,6 +61,21 @@ sap.ui.define(
             path: sKey,
           });
         });
+      },
+
+      /**
+       * Controller's lifecycle method. This method is called every time the View is rendered, after the HTML is placed in the DOM-Tree.
+       *
+       * This internal logic is responsible for counting the number of Products.
+       *
+       */
+       onAfterRendering: function () {
+        var oStateModel = this.getView().getModel("stateModel");
+        var oBinding    = this.byId('ProductsTableCategories').getBinding('items');
+
+        oBinding.attachChange(function() {
+          oStateModel.setProperty("/ProductsCount", oBinding.getLength());
+        })
       },
 
       /**
@@ -435,6 +454,36 @@ sap.ui.define(
 
         this._collectsFields("groupValueNewProduct").forEach(oField => oField.setValueState(ValueState.None));
         Core.getMessageManager().removeAllMessages();
+      },
+
+      /**
+       * Filters products.
+       * 
+       * @param {sap.ui.base.Event} oEvent event object.
+       */
+      onFilterProduct: function (oEvent) {
+        var oItemsBinding = this.byId("ProductsTableCategories").getBinding("items");
+        var sValue        = oEvent.getSource().getValue().trim();
+        var aFilters      = [];
+
+        if (sValue && !isNaN(sValue)) {
+          aFilters.push(new Filter({
+            filters: [
+              new Filter("Price", FilterOperator.EQ, sValue),
+              new Filter("Rating", FilterOperator.EQ, sValue)
+            ],
+            and: false,
+          }))
+        } else if (sValue) {
+          aFilters.push(new Filter({
+            filters: [
+              new Filter("Name", FilterOperator.Contains, sValue),
+              new Filter("Description", FilterOperator.Contains, sValue)
+            ],
+            and: false,
+          }))
+        }
+        oItemsBinding.filter(aFilters);
       },
     });
   }

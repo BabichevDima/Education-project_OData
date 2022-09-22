@@ -131,32 +131,16 @@ sap.ui.define(
 
         switch (sProperty) {
           case "Product":
-            if (this._checkFields("groupValueNewProduct")) {
-              MessageBox.alert(this.i18n("AlertMessage"));
-            } else if (nCountError) {
-              MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
-            } else if (this._checkData()) {
-              MessageBox.alert(this.i18n("AlertInvalidDateMessage"));
-            } else {
-              this.getView().getModel().submitChanges();
-              this.onDialogCategoryClosePress();
-              MessageToast.show(this.i18n("SuccessCreatedProduct"));
-            }
+            this._createNewElement(sProperty, nCountError, sSuffix);
             break;
           case "Category":
-            if (this._checkFields("groupValueNewCategory")) {
-              MessageBox.alert(this.i18n("AlertMessage"));
-            } else if (nCountError) {
-              MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
-            } else {
-              this.getView().getModel().submitChanges();
-              this.onDialogCategoryClosePress();
-              MessageToast.show(this.i18n("SuccessCreatedCategory"));
-            }
+            this._createNewElement(sProperty, nCountError, sSuffix);
             break;
           default:
             if (this._checkFields("groupEditValueProduct")) {
               MessageBox.alert(this.i18n("AlertMessage"));
+            } else if (this._checkDataInTable("groupEditValueProduct")) {
+              MessageBox.alert(this.i18n("AlertInvalidDateMessage"));
             } else if (nCountError) {
               MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
             } else {
@@ -169,21 +153,64 @@ sap.ui.define(
       },
 
       /**
-       * Check Data.
+       * Check Discontinued Data.
        *
+       * @private
        */
       _checkData: function () {
         var sReleaseDate = this.byId("NewProductReleaseDate");
         var sDiscontinuedDate = this.byId("NewProductDiscontinuedDate");
         var bCheck = false;
 
-        if (sReleaseDate.getValue() > sDiscontinuedDate.getValue()) {
+        if (new Date(sReleaseDate.getValue()) > new Date(sDiscontinuedDate.getValue())) {
           bCheck = true;
           sDiscontinuedDate.setValue("");
           sDiscontinuedDate.setValueState(ValueState.Error);
         }
         return bCheck
-      }
+      },
+
+      /**
+       * Check Discontinued Date in table.
+       *
+       * @private
+       */
+      _checkDataInTable: function(sGroupID){
+        var aFieldGroupId = this.getView().getControlsByFieldGroupId(sGroupID);
+        var aDatePicker   = this.collectsArray(aFieldGroupId, "DatePicker");
+        var bCheck        = false;
+
+        for (let i = 0; i < aDatePicker.length; i++){
+          var j = i + 1;
+          if (new Date(aDatePicker[i].getValue().trim()) > new Date(aDatePicker[j].getValue().trim())) {
+            aDatePicker[j].setValueState(ValueState.Error);
+            aDatePicker[j].setValue('');
+            bCheck = true;
+          }
+          i++
+        }
+        return bCheck
+      },
+
+      /**
+       * Creates new element.
+       *
+       * @param {string} sProperty type new element.
+       * @param {number} nCountError count errors.
+       * @param {string} sSuffix suffix.
+       *
+       */
+      _createNewElement: function (sProperty, nCountError, sSuffix) {
+        if (this._checkFields(`groupValueNew${sProperty}`)) {
+          MessageBox.alert(this.i18n("AlertMessage"));
+        } else if (nCountError) {
+          MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
+        } else {
+          this.getView().getModel().submitChanges();
+          this.onDialogCategoryClosePress();
+          MessageToast.show(this.i18n(`SuccessCreated${sProperty}`));
+        }
+      },
     });
   }
 );
