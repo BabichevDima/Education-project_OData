@@ -1,34 +1,32 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc"
 	xmlns:forms="sap.ui.layout.form"
 	xmlns="sap.m">
-	<forms:Form width="100%">
+	<forms:Form width="100%" editable="true" >
 		<forms:formContainers>
 			<forms:FormContainer id="addressInfo" title="{i18n>Info}">
 				<forms:formElements>
 					<forms:FormElement label="{i18n>Description}">
-						<forms:fields>
-							<Text text="{Description}"/>
-						</forms:fields>
+						<Text text="{Description}" visible="{= !${stateModel>/EditMode}}"/>
+						<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Description', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
 					</forms:FormElement>
+
 					<forms:FormElement label="{i18n>Rating}">
-						<forms:fields>
-							<RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{Rating}" tooltip="Rating Product" editable="false"/>
-						</forms:fields>
+						<RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{Rating}" tooltip="Rating Product" editable="{stateModel>/EditMode}"/>
 					</forms:FormElement>
+
 					<forms:FormElement label="{i18n>ReleaseDate}">
-						<forms:fields>
-							<Text wrapping="false" class="sapUiTinyMarginTop" text="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
-						</forms:fields>
+						<Text visible="{= !${stateModel>/EditMode}}" text="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+						<DatePicker change="checkField" fieldGroupIds="groupEditValueProduct" value="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{stateModel>/EditMode}"/>
 					</forms:FormElement>
-					<forms:FormElement label="{i18n>DiscontinuedDate}" visible="{= ${DiscontinuedDate} ? true : false }">
-						<forms:fields>
-							<Text wrapping="false" class="sapUiTinyMarginTop" text="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
-						</forms:fields>
+
+					<forms:FormElement label="{i18n>DiscontinuedDate}">
+						<Text visible="{= !${stateModel>/EditMode}}" text="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+						<DatePicker change="checkField" fieldGroupIds="groupEditValueProduct" value="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{stateModel>/EditMode}"/>
 					</forms:FormElement>
+
 					<forms:FormElement label="{i18n>Price}">
-						<forms:fields>
-							<ObjectNumber number="{ path: 'Price', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" state="{= ${Price} > 20 ? 'Error' : 'Success'}" unit="EUR"/>
-						</forms:fields>
+						<ObjectNumber visible="{= !${stateModel>/EditMode}}" number="{ path: 'Price', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" state="{= ${Price} > 20 ? 'Error' : 'Success'}" unit="EUR"/>
+						<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
 					</forms:FormElement>
 				</forms:formElements>
 			</forms:FormContainer>

@@ -29,17 +29,6 @@
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
 		</headerTitle>
-		<headerContent>
-			<m:FlexBox wrap="Wrap" fitContainer="true">
-				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-					<m:Label text="{i18n>Description}:"/>
-					<m:VBox>
-						<m:Text text="{Description}"/>
-						<m:Text text="{stateModel>/EditMode}"/>
-					</m:VBox>
-				</layout:VerticalLayout>
-			</m:FlexBox>
-		</headerContent>
 		<sections>
 			<ObjectPageSection titleUppercase="false" title="{i18n>Info}">
 				<subSections>
@@ -63,6 +52,11 @@
 		</sections>
 
 		<footer>
+			<m:OverflowToolbar>
+				<m:ToolbarSpacer/>
+				<m:Button type="Accept" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onCreate"/>
+				<m:Button id="CancelButtonObjectPageCategory" type="Reject" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onConfirmCancelEditModeOnProduct"/>
+			</m:OverflowToolbar>
 		</footer>
 	</ObjectPageLayout>
 </mvc:View>

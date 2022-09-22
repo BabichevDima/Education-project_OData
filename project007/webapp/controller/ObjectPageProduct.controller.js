@@ -141,6 +141,40 @@ sap.ui.define(
           },
         });
       },
+
+      /**
+       * Cancel button click action.
+       *
+       */
+       onConfirmCancelEditModeOnProduct: function () {
+        var that = this;
+        var bCheck = this._checkFields("groupEditValueProduct");
+        var nCountError = this.getView().getModel("messages")?.getData();
+
+        if (this.getView().getModel().hasPendingChanges() || bCheck || nCountError) {
+          MessageBox.confirm(that.i18n("ConfirmMessage"), {
+            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+            emphasizedAction: MessageBox.Action.YES,
+            onClose: function (sAction) {
+              if (sAction === MessageBox.Action.YES) {
+                that.onCancelButton();
+              }
+            },
+          });
+        } else {
+          that.onCancelButton();
+        }
+      },
+
+      /**
+       * Close edit mode.
+       */
+      onCancelButton: function () {
+        var oODataModel = this.getView().getModel();
+
+        oODataModel.resetChanges();
+        this.navigate("ProductInfo", {CategoryId: this.sCategoryId, productId: this.sProductId, mode: "display"}, true);
+      },
     });
   }
 );

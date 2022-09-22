@@ -4,21 +4,27 @@
 	xmlns:core="sap.ui.core">
 
 	<forms:SimpleForm editable="true" layout="ColumnLayout">
-		<core:Title text="{Supplier/Name}"/>
+		<core:Title text="{Supplier/Name}" visible="{= !${stateModel>/EditMode}}"/>
 
 		<Label text="{i18n>Country}"/>
-		<Text text="{Supplier/Address/Country}"/>
+		<Text text="{Supplier/Address/Country}" visible="{= !${stateModel>/EditMode}}"/>
+		<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/Country', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
 
 		<Label text="{i18n>City}"/>
-		<Text text="{Supplier/Address/City}"/>
+		<Text text="{Supplier/Address/City}" visible="{= !${stateModel>/EditMode}}"/>
+		<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/City', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
 
 		<Label text="{i18n>Street}"/>
-		<Text text="{Supplier/Address/Street}"/>
+		<Text text="{Supplier/Address/Street}" visible="{= !${stateModel>/EditMode}}"/>
+		<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/Street', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
 
 		<Label text="{i18n>State}"/>
-		<Text text="{Supplier/Address/State}"/>
+		<Text text="{Supplier/Address/State}" visible="{= !${stateModel>/EditMode}}"/>
+		<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/State', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
 
 		<Label text="{i18n>ZipCode}"/>
-		<Text text="{Supplier/Address/ZipCode}"/>
+		<Text text="{Supplier/Address/ZipCode}" visible="{= !${stateModel>/EditMode}}"/>
+		<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Supplier/Address/ZipCode', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
+
 	</forms:SimpleForm>
 </mvc:View>
