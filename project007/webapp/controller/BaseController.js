@@ -284,10 +284,6 @@ sap.ui.define(
           MessageToast.show(this.i18n(`SuccessCreated${sProperty}`));
         }
       },
-
-      test: function () {
-
-      }
     });
   }
 );
