@@ -131,28 +131,10 @@ sap.ui.define(
 
         switch (sProperty) {
           case "Product":
-            if (this._checkFields("groupValueNewProduct")) {
-              MessageBox.alert(this.i18n("AlertMessage"));
-            } else if (nCountError) {
-              MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
-            } else if (this._checkData()) {
-              MessageBox.alert(this.i18n("AlertInvalidDateMessage"));
-            } else {
-              this.getView().getModel().submitChanges();
-              this.onDialogCategoryClosePress();
-              MessageToast.show(this.i18n("SuccessCreatedProduct"));
-            }
+            this._createNewElement(sProperty, nCountError, sSuffix);
             break;
           case "Category":
-            if (this._checkFields("groupValueNewCategory")) {
-              MessageBox.alert(this.i18n("AlertMessage"));
-            } else if (nCountError) {
-              MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
-            } else {
-              this.getView().getModel().submitChanges();
-              this.onDialogCategoryClosePress();
-              MessageToast.show(this.i18n("SuccessCreatedCategory"));
-            }
+            this._createNewElement(sProperty, nCountError, sSuffix);
             break;
           default:
             if (this._checkFields("groupEditValueProduct")) {
@@ -208,6 +190,26 @@ sap.ui.define(
           i++
         }
         return bCheck
+      },
+
+      /**
+       * Creates new element.
+       *
+       * @param {string} sProperty type new element.
+       * @param {number} nCountError count errors.
+       * @param {string} sSuffix suffix.
+       *
+       */
+      _createNewElement: function (sProperty, nCountError, sSuffix) {
+        if (this._checkFields(`groupValueNew${sProperty}`)) {
+          MessageBox.alert(this.i18n("AlertMessage"));
+        } else if (nCountError) {
+          MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
+        } else {
+          this.getView().getModel().submitChanges();
+          this.onDialogCategoryClosePress();
+          MessageToast.show(this.i18n(`SuccessCreated${sProperty}`));
+        }
       },
     });
   }
