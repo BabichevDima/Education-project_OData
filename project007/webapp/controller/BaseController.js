@@ -128,7 +128,7 @@ sap.ui.define(
        */
       onCreate: function (sProperty) {
         var nCountError = this.getView().getModel("messages")?.getData().length;
-        var sSuffix = nCountError === 1 ? "" : "s";
+        var sSuffix     = nCountError === 1 ? "" : "s";
 
         switch (sProperty) {
           case "Product":
@@ -177,9 +177,9 @@ sap.ui.define(
        * @private
        */
       _checkData: function () {
-        var sReleaseDate = this.byId("NewProductReleaseDate");
+        var sReleaseDate      = this.byId("NewProductReleaseDate");
         var sDiscontinuedDate = this.byId("NewProductDiscontinuedDate");
-        var bCheck = false;
+        var bCheck            = false;
 
         if (new Date(sReleaseDate.getValue()) > new Date(sDiscontinuedDate.getValue())) {
           bCheck = true;
@@ -218,7 +218,7 @@ sap.ui.define(
      * @param {string} sTableID Table ID.
      */
       onSortButtonPress: function (sPropertyName, sTableID) {
-        var oStateModel = this.getView().getModel("stateModel");
+        var oStateModel   = this.getView().getModel("stateModel");
         var oItemsBinding = this.byId(sTableID).getBinding("items");
 
         oItemsBinding.sort(this.getSorter(sPropertyName, oStateModel));
@@ -284,6 +284,10 @@ sap.ui.define(
           MessageToast.show(this.i18n(`SuccessCreated${sProperty}`));
         }
       },
+
+      test: function () {
+
+      }
     });
   }
 );
