@@ -157,6 +157,8 @@ sap.ui.define(
           default:
             if (this._checkFields("groupEditValueProduct")) {
               MessageBox.alert(this.i18n("AlertMessage"));
+            } else if (this._checkDataInTable("groupEditValueProduct")) {
+              MessageBox.alert(this.i18n("AlertInvalidDateMessage"));
             } else if (nCountError) {
               MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
             } else {
@@ -169,21 +171,44 @@ sap.ui.define(
       },
 
       /**
-       * Check Data.
+       * Check Discontinued Data.
        *
+       * @private
        */
       _checkData: function () {
         var sReleaseDate = this.byId("NewProductReleaseDate");
         var sDiscontinuedDate = this.byId("NewProductDiscontinuedDate");
         var bCheck = false;
 
-        if (sReleaseDate.getValue() > sDiscontinuedDate.getValue()) {
+        if (new Date(sReleaseDate.getValue()) > new Date(sDiscontinuedDate.getValue())) {
           bCheck = true;
           sDiscontinuedDate.setValue("");
           sDiscontinuedDate.setValueState(ValueState.Error);
         }
         return bCheck
-      }
+      },
+
+      /**
+       * Check Discontinued Date in table.
+       *
+       * @private
+       */
+      _checkDataInTable: function(sGroupID){
+        var aFieldGroupId = this.getView().getControlsByFieldGroupId(sGroupID);
+        var aDatePicker   = this.collectsArray(aFieldGroupId, "DatePicker");
+        var bCheck        = false;
+
+        for (let i = 0; i < aDatePicker.length; i++){
+          var j = i + 1;
+          if (new Date(aDatePicker[i].getValue().trim()) > new Date(aDatePicker[j].getValue().trim())) {
+            aDatePicker[j].setValueState(ValueState.Error);
+            aDatePicker[j].setValue('');
+            bCheck = true;
+          }
+          i++
+        }
+        return bCheck
+      },
     });
   }
 );

@@ -61,9 +61,9 @@
 							<Table id="ProductsTableCategories" selectionChange="onSelectionTableCategories" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{Products}">
 								<headerToolbar>
 									<Toolbar class="sapUiMediumMarginTop">
-										<Title text="{i18n>Products}" level="H2"/>
+										<Title text="{i18n>Products} ({stateModel>/ProductsCount})" level="H2"/>
 										<ToolbarSpacer/>
-										<SearchField id="SearchProduct" placeholder="{i18n>PlaceholderSerchProduct}" showRefreshButton='true' width="300px"/>
+										<SearchField search="onFilterProduct" id="SearchProduct" placeholder="{i18n>PlaceholderSerchProduct}" showRefreshButton='true' width="300px"/>
 										<Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>CreateButton}" press="onOpenDialogProduct"/>
 										<Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" enabled="{stateModel>/StatusButtons}" class="sapUiSmallMarginBeginEnd" press="onDeleteProductButton"/>
 									</Toolbar>
@@ -96,7 +96,8 @@
 										</HBox>
 										<HBox justifyContent="End">
 											<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
-											<Text text="{Price}" visible="{= !${stateModel>/EditMode} }"/>
+											<!-- <Text text="{Price}" visible="{= !${stateModel>/EditMode} }"/> -->
+											<ObjectNumber number="{ path: 'Price', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" state="{= ${Price} > 20 ? 'Error' : 'Success'}" unit="EUR" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
 										<HBox justifyContent="Start">
 											<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Description', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
