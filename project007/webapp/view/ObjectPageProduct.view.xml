@@ -2,7 +2,10 @@
 	xmlns="sap.uxap"
 	xmlns:layout="sap.ui.layout"
 	xmlns:m="sap.m"
-	xmlns:personal="webapp.controller.blocks" controllerName="webapp.controller.ObjectPageProduct" height="100%">
+	xmlns:personal="webapp.controller.blocks"
+	xmlns:additional="webapp.controller.blocks"
+	controllerName="webapp.controller.ObjectPageProduct"
+	height="100%">
 	<ObjectPageLayout id="ObjectPageProduct" enableLazyLoading="true" upperCaseAnchorBar="false">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
@@ -47,6 +50,17 @@
 					</ObjectPageSubSection>
 				</subSections>
 			</ObjectPageSection>
+
+			<ObjectPageSection titleUppercase="false" title="{i18n>AdditionalInfo}">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<additional:AdditionalInformation id="additionalInformation" columnLayout="2"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
 			<ObjectPageSection titleUppercase="false" title="{i18n>Suppliers}">
 				<subSections>
 					<ObjectPageSubSection>

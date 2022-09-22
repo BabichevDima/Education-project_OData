@@ -31,7 +31,10 @@ sap.ui.define(
           });
 
           that.getView().bindObject({
-            path: sKey
+            path: sKey,
+            parameters: {
+              expand: "Supplier",
+            },
           });
         });
       },
