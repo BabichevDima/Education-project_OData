@@ -114,10 +114,7 @@ sap.ui.define(
       onProductPress: function (oEvent) {
         var nProductId = oEvent.getSource().getBindingContext().getObject("ID");
 
-        this.navigate("ProductInfo", {
-          CategoryId: this.sCategoryId,
-          productId: nProductId,
-        });
+        this.navigate("ProductInfo", {CategoryId: this.sCategoryId, productId: nProductId, mode: "display"});
       },
 
       /**

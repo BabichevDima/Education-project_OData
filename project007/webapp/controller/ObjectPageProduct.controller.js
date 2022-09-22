@@ -1,7 +1,8 @@
 // this.getOwnerComponent().getRouter().getHashChanger()
 sap.ui.define(
-  ["webapp/controller/BaseController"],
-  function (BaseController) {
+  ["webapp/controller/BaseController",
+  "sap/ui/model/json/JSONModel"],
+  function (BaseController, JSONModel) {
     "use strict";
 
     return BaseController.extend("webapp.controller.ObjectPageProduct", {
@@ -24,6 +25,7 @@ sap.ui.define(
         var oDataModel    = this.getView().getModel();
         this.sCategoryId  = oEvent.getParameter("arguments").CategoryId;
         this.sProductId   = oEvent.getParameter("arguments").productId;
+        this.editMode     = oEvent.getParameter("arguments").mode === "edit";
 
         oDataModel.metadataLoaded().then(function () {
           var sKey = oDataModel.createKey("/Products", {
@@ -37,6 +39,21 @@ sap.ui.define(
             },
           });
         });
+
+        this._setStateModel();
+      },
+
+      /**
+       * Creates a view model to store locally on the view.
+       *
+       * @private
+       */
+       _setStateModel: function () {
+        var oStateModel = new JSONModel({
+          EditMode: this.editMode,
+        });
+
+        this.getView().setModel(oStateModel, "stateModel");
       },
 
       /**
@@ -44,7 +61,15 @@ sap.ui.define(
        */
       onNavToCategory: function () {
         this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId, mode: "display"});
-      }
+      },
+
+      /**
+       * Edits table fields.
+       *
+       */
+      onEditButton: function () {
+        this.navigate("ProductInfo", {CategoryId: this.sCategoryId, productId: this.sProductId, mode: "edit"}, true);
+      },
     });
   }
 );

@@ -111,7 +111,7 @@
           "target": ["TargetObjectPageCategory"]
         },
         {
-          "pattern": "Category/{CategoryId}/Product/{productId}",
+          "pattern": "Category/{CategoryId}/Product/{productId}/{mode}",
           "name": "ProductInfo",
           "target": ["TargetObjectPageProduct"]
         }

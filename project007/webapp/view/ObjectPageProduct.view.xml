@@ -2,11 +2,10 @@
 	xmlns="sap.uxap"
 	xmlns:layout="sap.ui.layout"
 	xmlns:m="sap.m"
+	xmlns:f="sap.f"
 	xmlns:personal="webapp.controller.blocks"
-	xmlns:additional="webapp.controller.blocks"
-	controllerName="webapp.controller.ObjectPageProduct"
-	height="100%">
-	<ObjectPageLayout id="ObjectPageProduct" enableLazyLoading="true" upperCaseAnchorBar="false">
+	xmlns:additional="webapp.controller.blocks" controllerName="webapp.controller.ObjectPageProduct" height="100%">
+	<ObjectPageLayout id="ObjectPageProduct" enableLazyLoading="true" upperCaseAnchorBar="false" showFooter="{stateModel>/EditMode}">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
 				<breadcrumbs>
@@ -25,7 +24,7 @@
 					</m:FlexBox>
 				</snappedHeading>
 				<actions>
-					<m:Button text="Edit" type="Emphasized"/>
+					<m:Button text="Edit" type="Emphasized" press="onEditButton"/>
 					<m:Button type="Transparent" text="Delete"/>
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
@@ -36,6 +35,7 @@
 					<m:Label text="{i18n>Description}:"/>
 					<m:VBox>
 						<m:Text text="{Description}"/>
+						<m:Text text="{stateModel>/EditMode}"/>
 					</m:VBox>
 				</layout:VerticalLayout>
 			</m:FlexBox>
@@ -95,5 +95,8 @@
 				</subSections>
 			</ObjectPageSection>
 		</sections>
+
+		<footer>
+		</footer>
 	</ObjectPageLayout>
 </mvc:View>
