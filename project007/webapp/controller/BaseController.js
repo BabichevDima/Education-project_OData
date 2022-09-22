@@ -264,6 +264,26 @@ sap.ui.define(
         });
         return oSorter;
       },
+
+      /**
+       * Creates new element.
+       *
+       * @param {string} sProperty type new element.
+       * @param {number} nCountError count errors.
+       * @param {string} sSuffix suffix.
+       *
+       */
+      _createNewElement: function (sProperty, nCountError, sSuffix) {
+        if (this._checkFields(`groupValueNew${sProperty}`)) {
+          MessageBox.alert(this.i18n("AlertMessage"));
+        } else if (nCountError) {
+          MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
+        } else {
+          this.getView().getModel().submitChanges();
+          this.onDialogCategoryClosePress();
+          MessageToast.show(this.i18n(`SuccessCreated${sProperty}`));
+        }
+      },
     });
   }
 );
