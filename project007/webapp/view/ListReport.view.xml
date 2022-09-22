@@ -61,13 +61,13 @@
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <HBox alignItems="Center">
-                            <Button type="Transparent" icon="sap-icon://{stateModel>/sortType/Name}" press="onSortButtonPress('Name')"/>
+                            <Button type="Transparent" icon="sap-icon://{stateModel>/sortType/Name}" press="onSortButtonPress('Name', 'CategoriesTable')"/>
                             <Text text="{i18n>Name}"/>
                         </HBox>
                     </Column>
                     <Column minScreenWidth="Tablet" hAlign="End">
                         <HBox alignItems="Center">
-                            <Button type="Transparent" icon="sap-icon://{stateModel>/sortType/ID}" press="onSortButtonPress('ID')"/>
+                            <Button type="Transparent" icon="sap-icon://{stateModel>/sortType/ID}" press="onSortButtonPress('ID', 'CategoriesTable')"/>
                             <Text text="{i18n>ID}" class="sapUiSmallMarginEnd"/>
                         </HBox>
                     </Column>
