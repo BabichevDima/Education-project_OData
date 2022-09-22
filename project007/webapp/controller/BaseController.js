@@ -5,11 +5,12 @@ sap.ui.define(
     "sap/ui/core/ValueState",
     "sap/m/MessageToast",
     "sap/m/MessageBox",
+    "sap/ui/model/Sorter",
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, formatter, ValueState, MessageToast, MessageBox) {
+  function (Controller, formatter, ValueState, MessageToast, MessageBox, Sorter) {
     "use strict";
 
     return Controller.extend("webapp.controller.BaseController", {
@@ -100,7 +101,7 @@ sap.ui.define(
        * @private
        */
       _checkFields: function (sGroupID) {
-        var bCheck = false;
+        var bCheck = sGroupID === "groupValueNewProduct" ? this._checkData() : false;
         this._collectsFields(sGroupID).forEach((oField) => {
           if (!oField.getValue().trim()) {
             oField.setValueState(ValueState.Error);
@@ -131,28 +132,10 @@ sap.ui.define(
 
         switch (sProperty) {
           case "Product":
-            if (this._checkFields("groupValueNewProduct")) {
-              MessageBox.alert(this.i18n("AlertMessage"));
-            } else if (nCountError) {
-              MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
-            } else if (this._checkData()) {
-              MessageBox.alert(this.i18n("AlertInvalidDateMessage"));
-            } else {
-              this.getView().getModel().submitChanges();
-              this.onDialogCategoryClosePress();
-              MessageToast.show(this.i18n("SuccessCreatedProduct"));
-            }
+            this._createNewElement(sProperty, nCountError, sSuffix)
             break;
           case "Category":
-            if (this._checkFields("groupValueNewCategory")) {
-              MessageBox.alert(this.i18n("AlertMessage"));
-            } else if (nCountError) {
-              MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
-            } else {
-              this.getView().getModel().submitChanges();
-              this.onDialogCategoryClosePress();
-              MessageToast.show(this.i18n("SuccessCreatedCategory"));
-            }
+            this._createNewElement(sProperty, nCountError, sSuffix);
             break;
           default:
             if (this._checkFields("groupEditValueProduct")) {
@@ -167,6 +150,26 @@ sap.ui.define(
               MessageToast.show(this.i18n("SuccessEdited"));
             }
             break;
+        }
+      },
+
+      /**
+       * Creates new element.
+       *
+       * @param {string} sProperty type new element.
+       * @param {number} nCountError count errors.
+       * @param {string} sSuffix suffix.
+       *
+       */
+       _createNewElement: function (sProperty, nCountError, sSuffix) {
+        if (this._checkFields(`groupValueNew${sProperty}`)) {
+          MessageBox.alert(this.i18n("AlertMessage"));
+        } else if (nCountError) {
+          MessageBox.alert(this.i18n("CountError", nCountError, sSuffix));
+        } else {
+          this.getView().getModel().submitChanges();
+          this.onDialogCategoryClosePress();
+          MessageToast.show(this.i18n(`SuccessCreated${sProperty}`));
         }
       },
 
@@ -208,6 +211,60 @@ sap.ui.define(
           i++
         }
         return bCheck
+      },
+
+     /**
+     * Sort products button press event handler.
+     *
+     * @param {string} sPropertyName sorting type.
+     * @param {string} sTableID Table ID.
+     */
+      onSortButtonPress: function (sPropertyName, sTableID) {
+        var oStateModel = this.getView().getModel("stateModel");
+        var oItemsBinding = this.byId(sTableID).getBinding("items");
+
+        oItemsBinding.sort(this.getSorter(sPropertyName, oStateModel));
+      },
+
+      /**
+       * Return constructor object.
+       *
+       * @param {string} sPropertyName sorted column name.
+       * @param {object} oStateModel JSON modal.
+       *
+       * @returns Constructor object.
+       */
+      getSorter: function (sPropertyName, oStateModel) {
+        var oSortType = oStateModel.getProperty("/sortType");
+        var oSorter;
+
+        Object.keys(oSortType).forEach(function (sTypeName) {
+          if (sPropertyName === sTypeName) {
+            switch (oSortType[sTypeName]) {
+              case "sort":
+                oStateModel.setProperty(
+                  `/sortType/${sTypeName}`,
+                  "sort-ascending"
+                );
+                oSorter = new Sorter(sPropertyName, false);
+                break;
+              case "sort-ascending":
+                oStateModel.setProperty(
+                  `/sortType/${sTypeName}`,
+                  "sort-descending"
+                );
+                oSorter = new Sorter(sPropertyName, true);
+                break;
+              default:
+                oStateModel.setProperty(`/sortType/${sTypeName}`, "sort");
+                oSorter = null;
+                break;
+            }
+          } else {
+            oStateModel.setProperty(`/sortType/${sTypeName}`, "sort");
+          }
+        });
+        return oSorter;
       },
     });
   }
