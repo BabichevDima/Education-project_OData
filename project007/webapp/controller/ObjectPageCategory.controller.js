@@ -8,7 +8,7 @@ sap.ui.define(
     "sap/ui/core/ValueState",
     "sap/ui/core/Core",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
+    "sap/ui/model/FilterOperator"
   ],
   function (BaseController, JSONModel, MessageBox, MessageToast, Fragment, ValueState, Core, Filter, FilterOperator) {
     "use strict";
@@ -32,6 +32,14 @@ sap.ui.define(
         var oStateModel = new JSONModel({
           EditMode: false,
           StatusButtons: false,
+          sortType: {
+            Name: "sort",
+            Price: "sort",
+            Description: "sort",
+            ReleaseDate: "sort",
+            DiscontinuedDate: "sort",
+            Rating: "sort",
+          },
         });
 
         this.getView().setModel(oStateModel, "stateModel");

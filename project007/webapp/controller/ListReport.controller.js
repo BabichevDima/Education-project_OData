@@ -7,7 +7,6 @@ sap.ui.define(
     "sap/m/MessageToast",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/ui/model/Sorter",
     "sap/ui/core/ValueState",
   ],
   function (
@@ -18,7 +17,6 @@ sap.ui.define(
     MessageToast,
     Filter,
     FilterOperator,
-    Sorter,
     ValueState
   ) {
     "use strict";
@@ -373,59 +371,6 @@ sap.ui.define(
         }
 
         oItemsBinding.filter(aFilters);
-      },
-
-      /**
-       * Sort products button press event handler.
-       *
-       * @param {string} sPropertyName sorting type.
-       */
-      onSortButtonPress: function (sPropertyName) {
-        var oStateModel = this.getView().getModel("stateModel");
-        var oItemsBinding = this.byId("CategoriesTable").getBinding("items");
-
-        oItemsBinding.sort(this.getSorter(sPropertyName, oStateModel));
-      },
-
-      /**
-       * Return constructor object.
-       *
-       * @param {string} sPropertyName sorted column name.
-       * @param {object} oStateModel JSON modal.
-       *
-       * @returns Constructor object.
-       */
-      getSorter: function (sPropertyName, oStateModel) {
-        var oSortType = oStateModel.getProperty("/sortType");
-        var oSorter;
-
-        Object.keys(oSortType).forEach(function (sTypeName) {
-          if (sPropertyName === sTypeName) {
-            switch (oSortType[sTypeName]) {
-              case "sort":
-                oStateModel.setProperty(
-                  `/sortType/${sTypeName}`,
-                  "sort-ascending"
-                );
-                oSorter = new Sorter(sPropertyName, false);
-                break;
-              case "sort-ascending":
-                oStateModel.setProperty(
-                  `/sortType/${sTypeName}`,
-                  "sort-descending"
-                );
-                oSorter = new Sorter(sPropertyName, true);
-                break;
-              default:
-                oStateModel.setProperty(`/sortType/${sTypeName}`, "sort");
-                oSorter = null;
-                break;
-            }
-          } else {
-            oStateModel.setProperty(`/sortType/${sTypeName}`, "sort");
-          }
-        });
-        return oSorter;
       },
 
       /**

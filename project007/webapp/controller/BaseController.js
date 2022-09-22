@@ -5,11 +5,12 @@ sap.ui.define(
     "sap/ui/core/ValueState",
     "sap/m/MessageToast",
     "sap/m/MessageBox",
+    "sap/ui/model/Sorter",
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, formatter, ValueState, MessageToast, MessageBox) {
+  function (Controller, formatter, ValueState, MessageToast, MessageBox, Sorter) {
     "use strict";
 
     return Controller.extend("webapp.controller.BaseController", {
@@ -208,6 +209,60 @@ sap.ui.define(
           i++
         }
         return bCheck
+      },
+
+      /**
+       * Return constructor object.
+       *
+       * @param {string} sPropertyName sorted column name.
+       * @param {object} oStateModel JSON modal.
+       *
+       * @returns Constructor object.
+       */
+      getSorter: function (sPropertyName, oStateModel) {
+        var oSortType = oStateModel.getProperty("/sortType");
+        var oSorter;
+
+        Object.keys(oSortType).forEach(function (sTypeName) {
+          if (sPropertyName === sTypeName) {
+            switch (oSortType[sTypeName]) {
+              case "sort":
+                oStateModel.setProperty(
+                  `/sortType/${sTypeName}`,
+                  "sort-ascending"
+                );
+                oSorter = new Sorter(sPropertyName, false);
+                break;
+              case "sort-ascending":
+                oStateModel.setProperty(
+                  `/sortType/${sTypeName}`,
+                  "sort-descending"
+                );
+                oSorter = new Sorter(sPropertyName, true);
+                break;
+              default:
+                oStateModel.setProperty(`/sortType/${sTypeName}`, "sort");
+                oSorter = null;
+                break;
+            }
+          } else {
+            oStateModel.setProperty(`/sortType/${sTypeName}`, "sort");
+          }
+        });
+        return oSorter;
+      },
+
+      /**
+       * Sort products button press event handler.
+       *
+       * @param {string} sPropertyName sorting type.
+       * @param {string} sTableID sorting type.
+       */
+       onSortButtonPress: function (sPropertyName, sTableID) {
+        var oStateModel   = this.getView().getModel("stateModel");
+        var oItemsBinding = this.byId(sTableID).getBinding("items");
+
+        oItemsBinding.sort(this.getSorter(sPropertyName, oStateModel));
       },
     });
   }

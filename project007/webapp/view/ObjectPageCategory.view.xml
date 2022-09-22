@@ -70,22 +70,40 @@
 								</headerToolbar>
 								<columns>
 									<Column minScreenWidth="Tablet" demandPopin="true">
-										<Text text="{i18n>Name}"/>
+										<HBox alignItems="Center">
+											<Button type="Transparent" icon="sap-icon://{stateModel>/sortType/Name}" press="onSortButtonPress('Name', 'ProductsTableCategories')"/>
+											<Text text="{i18n>Name}"/>
+										</HBox>
 									</Column>
 									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-										<Text text="{i18n>Price}"/>
+										<HBox alignItems="Center">
+											<Button type="Transparent" icon="sap-icon://{stateModel>/sortType/Price}" press="onSortButtonPress('Price', 'ProductsTableCategories')"/>
+											<Text text="{i18n>Price}"/>
+										</HBox>
 									</Column>
 									<Column minScreenWidth="Tablet" demandPopin="true">
-										<Text text="{i18n>Description}"/>
+										<HBox alignItems="Center">
+											<Button type="Transparent" icon="sap-icon://{stateModel>/sortType/Description}" press="onSortButtonPress('Description', 'ProductsTableCategories')"/>
+											<Text text="{i18n>Description}"/>
+										</HBox>
 									</Column>
 									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-										<Text text="{i18n>ReleaseDate}"/>
+										<HBox alignItems="Center">
+											<Button type="Transparent" icon="sap-icon://{stateModel>/sortType/ReleaseDate}" press="onSortButtonPress('ReleaseDate', 'ProductsTableCategories')"/>
+											<Text text="{i18n>ReleaseDate}"/>
+										</HBox>
 									</Column>
 									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-										<Text text="{i18n>DiscontinuedDate}"/>
+										<HBox alignItems="Center">
+											<Button type="Transparent" icon="sap-icon://{stateModel>/sortType/DiscontinuedDate}" press="onSortButtonPress('DiscontinuedDate', 'ProductsTableCategories')"/>
+											<Text text="{i18n>DiscontinuedDate}"/>
+										</HBox>
 									</Column>
 									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-										<Text text="{i18n>Rating}"/>
+										<HBox alignItems="Center">
+											<Button type="Transparent" icon="sap-icon://{stateModel>/sortType/Rating}" press="onSortButtonPress('Rating', 'ProductsTableCategories')"/>
+											<Text text="{i18n>Rating}"/>
+										</HBox>
 									</Column>
 								</columns>
 								<items>
@@ -96,7 +114,6 @@
 										</HBox>
 										<HBox justifyContent="End">
 											<Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
-											<!-- <Text text="{Price}" visible="{= !${stateModel>/EditMode} }"/> -->
 											<ObjectNumber number="{ path: 'Price', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" state="{= ${Price} > 20 ? 'Error' : 'Success'}" unit="EUR" visible="{= !${stateModel>/EditMode} }"/>
 										</HBox>
 										<HBox justifyContent="Start">
