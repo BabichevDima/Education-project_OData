@@ -471,7 +471,15 @@ sap.ui.define(
         var sValue        = oEvent.getSource().getValue().trim();
         var aFilters      = [];
 
-        if (sValue && !isNaN(sValue)) {
+        if (!isNaN(Date.parse(sValue)) && !Number(sValue)) {
+          aFilters.push(new Filter({
+            filters: [
+              new Filter("ReleaseDate", FilterOperator.LE, new Date(sValue)),
+              new Filter("DiscontinuedDate", FilterOperator.GE, new Date(sValue))
+            ],
+            and: true,
+          }))
+        } else if (sValue && !isNaN(sValue)) {
           aFilters.push(new Filter({
             filters: [
               new Filter("Price", FilterOperator.EQ, sValue),
