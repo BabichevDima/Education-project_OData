@@ -1,16 +1,18 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.uxap"
 	xmlns:layout="sap.ui.layout"
+	xmlns:forms="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
 	xmlns:m="sap.m"
 	xmlns:f="sap.f"
-	xmlns:personal="webapp.controller.blocks"
-	xmlns:additional="webapp.controller.blocks" controllerName="webapp.controller.ObjectPageProduct" height="100%">
+	controllerName="webapp.controller.ObjectPageProduct"
+	height="100%">
 	<ObjectPageLayout id="ObjectPageProduct" enableLazyLoading="true" upperCaseAnchorBar="false" showFooter="{stateModel>/EditMode}">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
 				<breadcrumbs>
 					<m:Breadcrumbs>
-						<m:Link text="{i18n>CategoriesOverview}" press="navigate('ListReport')"/>
+						<m:Link text="{i18n>CategoriesOverview}" press="onNavToCategoriesOverview"/>
 						<m:Link text="{i18n>Category}" press="onNavToCategory"/>
 						<m:Link text="{i18n>Product}"/>
 					</m:Breadcrumbs>
@@ -34,7 +36,26 @@
 				<subSections>
 					<ObjectPageSubSection titleUppercase="false">
 						<blocks>
-							<personal:PersonalFormBlock id="personalinfo" columnLayout="3"/>
+							<forms:SimpleForm editable="true" title="{i18n>Info}" layout="ColumnLayout">
+									<m:Label text="{i18n>Description}"/>
+									<m:Text text="{Description}" visible="{= !${stateModel>/EditMode}}"/>
+									<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Description', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+
+									<m:Label text="{i18n>Rating}"/>
+									<m:RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{Rating}" tooltip="Rating Product" editable="{stateModel>/EditMode}"/>
+
+									<m:Label text="{i18n>ReleaseDate}"/>
+									<m:Text visible="{= !${stateModel>/EditMode}}" text="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+									<m:DatePicker change="checkField" fieldGroupIds="groupEditValueProduct" value="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{stateModel>/EditMode}"/>
+
+									<m:Label text="{i18n>DiscontinuedDate}"/>
+									<m:Text visible="{= !${stateModel>/EditMode}}" text="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+									<m:DatePicker change="checkField" fieldGroupIds="groupEditValueProduct" value="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{stateModel>/EditMode}"/>
+
+									<m:Label text="{i18n>Price}"/>
+									<m:ObjectNumber visible="{= !${stateModel>/EditMode}}" number="{ path: 'Price', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" state="{= ${Price} > 20 ? 'Error' : 'Success'}" unit="EUR"/>
+									<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
+							</forms:SimpleForm>
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>
@@ -44,7 +65,27 @@
 				<subSections>
 					<ObjectPageSubSection titleUppercase="false">
 						<blocks>
-							<additional:AdditionalInformation id="additionalInformation" columnLayout="2"/>
+							<forms:SimpleForm editable="true" title="{Supplier/Name}" layout="ColumnLayout">
+								<m:Label text="{i18n>Country}"/>
+								<m:Text text="{Supplier/Address/Country}" visible="{= !${stateModel>/EditMode}}"/>
+								<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/Country', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+
+								<m:Label text="{i18n>City}"/>
+								<m:Text text="{Supplier/Address/City}" visible="{= !${stateModel>/EditMode}}"/>
+								<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/City', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+
+								<m:Label text="{i18n>Street}"/>
+								<m:Text text="{Supplier/Address/Street}" visible="{= !${stateModel>/EditMode}}"/>
+								<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/Street', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+
+								<m:Label text="{i18n>State}"/>
+								<m:Text text="{Supplier/Address/State}" visible="{= !${stateModel>/EditMode}}"/>
+								<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/State', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+
+								<m:Label text="{i18n>ZipCode}"/>
+								<m:Text text="{Supplier/Address/ZipCode}" visible="{= !${stateModel>/EditMode}}"/>
+								<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Supplier/Address/ZipCode', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
+							</forms:SimpleForm>
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>

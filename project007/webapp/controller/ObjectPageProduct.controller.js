@@ -1,4 +1,3 @@
-// this.getOwnerComponent().getRouter().getHashChanger()
 sap.ui.define(
   ["webapp/controller/BaseController",
   "sap/ui/model/json/JSONModel",
@@ -12,6 +11,7 @@ sap.ui.define(
        * Controller's "init" lifecycle method.
        */
       onInit: function () {
+        this.onRegisterManager();
         this.getOwnerComponent().getRouter().getRoute("ProductInfo").attachPatternMatched(this._onPatternMatched, this);
       },
 
@@ -64,7 +64,14 @@ sap.ui.define(
        * @param {boolean} bReplace additional Param.
        */
       onNavToCategory: function (bReplace) {
-        this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId, mode: "display"}, bReplace);
+        var oStateModel = this.getView().getModel("stateModel");
+        var EditMode    = oStateModel.getProperty("/EditMode");
+
+        if (!EditMode) {
+          this.navigate("ObjectPageCategory", {CategoryId: this.sCategoryId, mode: "display"}, bReplace);
+        } else {
+          MessageBox.warning(this.i18n("WarningEditMode"));
+        }
       },
 
       /**
