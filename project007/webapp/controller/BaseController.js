@@ -47,6 +47,8 @@ sap.ui.define(
 
         if (!EditMode) {
           this.navigate("ListReport");
+        } else {
+          MessageBox.warning(this.i18n("WarningEditMode"));
         }
       },
 

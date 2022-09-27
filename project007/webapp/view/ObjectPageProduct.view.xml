@@ -1,14 +1,18 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.uxap"
 	xmlns:layout="sap.ui.layout"
+	xmlns:forms="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
 	xmlns:m="sap.m"
-	xmlns:personal="webapp.controller.blocks" controllerName="webapp.controller.ObjectPageProduct" height="100%">
-	<ObjectPageLayout id="ObjectPageProduct" enableLazyLoading="true" upperCaseAnchorBar="false">
+	xmlns:f="sap.f"
+	controllerName="webapp.controller.ObjectPageProduct"
+	height="100%">
+	<ObjectPageLayout id="ObjectPageProduct" enableLazyLoading="true" upperCaseAnchorBar="false" showFooter="{stateModel>/EditMode}">
 		<headerTitle>
 			<ObjectPageDynamicHeaderTitle>
 				<breadcrumbs>
 					<m:Breadcrumbs>
-						<m:Link text="{i18n>CategoriesOverview}" press="navigate('ListReport')"/>
+						<m:Link text="{i18n>CategoriesOverview}" press="onNavToCategoriesOverview"/>
 						<m:Link text="{i18n>Category}" press="onNavToCategory"/>
 						<m:Link text="{i18n>Product}"/>
 					</m:Breadcrumbs>
@@ -22,64 +26,78 @@
 					</m:FlexBox>
 				</snappedHeading>
 				<actions>
-					<m:Button text="Edit" type="Emphasized"/>
-					<m:Button type="Transparent" text="Delete"/>
+					<m:Button text="Edit" type="Emphasized" press="onEditButton"/>
+					<m:Button type="Transparent" text="Delete" press="onDeleteProductButton"/>
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
 		</headerTitle>
-		<headerContent>
-			<m:FlexBox wrap="Wrap" fitContainer="true">
-				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-					<m:Label text="{i18n>Description}:"/>
-					<m:VBox>
-						<m:Text text="{Description}"/>
-					</m:VBox>
-				</layout:VerticalLayout>
-			</m:FlexBox>
-		</headerContent>
 		<sections>
 			<ObjectPageSection titleUppercase="false" title="{i18n>Info}">
 				<subSections>
 					<ObjectPageSubSection titleUppercase="false">
 						<blocks>
-							<personal:PersonalFormBlock id="personalinfo" columnLayout="3"/>
+							<forms:SimpleForm editable="true" title="{i18n>Info}" layout="ColumnLayout">
+									<m:Label text="{i18n>Description}"/>
+									<m:Text text="{Description}" visible="{= !${stateModel>/EditMode}}"/>
+									<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Description', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+
+									<m:Label text="{i18n>Rating}"/>
+									<m:RatingIndicator maxValue="5" class="sapUiSmallMarginBottom" value="{Rating}" tooltip="Rating Product" editable="{stateModel>/EditMode}"/>
+
+									<m:Label text="{i18n>ReleaseDate}"/>
+									<m:Text visible="{= !${stateModel>/EditMode}}" text="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+									<m:DatePicker change="checkField" fieldGroupIds="groupEditValueProduct" value="{path: 'ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{stateModel>/EditMode}"/>
+
+									<m:Label text="{i18n>DiscontinuedDate}"/>
+									<m:Text visible="{= !${stateModel>/EditMode}}" text="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'MMM dd YYYY'}}"/>
+									<m:DatePicker change="checkField" fieldGroupIds="groupEditValueProduct" value="{path: 'DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'MMM dd YYYY'}}" visible="{stateModel>/EditMode}"/>
+
+									<m:Label text="{i18n>Price}"/>
+									<m:ObjectNumber visible="{= !${stateModel>/EditMode}}" number="{ path: 'Price', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" state="{= ${Price} > 20 ? 'Error' : 'Success'}" unit="EUR"/>
+									<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Price', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
+							</forms:SimpleForm>
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>
 			</ObjectPageSection>
-			<ObjectPageSection titleUppercase="false" title="{i18n>Suppliers}">
+
+			<ObjectPageSection titleUppercase="false" title="{i18n>AdditionalInfo}">
 				<subSections>
-					<ObjectPageSubSection>
+					<ObjectPageSubSection titleUppercase="false">
 						<blocks>
-							<m:Table id="ProductsTableSuppliers" sticky="HeaderToolbar,ColumnHeaders" width="auto" mode="MultiSelect" items="{/Suppliers}">
-								<m:headerToolbar>
-									<m:Toolbar class="sapUiMediumMarginTop">
-										<m:Title text="{i18n>Suppliers}" level="H2"/>
-										<m:ToolbarSpacer/>
-										<m:SearchField id="SuppliersSearch" placeholder="{i18n>PlaceholderSerchProduct}" width="300px"/>
-										<m:Button id="CreateButton" type="Accept" ariaHasPopup="Dialog" icon="sap-icon://create" text="{i18n>CreateButton}"/>
-										<m:Button id="DeleteButton" type="Reject" icon="sap-icon://delete" text="{i18n>DeleteButton}" class="sapUiSmallMarginBeginEnd"/>
-									</m:Toolbar>
-								</m:headerToolbar>
-								<m:columns>
-									<m:Column minScreenWidth="Tablet" demandPopin="true">
-										<m:Text text="{i18n>Name}"/>
-									</m:Column>
-									<m:Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-										<m:Text text="{i18n>ID}" class="sapUiSmallMarginEnd"/>
-									</m:Column>
-								</m:columns>
-								<m:items>
-									<m:ColumnListItem>
-										<m:Text text="{Name}"/>
-										<m:Text text="{ID}" class="sapUiSmallMarginEnd"/>
-									</m:ColumnListItem>
-								</m:items>
-							</m:Table>
+							<forms:SimpleForm editable="true" title="{Supplier/Name}" layout="ColumnLayout">
+								<m:Label text="{i18n>Country}"/>
+								<m:Text text="{Supplier/Address/Country}" visible="{= !${stateModel>/EditMode}}"/>
+								<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/Country', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+
+								<m:Label text="{i18n>City}"/>
+								<m:Text text="{Supplier/Address/City}" visible="{= !${stateModel>/EditMode}}"/>
+								<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/City', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+
+								<m:Label text="{i18n>Street}"/>
+								<m:Text text="{Supplier/Address/Street}" visible="{= !${stateModel>/EditMode}}"/>
+								<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/Street', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+
+								<m:Label text="{i18n>State}"/>
+								<m:Text text="{Supplier/Address/State}" visible="{= !${stateModel>/EditMode}}"/>
+								<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" value="{ path: 'Supplier/Address/State', type: 'sap.ui.model.type.String', constraints: {search: '^[A-Za-zА-Яа-яЁё\\s]+$', minLength: 1, maxLength: 70}}" visible="{stateModel>/EditMode}"/>
+
+								<m:Label text="{i18n>ZipCode}"/>
+								<m:Text text="{Supplier/Address/ZipCode}" visible="{= !${stateModel>/EditMode}}"/>
+								<m:Input fieldGroupIds="groupEditValueProduct" liveChange="checkField" type="Number" value="{ path: 'Supplier/Address/ZipCode', type: 'sap.ui.model.type.String', constraints: {search: '^[0-9]', minimum: 1}}" visible="{stateModel>/EditMode}"/>
+							</forms:SimpleForm>
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>
 			</ObjectPageSection>
 		</sections>
+
+		<footer>
+			<m:OverflowToolbar>
+				<m:ToolbarSpacer/>
+				<m:Button type="Accept" icon="sap-icon://save" text="{i18n>ButtonSave}" press="onCreate"/>
+				<m:Button id="CancelButtonObjectPageCategory" type="Reject" icon="sap-icon://cancel" text="{i18n>ButtonCancel}" press="onConfirmCancelEditModeOnProduct"/>
+			</m:OverflowToolbar>
+		</footer>
 	</ObjectPageLayout>
 </mvc:View>

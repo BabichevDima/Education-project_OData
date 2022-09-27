@@ -17,7 +17,7 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/V2/(S(ptqjs5sdf30tkigfr531gqk1))/OData/OData.svc",
+        "uri": "/V2/(S(ptqjs5sdf30tkiccr531gqk1))/OData/OData.svc",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -111,7 +111,7 @@
           "target": ["TargetObjectPageCategory"]
         },
         {
-          "pattern": "Category/{CategoryId}/Product/{productId}",
+          "pattern": "Category/{CategoryId}/Product/{productId}/{mode}",
           "name": "ProductInfo",
           "target": ["TargetObjectPageProduct"]
         }
